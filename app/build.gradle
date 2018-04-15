@@ -19,6 +19,7 @@ android {
 }
 
 dependencies {
+    // Android base
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
 
@@ -30,6 +31,9 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.10'
     // Dagger for use with support libraries
     implementation 'com.google.dagger:dagger-android-support:2.10'
+
+    // RxJava
+    impelmentation group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.1'
 
     testImplementation 'junit:junit:4.12'
     // Mockito
