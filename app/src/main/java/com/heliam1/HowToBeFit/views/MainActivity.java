@@ -1,4 +1,4 @@
-package com.heliam1.mysciencefitness.views;
+package com.heliam1.HowToBeFit.views;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
