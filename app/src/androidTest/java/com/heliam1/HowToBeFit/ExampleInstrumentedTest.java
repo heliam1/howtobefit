@@ -1,4 +1,4 @@
-package com.heliam1.mysciencefitness;
+package com.heliam1.HowToBeFit;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
