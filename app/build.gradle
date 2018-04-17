@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
+    // signingConfig block goes here
+
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.heliam1.HowToBeFit"
@@ -14,6 +16,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // signingConfig signingConfigs.config
+        }
+        debug {
+            applicationIdSuffix ".debug"
         }
     }
 }
