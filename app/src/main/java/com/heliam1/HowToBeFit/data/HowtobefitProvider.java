@@ -13,6 +13,11 @@ import android.widget.Toast;
 
 import com.heliam1.HowToBeFit.data.HowtobefitContract.WorkoutEntry;
 import com.heliam1.HowToBeFit.data.HowtobefitContract.ExerciseSetEntry;
+import com.heliam1.HowToBeFit.models.ExerciseSet;
+import com.heliam1.HowToBeFit.models.Workout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HowtobefitProvider extends ContentProvider {
     public static final String LOG_TAG = HowtobefitProvider.class.getSimpleName();
@@ -409,4 +414,6 @@ public class HowtobefitProvider extends ContentProvider {
                 throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
         }
     }
+
+
 }
