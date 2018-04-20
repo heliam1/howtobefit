@@ -13,4 +13,12 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
     </GridView>
+
+    <!-- See udacity pets for better example of an empty view -->
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No workouts yet!"
+        android:padding="8dp"/>
 </ScrollView>

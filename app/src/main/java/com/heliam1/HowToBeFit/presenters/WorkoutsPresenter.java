@@ -40,6 +40,7 @@ public class WorkoutsPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        mView.displayToast("Something wrong with db");
                         mView.displayErrorLoadingWorkouts();
                     }
                 })

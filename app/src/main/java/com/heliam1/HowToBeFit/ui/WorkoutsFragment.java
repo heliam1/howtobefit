@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.heliam1.HowToBeFit.R;
 import com.heliam1.HowToBeFit.models.Workout;
@@ -23,11 +25,13 @@ public class WorkoutsFragment extends Fragment implements WorkoutsView {
     @Inject
     WorkoutRepository workoutRepository;
 
-    WorkoutsPresenter mWorkoutPresenter;
+    private WorkoutsPresenter mWorkoutPresenter;
 
-    GridView mWorkoutsGridview;
+    private GridView mWorkoutsGridview;
+    private TextView mEmptyView;
+    private Toast mToast;
 
-    List<Workout> workouts;
+    private List<Workout> workouts;
 
     public WorkoutsFragment() {};
 
@@ -37,7 +41,9 @@ public class WorkoutsFragment extends Fragment implements WorkoutsView {
         final View rootView = inflater.inflate(R.layout.fragment_workouts, container,
                 false);
 
-        GridView mWorkoutsGridview = (GridView) rootView.findViewById(R.id.workouts_gridview);
+        mWorkoutsGridview = (GridView) rootView.findViewById(R.id.workouts_gridview);
+        mEmptyView = (TextView) rootView.findViewById(R.id.empty_view);
+        mEmptyView.setVisibility(View.GONE);
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -54,16 +60,22 @@ public class WorkoutsFragment extends Fragment implements WorkoutsView {
     public void displayWorkouts(List<Workout> workouts) {
         this.workouts = workouts;
 
+        // mWorkoutsGridview.setEmptyView(findViewById(R.id.empty_view));
+
         WorkoutListAdapter workoutListAdapter = new WorkoutListAdapter(getContext(), this.workouts);
         mWorkoutsGridview.setAdapter(workoutListAdapter);
     }
 
+    @Override
     public void displayNoWorkouts() {
-
+        mWorkoutsGridview.setVisibility(View.GONE);
+        mEmptyView.setVisibility(View.VISIBLE);
     }
 
+    @Override
     public void displayErrorLoadingWorkouts() {
-
+        mWorkoutsGridview.setVisibility(View.GONE);
+        mEmptyView.setVisibility(View.VISIBLE);
     }
 
     public void displayErrorSavingWorkouts() {
@@ -80,5 +92,14 @@ public class WorkoutsFragment extends Fragment implements WorkoutsView {
 
     public void displaySuccessDeletingWorkout() {
 
+    }
+
+    @Override
+    public void displayToast (String message){
+        if (mToast != null) {
+            mToast.cancel();
+        }
+        mToast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+        mToast.show();
     }
 }

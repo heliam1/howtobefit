@@ -21,6 +21,7 @@ import io.reactivex.Single;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
+import static java.util.Collections.EMPTY_LIST;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
@@ -66,23 +67,24 @@ public class WorkoutPresenterTest {
 
         Mockito.verify(workoutsView).displayWorkouts(MANY_WORKOUTS);
     }
-    /*
+
     // should also test edge cases
     @Test
-    public void shouldHandleNoTasksFound() {
-        Mockito.when(taskRepository.getTasks()).thenReturn(Single.<List<Task>>just(EMPTY_LIST));
+    public void handleNoWorkoutsFound() {
+        Mockito.when(workoutRepository.getWorkouts()).thenReturn(Single.<List<Workout>>just(EMPTY_LIST));
 
-        presenter.loadTasks();
+        workoutsPresenter.loadWorkouts();
 
-        Mockito.verify(view).displayNoTasks();
+        Mockito.verify(workoutsView).displayNoWorkouts();
     }
 
     @Test
-    public void shouldHandleError() {
-        when(TasksRepositories.getTasksReactively()).thenReturn(Single.<List<Task>>error(new Throwable("boom")));
+    public void handleErrorGettingWorkouts() {
+        when(workoutRepository.getWorkouts()).thenReturn(Single.<List<Workout>>error(new Throwable("boom")));
 
-        presenter.loadTasks();
+        workoutsPresenter.loadWorkouts();
 
-        verify(view).// Remember verify is " did we call this method on the mock"
-    }*/
+        Mockito.verify(workoutsView).displayErrorLoadingWorkouts();// Remember verify is " did we call this method on the mock"
+        Mockito.verify(workoutsView).displayToast("Something wrong with db");
+    }
 }
