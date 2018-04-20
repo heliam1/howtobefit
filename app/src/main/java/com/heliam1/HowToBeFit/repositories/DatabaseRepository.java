@@ -37,6 +37,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         });
     }
 
+    @Override
     public Single<Long> saveWorkout(Workout workout) {
         return Single.fromCallable(() -> {
             try {
@@ -47,6 +48,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         });
     }
 
+    @Override
     public Single<Long> saveExerciseSet(ExerciseSet exerciseSet) {
         return Single.fromCallable(() -> {
             try {
@@ -57,6 +59,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         });
     }
 
+    @Override
     public Single<Long> deleteWorkout(Workout workout) {
         return Single.fromCallable(() -> {
             try {
@@ -71,6 +74,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         });
     }
 
+    @Override
     public Single<Long> deleteExerciseSet(ExerciseSet exerciseSet) {
         return Single.fromCallable(() -> {
             try {
@@ -86,7 +90,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
     }
 
     @Override
-    public Single<List<ExerciseSet>> getExerciseSetsById(long id) {
+    public Single<List<ExerciseSet>> getExerciseSetsByWorkoutId(long id) {
         return Single.fromCallable(() -> {
             try {
                 return queryExerciseSetsByWorkoutId(id);
