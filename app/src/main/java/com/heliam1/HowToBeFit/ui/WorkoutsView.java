@@ -9,6 +9,13 @@ public interface WorkoutsView {
 
     void displayNoWorkouts();
 
-    void displayError();
+    void displayErrorLoadingWorkouts();
 
+    void displayErrorSavingWorkouts();
+
+    void displaySuccessSavingWorkout();
+
+    void displayErrorDeletingWorkout();
+
+    void displaySuccessDeletingWorkout();
 }

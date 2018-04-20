@@ -40,9 +40,55 @@ public class WorkoutsPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        mView.displayError();
+                        mView.displayErrorLoadingWorkouts();
                     }
                 })
+        );
+    }
+
+    public void saveWorkout(Workout workout) {
+        compositeDisposable.add(mWorkoutRepository.saveWorkout(workout)
+                .subscribeOn(Schedulers.io())
+                .observeOn(mainScheduler)
+                .subscribeWith(new DisposableSingleObserver<Long>() {
+                    @Override
+                    public void onSuccess(Long idOfSavedWorkout) {
+                        if (idOfSavedWorkout == null) {
+                            // TODO: this should be in on error only?
+                            mView.displayErrorSavingWorkouts();
+                        } else {
+                            mView.displaySuccessSavingWorkout();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.displayErrorSavingWorkouts();
+                    }
+                })
+        );
+    }
+
+    public void deleteWorkout(Workout workout) {
+        compositeDisposable.add(mWorkoutRepository.deleteWorkout(workout)
+            .subscribeOn(Schedulers.io())
+            .observeOn(mainScheduler)
+            .subscribeWith(new DisposableSingleObserver<Long>() {
+                @Override
+                public void onSuccess(Long idOfDeletedWorkout) {
+                    if (idOfDeletedWorkout == null) {
+                        // TODO: this should be in on error only?
+                        mView.displayErrorDeletingWorkout();
+                    } else {
+                        mView.displaySuccessDeletingWorkout();
+                    }
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    mView.displayErrorDeletingWorkout();
+                }
+            })
         );
     }
 
