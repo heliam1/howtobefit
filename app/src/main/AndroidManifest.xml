@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.heliam1.HowToBeFit.views.MainActivity"
+            android:name="com.heliam1.HowToBeFit.ui.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,9 +17,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.heliam1.HowToBeFit.views.ExerciseSetsActivity"
+            android:name="com.heliam1.HowToBeFit.ui.ExerciseSetsActivity"
             android:theme="@style/AppTheme"
-            android:parentActivityName="com.heliam1.HowToBeFit.views.MainActivity">
+            android:parentActivityName="com.heliam1.HowToBeFit.ui.MainActivity">
         </activity>
         <provider
             android:name="com.heliam1.HowToBeFit.data.HowtobefitProvider"

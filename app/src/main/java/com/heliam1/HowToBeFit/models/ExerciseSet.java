@@ -2,9 +2,9 @@ package com.heliam1.HowToBeFit.models;
 
 public class ExerciseSet {
 
-    private long id;
+    private Long id;
     private long workoutId;
-    private String workoutName;
+    private String exerciseName;
     private int setNumber;
     private int setDuration;
     private int setRest;
@@ -15,12 +15,12 @@ public class ExerciseSet {
     private int pbWeight;
     private int pbReps;
 
-    public ExerciseSet(long id, long workoutId, String workoutName, int setNumber, int setDuration,
+    public ExerciseSet(long id, long workoutId, String exerciseName, int setNumber, int setDuration,
                        int setRest, double setWeight, int setReps, String setDate, int setOrder,
                        int pbWeight, int pbReps) {
         this.id = id;
         this.workoutId = workoutId;
-        this.workoutName = workoutName;
+        this.exerciseName = exerciseName;
         this.setNumber = setNumber;
         this.setDuration = setDuration;
         this.setRest = setRest;
@@ -33,6 +33,10 @@ public class ExerciseSet {
         this.pbReps = pbReps;
     }
 
+    public boolean hasId() {
+        return (this.id != null);
+    }
+
     public long getId() {
         return id;
     }
@@ -41,12 +45,16 @@ public class ExerciseSet {
         this.id = id;
     }
 
-    public String getWorkoutName() {
-        return workoutName;
+    public long getWorkoutId() {
+        return workoutId;
+    }
+
+    public String getExerciseName() {
+        return exerciseName;
     }
 
     public void setWorkoutName(String workoutName) {
-        this.workoutName = workoutName;
+        this.exerciseName = workoutName;
     }
 
     public int getSetNumber() {
@@ -111,5 +119,9 @@ public class ExerciseSet {
 
     public void setPbReps(int pbReps) {
         this.pbReps = pbReps;
+    }
+
+    public int getSetOrder() {
+        return setOrder;
     }
 }

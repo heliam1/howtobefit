@@ -1,4 +1,4 @@
-package com.heliam1.HowToBeFit.views;
+package com.heliam1.HowToBeFit.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

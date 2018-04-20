@@ -1,7 +1,7 @@
 package com.heliam1.HowToBeFit.models;
 
 public class Workout {
-    private long id;
+    private Long id;
     private String name;
     private int image;
     private String date;
@@ -13,5 +13,29 @@ public class Workout {
         this.image = image;
         this.date = date;
         this.duration = duration;
+    }
+
+    public boolean hasId() {
+        return (this.id != null);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public int getDuration() {
+        return duration;
     }
 }
