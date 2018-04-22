@@ -87,4 +87,24 @@ public class WorkoutPresenterTest {
         Mockito.verify(workoutsView).displayErrorLoadingWorkouts();// Remember verify is " did we call this method on the mock"
         Mockito.verify(workoutsView).displayToast("Something wrong with db");
     }
+
+    @Test
+    public void savesADefaultWorkout() {
+
+    }
+
+    @Test
+    public void lauchesNewWorkout() {
+
+    }
+
+    @Test
+    public void savesCustomWorkout() {
+
+    }
+
+    @Test
+    public void launchesCurrentWorkout() {
+
+    }
 }

@@ -21,7 +21,6 @@ import io.reactivex.Single;
 public class DatabaseRepository implements WorkoutRepository, ExerciseSetRepository {
     private final ContentResolver contentResolver;
 
-
     public DatabaseRepository(Context context) {
         this.contentResolver = context.getContentResolver();
     }

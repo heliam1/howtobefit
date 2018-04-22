@@ -1,6 +1,6 @@
-package com.heliam1.HowToBeFit.dagger;
+package com.heliam1.HowToBeFit.di;
 
-import android.app.Application;
+import android.content.Context;
 
 import com.heliam1.HowToBeFit.repositories.DatabaseRepository;
 import com.heliam1.HowToBeFit.repositories.ExerciseSetRepository;
@@ -13,11 +13,14 @@ import dagger.Provides;
 
 @Module
 public class AppModule {
-    private final Application application;
+    private final HowToBeFitApplication application;
 
-    AppModule(Application application) {
+    public AppModule(HowToBeFitApplication application) {
         this.application = application;
     }
+
+    @Provides
+    Context providesApplicationContext() { return application; }
 
     @Provides
     @Singleton
@@ -27,9 +30,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    ExerciseSetRepository providesExerciseSetRepository() {
-        return new DatabaseRepository(application);
-    }
+    ExerciseSetRepository providesExerciseSetRepository() { return new DatabaseRepository(application); }
 }
 
 // 1 what do you want to inject

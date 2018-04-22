@@ -13,11 +13,6 @@ import android.widget.Toast;
 
 import com.heliam1.HowToBeFit.data.HowtobefitContract.WorkoutEntry;
 import com.heliam1.HowToBeFit.data.HowtobefitContract.ExerciseSetEntry;
-import com.heliam1.HowToBeFit.models.ExerciseSet;
-import com.heliam1.HowToBeFit.models.Workout;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HowtobefitProvider extends ContentProvider {
     public static final String LOG_TAG = HowtobefitProvider.class.getSimpleName();
@@ -26,8 +21,6 @@ public class HowtobefitProvider extends ContentProvider {
     private static final int WORKOUT_ID = 101;      // URI matcher code for the content URI for a single task in the workouts table
     private static final int EXERCISE_SETS = 200;   // URI matcher code for the content URI for the exercisesets table
     private static final int EXERCISE_SET_ID = 201; // URI matcher code for the content URI for a single step in the exercise sets table
-
-    private static Toast mToast;
 
     /**
      * UriMatcher object to match a content URI to a corresponding code. The input passed into the
@@ -122,10 +115,6 @@ public class HowtobefitProvider extends ContentProvider {
         }
     }
 
-    /**
-     * Insert a task into the database with the given content values. Return the new content URI
-     * for that specific row in the database.
-     */
     private Uri insertWorkout(Uri uri, ContentValues values) {
         values = sanitiseWorkout(values);
         // If values were not sanitary
@@ -262,14 +251,14 @@ public class HowtobefitProvider extends ContentProvider {
 
         if (name == null || TextUtils.isEmpty(name)) {
             // TODO: Move this into view?
-            mToast.makeText(getContext(), "A workout requires a name", Toast.LENGTH_SHORT).show();
+            // mToast.makeText(getContext(), "A workout requires a name", Toast.LENGTH_SHORT).show();
             return null;
         }
 
         if (zonedDateTime == null || TextUtils.isEmpty(zonedDateTime)) {
             // TODO: Move this into view?
             Log.e(LOG_TAG, "ERROR PASSING DATE TO TABLE");
-            mToast.makeText(getContext(), "ERROR PASSING DATE TO TABLE", Toast.LENGTH_SHORT).show();
+            // mToast.makeText(getContext(), "ERROR PASSING DATE TO TABLE", Toast.LENGTH_SHORT).show();
             return null;
         }
 
@@ -298,18 +287,18 @@ public class HowtobefitProvider extends ContentProvider {
         if (workoutId == null) {
             // TODO: Move this into view?
             Log.e(LOG_TAG, "ERROR PASSING ID TO WORKOUT TABLE");
-            mToast.makeText(getContext(), "ERROR PASSING ID TO WORKOUT TABLE",
-                    Toast.LENGTH_SHORT).show();
+            // mToast.makeText(getContext(), "ERROR PASSING ID TO WORKOUT TABLE",
+            //        Toast.LENGTH_SHORT).show();
             return null;
         }
         if (exerciseName == null) {
             // TODO: Move this into view?
-            mToast.makeText(getContext(), "A workout requires a name", Toast.LENGTH_SHORT).show();
+            // mToast.makeText(getContext(), "A workout requires a name", Toast.LENGTH_SHORT).show();
             return null;
         }
         if (setNumber == null) {
             Log.e(LOG_TAG, "ERROR PASSING SET NUMBER TO WORKOUT TABLE");
-            mToast.makeText(getContext(), "ERROR PASSING SET NUMBER TO WORKOUT TABLE", Toast.LENGTH_SHORT).show();
+            // mToast.makeText(getContext(), "ERROR PASSING SET NUMBER TO WORKOUT TABLE", Toast.LENGTH_SHORT).show();
             return null;
         }
         if (setDuration == null) {
@@ -330,14 +319,14 @@ public class HowtobefitProvider extends ContentProvider {
         }
         if (setReps < 0) {
             Log.e(LOG_TAG, "ERROR PASSING SET REPS TO WORKOUT TABLE");
-            mToast.makeText(getContext(), "Set reps cannot be negative",
-                    Toast.LENGTH_SHORT).show();
+            // mToast.makeText(getContext(), "Set reps cannot be negative",
+            //        Toast.LENGTH_SHORT).show();
             return null;
         }
         if (setDate == null) {
             // TODO: Move this into view?
             Log.e(LOG_TAG, "ERROR PASSING DATE TO TABLE");
-            mToast.makeText(getContext(), "ERROR PASSING DATE TO TABLE", Toast.LENGTH_SHORT).show();
+            // mToast.makeText(getContext(), "ERROR PASSING DATE TO TABLE", Toast.LENGTH_SHORT).show();
             return null;
         }
         if (setOrder == null) {
