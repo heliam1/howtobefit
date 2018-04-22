@@ -18,4 +18,6 @@ public interface WorkoutsView {
     void displayErrorDeletingWorkout();
 
     void displaySuccessDeletingWorkout();
+
+    void displayToast(String message);
 }

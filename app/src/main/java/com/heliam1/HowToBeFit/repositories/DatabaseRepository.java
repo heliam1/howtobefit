@@ -15,12 +15,12 @@ import com.heliam1.HowToBeFit.models.Workout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Single;
 
 public class DatabaseRepository implements WorkoutRepository, ExerciseSetRepository {
     private final ContentResolver contentResolver;
+
 
     public DatabaseRepository(Context context) {
         this.contentResolver = context.getContentResolver();

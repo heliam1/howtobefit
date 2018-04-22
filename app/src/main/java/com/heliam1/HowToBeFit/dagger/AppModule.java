@@ -22,13 +22,13 @@ public class AppModule {
     @Provides
     @Singleton
     WorkoutRepository providesWorkoutRepository() {
-        return new DatabaseRepository(/*readable database or something*/);
+        return new DatabaseRepository(application);
     }
 
     @Provides
     @Singleton
     ExerciseSetRepository providesExerciseSetRepository() {
-        return new DatabaseRepository(/*readable database or something*/);
+        return new DatabaseRepository(application);
     }
 }
 

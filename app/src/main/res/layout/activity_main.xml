@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Display the workout fragment -->
+<fragment
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/workouts_fragment"
+    android:name="com.heliam1.HowToBeFit.ui.WorkoutsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+</fragment>
