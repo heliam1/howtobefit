@@ -9,7 +9,7 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/SetNumber"
+        android:id="@+id/SetNameNumber"
         android:layout_width="30dp"
         android:layout_height="wrap_content" />
 

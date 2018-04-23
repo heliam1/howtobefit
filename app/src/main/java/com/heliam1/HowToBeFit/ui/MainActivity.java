@@ -1,5 +1,8 @@
 package com.heliam1.HowToBeFit.ui;
 
+import android.content.ContentUris;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -53,14 +56,20 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
         mWorkoutsGridLayout = findViewById(R.id.workouts_gridview);
         mColumn1 = findViewById(R.id.column1);
         mColumn2 = findViewById(R.id.column2);
+
+        mWorkoutPresenter = new WorkoutsPresenter(this, workoutRepository, AndroidSchedulers.mainThread());
+        mWorkoutPresenter.loadWorkouts();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mWorkoutPresenter = new WorkoutsPresenter(this, workoutRepository, AndroidSchedulers.mainThread());
-        mWorkoutPresenter.loadWorkouts();
+    }
 
+    @Override
+    protected void onDestroy() {
+        mWorkoutPresenter.unsubscribe();
+        super.onDestroy();
     }
 
     @Override
@@ -83,10 +92,20 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
             workoutImageView.requestLayout();
             workoutImageView.getLayoutParams().height =
                     (int) (VERTICAL_DIMENSION_MULTIPLIER * workout.getDuration());
-
             workoutImageView.setMinimumHeight(VERTICAL_DIMENSION_MULTIPLIER * workout.getDuration());
-
             // workoutImageView.setImage( // TODO:
+            workoutImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this, ExerciseSetsActivity.class);
+
+                    intent.putExtra("Workout_Id", workout.getId());
+
+                    startActivity(intent);
+                }
+            });
+
+
             workoutNameView.setText(workout.getName());
             workoutDateView.setText(workout.getDate());
 

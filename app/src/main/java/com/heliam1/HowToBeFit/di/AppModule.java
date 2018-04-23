@@ -31,7 +31,9 @@ public class AppModule {
 
     @Provides
     @Singleton
-    ExerciseSetRepository providesExerciseSetRepository(Context application) { return new DatabaseRepository(application); }
+    ExerciseSetRepository providesExerciseSetRepository(Context application) {
+        return new DatabaseRepository(application);
+    }
 }
 
 // 1 what do you want to inject
