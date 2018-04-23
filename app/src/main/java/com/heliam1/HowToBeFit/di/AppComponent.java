@@ -1,7 +1,7 @@
 package com.heliam1.HowToBeFit.di;
 
 import com.heliam1.HowToBeFit.ui.ExerciseSetsActivity;
-import com.heliam1.HowToBeFit.ui.WorkoutsFragment;
+import com.heliam1.HowToBeFit.ui.MainActivity;
 
 import javax.inject.Singleton;
 
@@ -11,7 +11,7 @@ import dagger.Component;
 public interface AppComponent {
     void inject(HowToBeFitApplication application);
 
-    void inject(WorkoutsFragment workoutsFragment);
+    void inject(MainActivity mainActivity);
 
     void inject(ExerciseSetsActivity exerciseSetsActivity);
 }

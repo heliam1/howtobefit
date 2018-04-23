@@ -1,5 +1,6 @@
 package com.heliam1.HowToBeFit.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -89,5 +90,60 @@ public class HowtobefitDbHelper extends SQLiteOpenHelper {
     }
 
     private void insertDefaults(SQLiteDatabase db) {
+        Log.v(LOG_TAG, "Inserting defaults");
+        ContentValues values = new ContentValues();
+
+        values.put(WorkoutEntry._ID, 1);
+        values.put(WorkoutEntry.COLUMN_WORKOUT_NAME, "SSF5x Chest");
+        // values.put(WorkoutEntry.
+        values.put(WorkoutEntry.COLUMN_WORKOUT_LAST_DATE_COMPLETED, "Yet to complete");
+        values.put(WorkoutEntry.COLUMN_WORKOUT_DURATION, 75);
+
+        long didItWork = db.insertOrThrow(WorkoutEntry.TABLE_NAME, null, values);
+        Log.v(LOG_TAG, Long.toString(didItWork));
+
+        values.clear();
+
+        values.put(WorkoutEntry._ID, 2);
+        values.put(WorkoutEntry.COLUMN_WORKOUT_NAME, "SSF5x Back");
+        // values.put(WorkoutEntry.
+        values.put(WorkoutEntry.COLUMN_WORKOUT_LAST_DATE_COMPLETED, "Yet to complete");
+        values.put(WorkoutEntry.COLUMN_WORKOUT_DURATION, 44);
+
+        didItWork = db.insertOrThrow(WorkoutEntry.TABLE_NAME, null, values);
+        Log.v(LOG_TAG, Long.toString(didItWork));
+
+        values.clear();
+
+        values.put(WorkoutEntry._ID, 3);
+        values.put(WorkoutEntry.COLUMN_WORKOUT_NAME, "SSF5x Shoulders");
+        // values.put(WorkoutEntry.
+        values.put(WorkoutEntry.COLUMN_WORKOUT_LAST_DATE_COMPLETED, "Yet to complete");
+        values.put(WorkoutEntry.COLUMN_WORKOUT_DURATION, 62);
+
+        didItWork = db.insertOrThrow(WorkoutEntry.TABLE_NAME, null, values);
+        Log.v(LOG_TAG, Long.toString(didItWork));
+
+        values.clear();
+
+        values.put(WorkoutEntry._ID, 4);
+        values.put(WorkoutEntry.COLUMN_WORKOUT_NAME, "SSF5x Arms");
+        // values.put(WorkoutEntry.
+        values.put(WorkoutEntry.COLUMN_WORKOUT_LAST_DATE_COMPLETED, "Yet to complete");
+        values.put(WorkoutEntry.COLUMN_WORKOUT_DURATION, 52);
+
+        didItWork = db.insertOrThrow(WorkoutEntry.TABLE_NAME, null, values);
+        Log.v(LOG_TAG, Long.toString(didItWork));
+
+        values.clear();
+
+        values.put(WorkoutEntry._ID, 5);
+        values.put(WorkoutEntry.COLUMN_WORKOUT_NAME, "SSF5x Legs/Abs");
+        // values.put(WorkoutEntry.
+        values.put(WorkoutEntry.COLUMN_WORKOUT_LAST_DATE_COMPLETED, "Yet to complete");
+        values.put(WorkoutEntry.COLUMN_WORKOUT_DURATION, 48);
+
+        didItWork = db.insertOrThrow(WorkoutEntry.TABLE_NAME, null, values);
+        Log.v(LOG_TAG, Long.toString(didItWork));
     }
 }

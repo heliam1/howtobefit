@@ -15,8 +15,10 @@ import com.heliam1.HowToBeFit.models.Workout;
 import java.util.List;
 
 public class WorkoutListAdapter extends BaseAdapter {
+
     private Context mContext;
     private List<Workout> mWorkouts;
+    private static final int VERTICAL_DIMENSION_MULTIPLIER = 8;
 
     public WorkoutListAdapter(Context context, List<Workout> workouts) {
         // super(context, 0, workouts);
@@ -38,7 +40,11 @@ public class WorkoutListAdapter extends BaseAdapter {
         EditText workoutNameView = workoutView.findViewById(R.id.edit_text_name_workout);
         TextView workoutDateView = workoutView.findViewById(R.id.text_view_date_workout);
 
-        workoutView.setMinimumHeight(workout.getDuration());
+        workoutImageView.requestLayout();
+        workoutImageView.getLayoutParams().height =
+                (int) (VERTICAL_DIMENSION_MULTIPLIER * workout.getDuration());
+
+        workoutImageView.setMinimumHeight(VERTICAL_DIMENSION_MULTIPLIER * workout.getDuration());
 
         // workoutImageView.setImage( // TODO:
         workoutNameView.setText(workout.getName());
