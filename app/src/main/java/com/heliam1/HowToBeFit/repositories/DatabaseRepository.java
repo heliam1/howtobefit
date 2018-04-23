@@ -109,7 +109,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
 
         String sortOrder = WorkoutEntry._ID;
 
-        Cursor cursor = contentResolver.query(ExerciseSetEntry.CONTENT_URI,
+        Cursor cursor = contentResolver.query(WorkoutEntry.CONTENT_URI,
                 projection, null, null, sortOrder);
 
         List<Workout> workouts = new ArrayList<Workout>();

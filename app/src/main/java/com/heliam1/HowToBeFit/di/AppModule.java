@@ -20,17 +20,18 @@ public class AppModule {
     }
 
     @Provides
+    @Singleton
     Context providesApplicationContext() { return application; }
 
     @Provides
     @Singleton
-    WorkoutRepository providesWorkoutRepository() {
+    WorkoutRepository providesWorkoutRepository(Context application) {
         return new DatabaseRepository(application);
     }
 
     @Provides
     @Singleton
-    ExerciseSetRepository providesExerciseSetRepository() { return new DatabaseRepository(application); }
+    ExerciseSetRepository providesExerciseSetRepository(Context application) { return new DatabaseRepository(application); }
 }
 
 // 1 what do you want to inject

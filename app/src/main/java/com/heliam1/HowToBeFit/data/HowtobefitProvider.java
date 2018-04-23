@@ -41,8 +41,7 @@ public class HowtobefitProvider extends ContentProvider {
                 HowtobefitContract.PATH_EXERCISE_SET, EXERCISE_SETS);
 
         sUriMatcher.addURI(HowtobefitContract.CONTENT_AUTHORITY,
-                HowtobefitContract.PATH_EXERCISE_SET + "/#",
-                EXERCISE_SET_ID);
+                HowtobefitContract.PATH_EXERCISE_SET + "/#", EXERCISE_SET_ID);
     }
 
     private HowtobefitDbHelper mDbHelper;
