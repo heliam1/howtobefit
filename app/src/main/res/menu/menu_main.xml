@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.MainActivity">
+
+    <!-- Current date -->
+    <item
+        android:id="@+id/action_bar_add_workout"
+        android:title="+"
+        app:showAsAction="ifRoom"/>
+
+    <!-- Settings, search should always be in the overflow -->
+    <item
+        android:id="@+id/action_settings"
+        android:title="Settings"
+        app:showAsAction="never" />
+</menu>

@@ -1,11 +1,31 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.heliam1.mysciencefitness">
+    package="com.heliam1.HowToBeFit">
 
     <application
         android:allowBackup="true"
+        android:name=".di.HowToBeFitApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" />
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="com.heliam1.HowToBeFit.ui.MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.heliam1.HowToBeFit.ui.ExerciseSetsActivity"
+            android:theme="@style/AppTheme"
+            android:parentActivityName="com.heliam1.HowToBeFit.ui.MainActivity">
+        </activity>
+        <provider
+            android:name="com.heliam1.HowToBeFit.data.HowtobefitProvider"
+            android:authorities="${applicationId}"
+            android:exported="false">
+        </provider>
+    </application>
 </manifest>

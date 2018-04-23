@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">MyScienceFitness</string>
+    <string name="app_name">HowToBeFit</string>
+
+    <string name="content_authority">com.heliam1.HowToBeFit</string>
 </resources>
