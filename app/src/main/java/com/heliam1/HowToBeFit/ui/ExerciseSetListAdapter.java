@@ -61,6 +61,10 @@ public class ExerciseSetListAdapter extends ArrayAdapter<ExerciseSetAndListPrevi
                 = new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false);
         previousSetsRecycleView.setLayoutManager(layoutManager);
 
+        previousExerciseSets.add(new PreviousExerciseSet(100, 6, "Yest", 2));
+        previousExerciseSets.add(new PreviousExerciseSet(100, 6, "Yest", 2));
+        previousExerciseSets.add(new PreviousExerciseSet(100, 6, "Yest", 2));
+
         PreviousSetAdapter adapter = new PreviousSetAdapter(getContext(), previousExerciseSets);
         previousSetsRecycleView.setAdapter(adapter);
 

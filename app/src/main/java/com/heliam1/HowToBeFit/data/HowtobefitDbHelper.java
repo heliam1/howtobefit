@@ -126,8 +126,65 @@ public class HowtobefitDbHelper extends SQLiteOpenHelper {
         values.put(ExerciseSetEntry.COLUMN_SET_WEIGHT, 100);
         values.put(ExerciseSetEntry.COLUMN_SET_REPS, 6);
         values.put(ExerciseSetEntry.COLUMN_SET_DATE_STRING, "Today");
-        values.put(ExerciseSetEntry.COLUMN_SET_DATE_LONG, 1);
+        values.put(ExerciseSetEntry.COLUMN_SET_DATE_LONG, 2);
         values.put(ExerciseSetEntry.COLUMN_SET_ORDER, 1);
+        values.put(ExerciseSetEntry.COLUMN_PB_WEIGHT, 110);
+        values.put(ExerciseSetEntry.COLUMN_PB_REPS, 6);
+
+        didItWork = db.insert(ExerciseSetEntry.TABLE_NAME, null, values);
+        Log.v(LOG_TAG, Long.toString(didItWork));
+
+        values.clear();
+
+        values.put(ExerciseSetEntry._ID, 2);
+        values.put(ExerciseSetEntry._WORKOUT_ID, 2);
+        values.put(ExerciseSetEntry.COLUMN_EXERCISE_NAME, "Deadlift");
+        values.put(ExerciseSetEntry.COLUMN_SET_NUMBER, "2");
+        values.put(ExerciseSetEntry.COLUMN_SET_DURATION, 60);
+        values.put(ExerciseSetEntry.COLUMN_SET_REST, 180);
+        values.put(ExerciseSetEntry.COLUMN_SET_WEIGHT, 100);
+        values.put(ExerciseSetEntry.COLUMN_SET_REPS, 6);
+        values.put(ExerciseSetEntry.COLUMN_SET_DATE_STRING, "Today");
+        values.put(ExerciseSetEntry.COLUMN_SET_DATE_LONG, 2);
+        values.put(ExerciseSetEntry.COLUMN_SET_ORDER, 2);
+        values.put(ExerciseSetEntry.COLUMN_PB_WEIGHT, 110);
+        values.put(ExerciseSetEntry.COLUMN_PB_REPS, 6);
+
+        didItWork = db.insert(ExerciseSetEntry.TABLE_NAME, null, values);
+        Log.v(LOG_TAG, Long.toString(didItWork));
+
+        values.clear();
+
+        values.put(ExerciseSetEntry._ID, 1);
+        values.put(ExerciseSetEntry._WORKOUT_ID, 2);
+        values.put(ExerciseSetEntry.COLUMN_EXERCISE_NAME, "Deadlift");
+        values.put(ExerciseSetEntry.COLUMN_SET_NUMBER, "1");
+        values.put(ExerciseSetEntry.COLUMN_SET_DURATION, 60);
+        values.put(ExerciseSetEntry.COLUMN_SET_REST, 180);
+        values.put(ExerciseSetEntry.COLUMN_SET_WEIGHT, 100);
+        values.put(ExerciseSetEntry.COLUMN_SET_REPS, 6);
+        values.put(ExerciseSetEntry.COLUMN_SET_DATE_STRING, "Today");
+        values.put(ExerciseSetEntry.COLUMN_SET_DATE_LONG, 3);
+        values.put(ExerciseSetEntry.COLUMN_SET_ORDER, 1);
+        values.put(ExerciseSetEntry.COLUMN_PB_WEIGHT, 110);
+        values.put(ExerciseSetEntry.COLUMN_PB_REPS, 6);
+
+        didItWork = db.insert(ExerciseSetEntry.TABLE_NAME, null, values);
+        Log.v(LOG_TAG, Long.toString(didItWork));
+
+        values.clear();
+
+        values.put(ExerciseSetEntry._ID, 2);
+        values.put(ExerciseSetEntry._WORKOUT_ID, 2);
+        values.put(ExerciseSetEntry.COLUMN_EXERCISE_NAME, "Deadlift");
+        values.put(ExerciseSetEntry.COLUMN_SET_NUMBER, "2");
+        values.put(ExerciseSetEntry.COLUMN_SET_DURATION, 60);
+        values.put(ExerciseSetEntry.COLUMN_SET_REST, 180);
+        values.put(ExerciseSetEntry.COLUMN_SET_WEIGHT, 100);
+        values.put(ExerciseSetEntry.COLUMN_SET_REPS, 6);
+        values.put(ExerciseSetEntry.COLUMN_SET_DATE_STRING, "Today");
+        values.put(ExerciseSetEntry.COLUMN_SET_DATE_LONG, 3);
+        values.put(ExerciseSetEntry.COLUMN_SET_ORDER, 2);
         values.put(ExerciseSetEntry.COLUMN_PB_WEIGHT, 110);
         values.put(ExerciseSetEntry.COLUMN_PB_REPS, 6);
 
