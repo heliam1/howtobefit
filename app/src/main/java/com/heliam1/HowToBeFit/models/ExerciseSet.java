@@ -10,13 +10,14 @@ public class ExerciseSet {
     private int setRest;
     private double setWeight;
     private int setReps;
-    private String setDate;
+    private String setDateString;
+    private long setDateLong;
     private int setOrder;
     private int pbWeight;
     private int pbReps;
 
     public ExerciseSet(long id, long workoutId, String exerciseName, int setNumber, int setDuration,
-                       int setRest, double setWeight, int setReps, String setDate, int setOrder,
+                       int setRest, double setWeight, int setReps, String setDateString, long setDateLong, int setOrder,
                        int pbWeight, int pbReps) {
         this.id = id;
         this.workoutId = workoutId;
@@ -26,7 +27,8 @@ public class ExerciseSet {
         this.setRest = setRest;
         this.setWeight = setWeight;
         this.setReps = setReps;
-        this.setDate = setDate;
+        this.setDateString = setDateString;
+        this.setDateLong = setDateLong;
         this.setWeight = setWeight;
         this.setOrder = setOrder;
         this.pbWeight = pbWeight;
@@ -53,8 +55,8 @@ public class ExerciseSet {
         return exerciseName;
     }
 
-    public void setWorkoutName(String workoutName) {
-        this.exerciseName = workoutName;
+    public void setExerciseName(String exerciseName) {
+        this.exerciseName = exerciseName;
     }
 
     public int getSetNumber() {
@@ -97,12 +99,20 @@ public class ExerciseSet {
         this.setReps = setReps;
     }
 
-    public String getSetDate() {
-        return setDate;
+    public String getSetDateString() {
+        return setDateString;
     }
 
-    public void setSetDate(String setDate) {
-        this.setDate = setDate;
+    public void setSetDateString(String setDateString) {
+        this.setDateString = setDateString;
+    }
+
+    public long getSetDateLong() {
+        return setDateLong;
+    }
+
+    public void setSetDate(long setDateLong) {
+        this.setDateLong = setDateLong;
     }
 
     public int getPbWeight() {

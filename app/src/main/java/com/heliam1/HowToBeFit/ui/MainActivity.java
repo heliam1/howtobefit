@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
                 public void onClick(View view) {
                     Intent intent = new Intent(MainActivity.this, ExerciseSetsActivity.class);
 
-                    intent.putExtra("Workout_Id", workout.getId());
+                    intent.putExtra("workoutId", workout.getId());
 
                     startActivity(intent);
                 }

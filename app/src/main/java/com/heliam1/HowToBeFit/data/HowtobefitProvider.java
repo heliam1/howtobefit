@@ -277,7 +277,8 @@ public class HowtobefitProvider extends ContentProvider {
         Integer setRest = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_REST);
         Integer setWeight = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_WEIGHT);
         Integer setReps = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_REPS);
-        String setDate = values.getAsString(ExerciseSetEntry.COLUMN_SET_DATE);
+        String setDateString = values.getAsString(ExerciseSetEntry.COLUMN_SET_DATE_STRING);
+        Long setDateLong = values.getAsLong(ExerciseSetEntry.COLUMN_SET_DATE_LONG);
         Integer setOrder = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_ORDER);
         Integer pbWeight = values.getAsInteger(ExerciseSetEntry.COLUMN_PB_WEIGHT);
         Integer pbReps = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_REPS);
@@ -322,9 +323,15 @@ public class HowtobefitProvider extends ContentProvider {
             //        Toast.LENGTH_SHORT).show();
             return null;
         }
-        if (setDate == null) {
+        if (setDateString == null) {
             // TODO: Move this into view?
-            Log.e(LOG_TAG, "ERROR PASSING DATE TO TABLE");
+            Log.e(LOG_TAG, "ERROR PASSING DATESTRING TO TABLE");
+            // mToast.makeText(getContext(), "ERROR PASSING DATE TO TABLE", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        if (setDateLong == null) {
+            // TODO: Move this into view?
+            Log.e(LOG_TAG, "ERROR PASSING DATELONG TO TABLE");
             // mToast.makeText(getContext(), "ERROR PASSING DATE TO TABLE", Toast.LENGTH_SHORT).show();
             return null;
         }

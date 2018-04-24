@@ -45,7 +45,8 @@ public class HowtobefitDbHelper extends SQLiteOpenHelper {
                 + ExerciseSetEntry.COLUMN_SET_REST + " INTEGER NOT NULL DEFAULT 30, "
                 + ExerciseSetEntry.COLUMN_SET_WEIGHT + " INTEGER NOT NULL DEFAULT 0, "
                 + ExerciseSetEntry.COLUMN_SET_REPS + " INTEGER NOT NULL DEFAULT 1, "
-                + ExerciseSetEntry.COLUMN_SET_DATE + " TEXT NOT NULL, " // ZonedDateTime
+                + ExerciseSetEntry.COLUMN_SET_DATE_STRING + " TEXT NOT NULL, " // ZonedDateTime
+                + ExerciseSetEntry.COLUMN_SET_DATE_LONG + " INTEGER NOT NULL, " // ZonedDateTime
                 + ExerciseSetEntry.COLUMN_SET_ORDER + " INTEGER NOT NULL, "
                 + ExerciseSetEntry.COLUMN_PB_WEIGHT + " INTEGER NOT NULL DEFAULT 0, "
                 + ExerciseSetEntry.COLUMN_PB_REPS + " INTEGER NOT NULL DEFAULT 0);";

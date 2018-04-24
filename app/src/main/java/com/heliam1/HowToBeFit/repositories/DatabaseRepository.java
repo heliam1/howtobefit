@@ -11,6 +11,8 @@ import android.util.Log;
 import com.heliam1.HowToBeFit.data.HowtobefitContract.WorkoutEntry;
 import com.heliam1.HowToBeFit.data.HowtobefitContract.ExerciseSetEntry;
 import com.heliam1.HowToBeFit.models.ExerciseSet;
+import com.heliam1.HowToBeFit.models.ExerciseSetAndListPreviousExerciseSet;
+import com.heliam1.HowToBeFit.models.PreviousExerciseSet;
 import com.heliam1.HowToBeFit.models.Workout;
 
 import java.util.ArrayList;
@@ -37,62 +39,49 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
     }
 
     @Override
-    public Single<Long> saveWorkout(Workout workout) {
-        return Single.fromCallable(() -> {
-            try {
-                return upsertWorkout(workout);
-            } catch (Exception e) {
-                throw new RuntimeException("Something wrong with db");
-            }
-        });
-    }
-
-    @Override
-    public Single<Long> saveExerciseSet(ExerciseSet exerciseSet) {
-        return Single.fromCallable(() -> {
-            try {
-                return upsertExerciseSet(exerciseSet);
-            } catch (Exception e) {
-                throw new RuntimeException("Something wrong with db");
-            }
-        });
-    }
-
-    @Override
-    public Single<Long> deleteWorkout(Workout workout) {
-        return Single.fromCallable(() -> {
-            try {
-                Long id  = workout.getId();
-                contentResolver.delete(
-                        ContentUris.withAppendedId(WorkoutEntry.CONTENT_URI, workout.getId()),
-                        null, null);
-                return id;
-            } catch (Exception e) {
-                throw new RuntimeException("Something wrong with db");
-            }
-        });
-    }
-
-    @Override
-    public Single<Long> deleteExerciseSet(ExerciseSet exerciseSet) {
-        return Single.fromCallable(() -> {
-            try {
-                Long id  = exerciseSet.getId();
-                contentResolver.delete(
-                        ContentUris.withAppendedId(ExerciseSetEntry.CONTENT_URI, exerciseSet.getId()),
-                        null, null);
-                return id;
-            } catch (Exception e) {
-                throw new RuntimeException("Something wrong with db");
-            }
-        });
-    }
-
-    @Override
     public Single<List<ExerciseSet>> getExerciseSetsByWorkoutId(long id) {
         return Single.fromCallable(() -> {
             try {
                 return queryExerciseSetsByWorkoutId(id);
+            } catch (Exception e) {
+                throw new RuntimeException("Something wrong with db");
+            }
+        });
+    }
+
+    @Override
+    public Single<List<PreviousExerciseSet>> getPreviousSets(String name, int setNumber) {
+        return Single.fromCallable(() -> {
+            try {
+                return queryPreviousExerciseSets(name, setNumber);
+            } catch (Exception e) {
+                throw new RuntimeException("Something wrong with db");
+            }
+        });
+    }
+
+    @Override
+    public Single<List<ExerciseSetAndListPreviousExerciseSet>>
+    getExerciseSetsByWorkoutIdandPreviousSets(long id) {
+        return Single.fromCallable(() -> {
+            try {
+                List<ExerciseSet> exerciseSets = queryExerciseSetsByWorkoutId(id);
+
+                List<ExerciseSetAndListPreviousExerciseSet> list = new ArrayList<>();
+
+                for (int i = 0; i < exerciseSets.size(); i++)
+                {
+                    ExerciseSet exerciseSet = exerciseSets.get(i);
+
+                    List<PreviousExerciseSet> previousExerciseSets =
+                            queryPreviousExerciseSets(exerciseSet.getExerciseName(),
+                                    exerciseSet.getSetNumber());
+
+                    list.add(new ExerciseSetAndListPreviousExerciseSet(exerciseSet,
+                            previousExerciseSets));
+                }
+
+                return list;
             } catch (Exception e) {
                 throw new RuntimeException("Something wrong with db");
             }
@@ -140,7 +129,8 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
                 ExerciseSetEntry.COLUMN_SET_REST,
                 ExerciseSetEntry.COLUMN_SET_WEIGHT,
                 ExerciseSetEntry.COLUMN_SET_REPS,
-                ExerciseSetEntry.COLUMN_SET_DATE,
+                ExerciseSetEntry.COLUMN_SET_DATE_STRING,
+                ExerciseSetEntry.COLUMN_SET_DATE_LONG,
                 ExerciseSetEntry.COLUMN_SET_ORDER,
                 ExerciseSetEntry.COLUMN_PB_WEIGHT,
                 ExerciseSetEntry.COLUMN_PB_REPS};
@@ -168,7 +158,8 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
                     cursor.getInt(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_REST)),
                     cursor.getDouble(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_WEIGHT)),
                     cursor.getInt(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_REPS)),
-                    cursor.getString(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_DATE)),
+                    cursor.getString(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_DATE_STRING)),
+                    cursor.getLong(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_DATE_LONG)),
                     cursor.getInt(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_ORDER)),
                     cursor.getInt(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_PB_WEIGHT)),
                     cursor.getInt(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_PB_REPS))));
@@ -178,6 +169,66 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         cursor.close();
 
         return exerciseSets;
+    }
+
+    public List<PreviousExerciseSet> queryPreviousExerciseSets(String exerciseSetName,
+                                                                         int exerciseSetSetNumber ) {
+        String[] projection = {
+                // ExerciseSetEntry.COLUMN_EXERCISE_NAME,
+                // ExerciseSetEntry.COLUMN_SET_NUMBER,
+                ExerciseSetEntry.COLUMN_SET_WEIGHT,
+                ExerciseSetEntry.COLUMN_SET_REPS,
+                ExerciseSetEntry.COLUMN_SET_DATE_STRING,
+                ExerciseSetEntry.COLUMN_SET_DATE_LONG};
+
+        String selection = ExerciseSetEntry.COLUMN_EXERCISE_NAME + "=?"
+                + " AND " + ExerciseSetEntry.COLUMN_SET_NUMBER + "=?";
+
+        String[] selectionArgs = {exerciseSetName, Integer.toString(exerciseSetSetNumber)};
+
+        // Assumes recycler view will be from left to right
+        String sortOrder = ExerciseSetEntry.COLUMN_SET_DATE_LONG + " ASC";
+
+        Cursor cursor = contentResolver.query(ExerciseSetEntry.CONTENT_URI,
+                projection, selection, selectionArgs, sortOrder);
+
+        List<PreviousExerciseSet> previousExerciseSets = new ArrayList<PreviousExerciseSet>();
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            previousExerciseSets.add(new PreviousExerciseSet(
+                    cursor.getInt(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_WEIGHT)),
+                    cursor.getInt(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_REPS)),
+                    cursor.getString(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_DATE_STRING)),
+                    cursor.getLong(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_DATE_LONG))));
+
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return previousExerciseSets;
+    }
+
+    @Override
+    public Single<Long> saveWorkout(Workout workout) {
+        return Single.fromCallable(() -> {
+            try {
+                return upsertWorkout(workout);
+            } catch (Exception e) {
+                throw new RuntimeException("Something wrong with db");
+            }
+        });
+    }
+
+    @Override
+    public Single<Long> saveExerciseSet(ExerciseSet exerciseSet) {
+        return Single.fromCallable(() -> {
+            try {
+                return upsertExerciseSet(exerciseSet);
+            } catch (Exception e) {
+                throw new RuntimeException("Something wrong with db");
+            }
+        });
     }
 
     private Long upsertWorkout(Workout workout) {
@@ -212,7 +263,8 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         values.put(ExerciseSetEntry.COLUMN_SET_REST, exerciseSet.getSetRest());
         values.put(ExerciseSetEntry.COLUMN_SET_WEIGHT, exerciseSet.getSetWeight());
         values.put(ExerciseSetEntry.COLUMN_SET_REPS, exerciseSet.getSetReps());
-        values.put(ExerciseSetEntry.COLUMN_SET_DATE, exerciseSet.getSetDate());
+        values.put(ExerciseSetEntry.COLUMN_SET_DATE_STRING, exerciseSet.getSetDateString());
+        values.put(ExerciseSetEntry.COLUMN_SET_DATE_LONG, exerciseSet.getSetDateLong());
         values.put(ExerciseSetEntry.COLUMN_SET_ORDER, exerciseSet.getSetOrder());
         values.put(ExerciseSetEntry.COLUMN_PB_WEIGHT, exerciseSet.getPbWeight());
         values.put(ExerciseSetEntry.COLUMN_PB_REPS, exerciseSet.getPbReps());
@@ -245,4 +297,34 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
     // or just have separate methods?
 
     // need thigns for delete
+
+    @Override
+    public Single<Long> deleteWorkout(Workout workout) {
+        return Single.fromCallable(() -> {
+            try {
+                Long id  = workout.getId();
+                contentResolver.delete(
+                        ContentUris.withAppendedId(WorkoutEntry.CONTENT_URI, workout.getId()),
+                        null, null);
+                return id;
+            } catch (Exception e) {
+                throw new RuntimeException("Something wrong with db");
+            }
+        });
+    }
+
+    @Override
+    public Single<Long> deleteExerciseSet(ExerciseSet exerciseSet) {
+        return Single.fromCallable(() -> {
+            try {
+                Long id  = exerciseSet.getId();
+                contentResolver.delete(
+                        ContentUris.withAppendedId(ExerciseSetEntry.CONTENT_URI, exerciseSet.getId()),
+                        null, null);
+                return id;
+            } catch (Exception e) {
+                throw new RuntimeException("Something wrong with db");
+            }
+        });
+    }
 }

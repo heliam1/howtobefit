@@ -4,38 +4,28 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/SetStarTime"
-        android:layout_width="30dp"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/SetNameNumber"
-        android:layout_width="30dp"
+        android:id="@+id/setStartTimeNameNumber"
+        android:layout_width="60dp"
         android:layout_height="wrap_content" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/PreviousSets"
+        android:id="@+id/previousSetsRecyclerView"
         android:layout_width="90dp"
         android:layout_height="wrap_content">
     </android.support.v7.widget.RecyclerView>
 
-    <TextView
-        android:id="@+id/CurrentSetWeight"
+    <EditText
+        android:id="@+id/currentSetWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/currentSetReps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/CurrentSetReps"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/PersonalBestWeight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/PersonalBestReps"
+        android:id="@+id/personalBestWeightAndReps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>
