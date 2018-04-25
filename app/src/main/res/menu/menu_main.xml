@@ -3,15 +3,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.MainActivity">
 
-    <!-- Current date -->
+    <!-- Add Workouts -->
     <item
-        android:id="@+id/action_bar_add_workout"
-        android:title="+"
-        app:showAsAction="ifRoom"/>
+        android:id="@+id/add_default_workout_SSF5x_Chest"
+        android:title="SSF5x Chest"
+        app:showAsAction="never"/>
 
-    <!-- Settings, search should always be in the overflow -->
     <item
-        android:id="@+id/action_settings"
-        android:title="Settings"
-        app:showAsAction="never" />
+        android:id="@+id/add_default_workout_SSF5x_Back"
+        android:title="SSF5x Back"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/add_default_workout_SSF5x_Shoulders"
+        android:title="SSF5x Shoulders"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/add_default_workout_SSF5x_Arms"
+        android:title="SSF5x Arms"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/add_default_workout_SSF5x_Legs"
+        android:title="SSF5x Legs/Abs"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/add_custom_workout"
+        android:title="+ New Workout"
+        app:showAsAction="never"/>
 </menu>
