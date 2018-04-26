@@ -6,6 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +57,28 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_exercisesets, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_menu_add_set:
+
+                
+                return true;
+            case R.id.item_menu_delete_workout:
+                // TODO: do something
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         mExerciseSetsPresenter.unsubscribe();
         super.onDestroy();
@@ -70,14 +94,14 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         mExerciseSetsRecyclerView.setAdapter(adapter);
 
         ItemTouchHelper.Callback callback =
-                new ExerciseSetTouchHelperCallback(adapter);
+                new ExerciseSetTouchHelperCallback(adapter, this);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(mExerciseSetsRecyclerView);
     }
 
     @Override
     public void displayNoExerciseSets() {
-        
+
     }
 
     @Override

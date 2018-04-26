@@ -1,13 +1,18 @@
 package com.heliam1.HowToBeFit.ui;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
 public class ExerciseSetTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private final ExerciseSetTouchHelperAdapter mAdapter;
+    private Context mContext;
 
-    public ExerciseSetTouchHelperCallback(ExerciseSetTouchHelperAdapter adapter) {
+    public ExerciseSetTouchHelperCallback(ExerciseSetTouchHelperAdapter adapter, Context context) {
+        mContext = context;
         mAdapter = adapter;
     }
 
