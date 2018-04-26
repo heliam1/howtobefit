@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
 
     private static final int VERTICAL_DIMENSION_MULTIPLIER = 8;
     private ActionBar mActionBar;
-    private LinearLayout mAddWorkout;
+    private ConstraintLayout mAddWorkout;
     private Button mSaveWorkout;
     private LinearLayout mWorkoutsGridLayout;
     private LinearLayout mColumn1;
@@ -60,9 +62,9 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
         setContentView(R.layout.activity_main);
 
         mActionBar = getSupportActionBar();
-        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
+        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
 
-        mAddWorkout = findViewById(R.id.add_workout_linear_layout);
+        mAddWorkout = findViewById(R.id.add_workout_constraint_layout);
         mSaveWorkout = findViewById(R.id.save_workout);
         mWorkoutsGridLayout = findViewById(R.id.workouts_gridview);
         mColumn1 = findViewById(R.id.column1);

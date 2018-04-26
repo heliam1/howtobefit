@@ -2,6 +2,9 @@ package com.heliam1.HowToBeFit.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,7 +29,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
 
     private ExerciseSetsPresenter mExerciseSetsPresenter;
 
-    private ListView mExerciseSetsListView;
+    private RecyclerView mExerciseSetsRecyclerView;
     private TextView mTimeElapsed;
     private TextView mActualTimeElapsed;
     private Toast mToast;
@@ -38,7 +41,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
 
         ((HowToBeFitApplication) getApplication()).getAppComponent().inject(this);
 
-        mExerciseSetsListView = findViewById(R.id.exerciseSetsListView);
+        mExerciseSetsRecyclerView = findViewById(R.id.exerciseSetsRecyclerView);
         mTimeElapsed = findViewById(R.id.timeElapsed);
         mActualTimeElapsed = findViewById(R.id.actualTimeElapsed);
 
@@ -59,13 +62,22 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
 
     @Override
     public void displayExerciseSets(List<ExerciseSetAndListPreviousExerciseSet> exerciseSetsAndTheirPreviousSets) {
-        ExerciseSetListAdapter adapter = new ExerciseSetListAdapter(this, exerciseSetsAndTheirPreviousSets);
-        mExerciseSetsListView.setAdapter(adapter);
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mExerciseSetsRecyclerView.setLayoutManager(layoutManager);
+
+        ExerciseSetAdapter adapter = new ExerciseSetAdapter(this, exerciseSetsAndTheirPreviousSets);
+        mExerciseSetsRecyclerView.setAdapter(adapter);
+
+        ItemTouchHelper.Callback callback =
+                new ExerciseSetTouchHelperCallback(adapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(mExerciseSetsRecyclerView);
     }
 
     @Override
     public void displayNoExerciseSets() {
-
+        
     }
 
     @Override
