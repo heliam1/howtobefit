@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -108,6 +109,17 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
             personalBestWeightReps.setText(
                     Integer.toString(exerciseSetAndList.getExerciseSet().getPbWeight()) + " "
                             + Integer.toString(exerciseSetAndList.getExerciseSet().getPbReps()));
+
+            previousSetsRecycleView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
+                        // Disallow the touch request for parent scroll on touch of child view
+                        view.getParent().requestDisallowInterceptTouchEvent(true);
+                    }
+                    return false;
+                }
+            });
         }
 
         @Override

@@ -1,8 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraint_layout_add_set"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/colorPrimaryLight"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edit_text_add_set_exercise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:hint="Exercise"
+            android:inputType="text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/edit_text_add_set_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Set #"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="@+id/edit_text_add_pb_reps"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/edit_text_add_set_duration"
+            android:textAlignment="textEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:hint="Duration seconds"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/edit_text_add_set_rest"
+            android:textAlignment="textEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Rest seconds"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="@+id/edit_text_add_set_duration"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_add_set_duration" />
+
+        <EditText
+            android:id="@+id/edit_text_add_pb_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Pb Weight"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="@+id/edit_text_add_set_exercise"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_add_set_exercise" />
+
+        <EditText
+            android:id="@+id/edit_text_add_pb_reps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:hint="Pb Reps"
+            android:inputType="number"
+            app:layout_constraintStart_toEndOf="@+id/edit_text_add_pb_weight"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_add_set_number" />
+
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/exerciseSetsRecyclerView"

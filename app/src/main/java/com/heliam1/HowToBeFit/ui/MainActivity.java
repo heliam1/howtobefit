@@ -151,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
                     Intent intent = new Intent(MainActivity.this, ExerciseSetsActivity.class);
 
                     intent.putExtra("workoutId", workout.getId());
+                    intent.putExtra("workoutName",workout.getName());
 
                     startActivity(intent);
                 }

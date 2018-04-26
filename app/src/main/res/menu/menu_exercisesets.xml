@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/item_menu_add_set"
-        android:title="Add Set"
+        android:title="Add A Set"
         app:showAsAction="ifRoom"/>
 
     <item
