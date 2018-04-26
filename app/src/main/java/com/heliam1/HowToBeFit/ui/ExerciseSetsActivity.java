@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,6 +69,9 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
 
         mExerciseSetsPresenter = new ExerciseSetsPresenter(this, exerciseSetRepository, AndroidSchedulers.mainThread());
         mExerciseSetsPresenter.loadExerciseSets(workoutId);
+
+        mTimeElapsed.setText("00:00");
+        mActualTimeElapsed.setText("00:00");
     }
 
     @Override

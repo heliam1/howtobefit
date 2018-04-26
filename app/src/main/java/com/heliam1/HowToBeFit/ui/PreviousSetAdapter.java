@@ -40,7 +40,7 @@ public class PreviousSetAdapter extends RecyclerView.Adapter<PreviousSetAdapter.
         }
 
         public void bind(PreviousExerciseSet previousExerciseSet) {
-            previousSetWeightAndReps.setText(previousExerciseSet.getSetWeight() + " "
+            previousSetWeightAndReps.setText("26-04" + "\n" + previousExerciseSet.getSetWeight() + " "
                     + previousExerciseSet.getSetReps());
         }
     }

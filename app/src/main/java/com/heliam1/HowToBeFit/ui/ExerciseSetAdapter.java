@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -89,9 +90,11 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
             int startTimeSeconds = calculateSetStart(position);
             String startTime = formatStartTime(startTimeSeconds);
 
-            setStartTimeNameNumber.setText(startTime + " "
+            String setStartTimeNameNumberString = startTime + " "
                     + exerciseSetAndList.getExerciseSet().getExerciseName() + "-"
-                    + Integer.toString(exerciseSetAndList.getExerciseSet().getSetNumber()));
+                    + Integer.toString(exerciseSetAndList.getExerciseSet().getSetNumber());
+
+            setStartTimeNameNumber.setText(setStartTimeNameNumberString);
 
             LinearLayoutManager layoutManager
                     = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
@@ -120,11 +123,19 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
                     return false;
                 }
             });
+
+            currentSetWeight.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    previousSetsRecycleView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                    return true;
+                }
+            });
         }
 
         @Override
         public void onItemSelected() {
-            itemView.setBackgroundColor(Color.LTGRAY);
+            // itemView.setBackgroundColor(Color.LTGRAY);
         }
 
         @Override
@@ -148,10 +159,24 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
         }
 
         private String formatStartTime(int totalSeconds) {
-            int minutes = (totalSeconds % 60);
-            int seconds = totalSeconds - 60 * (totalSeconds % 60);
+            int minutes = (totalSeconds / 60);
+            int seconds = totalSeconds % 60;
 
-            return (Integer.toString(minutes) + ":" + Integer.toString(seconds));
+            String minutesString;
+            if (minutes < 10) {
+                minutesString = "0" + Integer.toString(minutes);
+            } else {
+                minutesString = Integer.toString(minutes);
+            }
+
+            String secondsString;
+            if (seconds < 10) {
+                secondsString = "0" + Integer.toString(seconds);
+            } else {
+                secondsString = Integer.toString(seconds);
+            }
+
+            return (minutesString + ":" + secondsString);
         }
     }
 }
