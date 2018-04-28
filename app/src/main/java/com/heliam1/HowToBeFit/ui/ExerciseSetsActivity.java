@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,7 +42,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
     private ActionBar mActionBar;
     private ConstraintLayout mAddEerciseSetContraintLayout;
     private RecyclerView mExerciseSetsRecyclerView;
-    private TextView mTimeElapsed;
+    private EditText mTimeElapsed;
     private TextView mActualTimeElapsed;
     private Toast mToast;
 
@@ -70,8 +71,15 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         mExerciseSetsPresenter = new ExerciseSetsPresenter(this, exerciseSetRepository, AndroidSchedulers.mainThread());
         mExerciseSetsPresenter.loadExerciseSets(workoutId);
 
-        mTimeElapsed.setText("00:00");
-        mActualTimeElapsed.setText("00:00");
+        mActualTimeElapsed.setText("00:00:00");
+        mTimeElapsed.setText("00:00:00");
+
+        mActualTimeElapsed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mExerciseSetsPresenter.startTimers();
+            }
+        });
     }
 
     @Override
@@ -115,7 +123,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mExerciseSetsRecyclerView.setLayoutManager(layoutManager);
 
-        ExerciseSetAdapter adapter = new ExerciseSetAdapter(this, exerciseSetsAndTheirPreviousSets);
+        ExerciseSetAdapter adapter = new ExerciseSetAdapter(this, mExerciseSetsPresenter);
         mExerciseSetsRecyclerView.setAdapter(adapter);
 
         ItemTouchHelper.Callback callback =
@@ -132,6 +140,26 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
     @Override
     public void displayErrorLoadingExerciseSets() {
 
+    }
+
+    @Override
+    public void displayActualElapsedTime(String time) {
+        mActualTimeElapsed.setText(time);
+    }
+
+    @Override
+    public void displayElapsedTime(String time) {
+        mTimeElapsed.setText(time);
+    }
+
+    @Override
+    public String getTimeElapsed() {
+        return mTimeElapsed.getText().toString();
+    }
+
+    @Override
+    public boolean isTimeElapsedFocused() {
+        return mTimeElapsed.isFocused();
     }
 
     @Override

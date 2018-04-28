@@ -13,5 +13,13 @@ public interface ExerciseSetsView {
 
     public void displayErrorLoadingExerciseSets();
 
+    public void displayActualElapsedTime(String time);
+
+    public void displayElapsedTime(String time);
+
+    public String getTimeElapsed();
+
+    public boolean isTimeElapsedFocused();
+
     public void displayToast(String message);
 }
