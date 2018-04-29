@@ -21,5 +21,7 @@ public interface ExerciseSetsView {
 
     public boolean isTimeElapsedFocused();
 
+    public void notifyStartNextSet(String action);
+
     public void displayToast(String message);
 }

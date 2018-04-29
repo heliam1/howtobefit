@@ -26,6 +26,8 @@ import com.heliam1.HowToBeFit.models.ExerciseSet;
 import com.heliam1.HowToBeFit.models.ExerciseSetAndListPreviousExerciseSet;
 import com.heliam1.HowToBeFit.presenters.ExerciseSetsPresenter;
 import com.heliam1.HowToBeFit.repositories.ExerciseSetRepository;
+import com.heliam1.HowToBeFit.sync.NotificationsTasks;
+import com.heliam1.HowToBeFit.utils.NotificationUtils;
 
 import java.util.List;
 
@@ -160,6 +162,16 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
     @Override
     public boolean isTimeElapsedFocused() {
         return mTimeElapsed.isFocused();
+    }
+
+    @Override
+    public void notifyStartNextSet(String action) {
+        // if we wanted to use a service
+        // Intent notifiyStartNext = new Intent(this, NextSetIntentService)
+        // then use this next line of code inside that class^/service
+        // NotificationsTasks.executeTask(this, action);
+        NotificationUtils.clearAllNotifications(this);
+        NotificationUtils.remindUserBecauseSetStart(this);
     }
 
     @Override

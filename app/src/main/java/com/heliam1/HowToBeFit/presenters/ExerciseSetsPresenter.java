@@ -6,6 +6,7 @@ import com.heliam1.HowToBeFit.models.ExerciseSet;
 import com.heliam1.HowToBeFit.models.ExerciseSetAndListPreviousExerciseSet;
 import com.heliam1.HowToBeFit.repositories.ExerciseSetRepository;
 import com.heliam1.HowToBeFit.ui.ExerciseSetsView;
+import com.heliam1.HowToBeFit.utils.NotificationUtils;
 
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
@@ -72,7 +73,7 @@ public class ExerciseSetsPresenter {
     }
 
     public void startTimers() {
-        // if (!actualStarted) {
+        if (!actualStarted) {
             actualStarted = true;
             int POLL_INTERVAL = 1;
 
@@ -145,6 +146,10 @@ public class ExerciseSetsPresenter {
                                     if (timeString2.equals("00:" + mStartTimes.get(i))) {
                                         Log.v("ExerciseSetsPresenter", "Sending notifcation");
                                         mView.displayToast("Sending notification");
+                                        // call to view -> activity to start service
+                                        // since no service, just call to notif utils directly from view
+                                        // instead of sync/SetReminderServiceIntent and sync/NotificationTasks then notif utils
+                                        mView.notifyStartNextSet("no action");
                                     }
                                 }
                             }
@@ -160,7 +165,7 @@ public class ExerciseSetsPresenter {
 
                         }
                     });
-        //}
+        }
     }
 
     public void setExerciseSetsAndListPreviousExerciseSets(List<ExerciseSetAndListPreviousExerciseSet>
