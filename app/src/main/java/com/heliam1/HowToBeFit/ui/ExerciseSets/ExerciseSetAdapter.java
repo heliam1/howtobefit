@@ -82,7 +82,6 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
         RecyclerView previousSetsRecycleView;
         EditText currentSetWeight;
         EditText currentSetReps;
-        TextView personalBestWeightReps;
 
         private Context mContext;
 
@@ -92,7 +91,6 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
             previousSetsRecycleView = itemView.findViewById(R.id.previousSetsRecyclerView);
             currentSetWeight = itemView.findViewById(R.id.currentSetWeight);
             currentSetReps = itemView.findViewById(R.id.currentSetReps);
-            personalBestWeightReps = itemView.findViewById(R.id.personalBestWeightAndReps);
             mContext = itemView.getContext();
         }
 
@@ -126,10 +124,6 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
             PreviousSetAdapter adapter = new PreviousSetAdapter(mContext, previousExerciseSets);
             previousSetsRecycleView.setAdapter(adapter);
 
-            personalBestWeightReps.setText(
-                    Integer.toString(exerciseSetAndList.getExerciseSet().getPbWeight()) + " "
-                            + Integer.toString(exerciseSetAndList.getExerciseSet().getPbReps()));
-
             previousSetsRecycleView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -141,6 +135,7 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
                 }
             });
 
+            /*
             personalBestWeightReps.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -148,6 +143,7 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
                     return true;
                 }
             });
+            */
         }
 
         @Override
