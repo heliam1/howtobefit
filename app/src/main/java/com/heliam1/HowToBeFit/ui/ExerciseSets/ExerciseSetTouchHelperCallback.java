@@ -1,4 +1,4 @@
-package com.heliam1.HowToBeFit.ui;
+package com.heliam1.HowToBeFit.ui.ExerciseSets;
 
 import android.content.Context;
 import android.content.DialogInterface;

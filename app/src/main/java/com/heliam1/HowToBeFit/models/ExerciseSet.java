@@ -6,8 +6,8 @@ public class ExerciseSet {
     private long workoutId;
     private String exerciseName;
     private int setNumber;
-    private int setDuration;
-    private int setRest;
+    private long setDuration;
+    private long setRest;
     private double setWeight;
     private int setReps;
     private String setDateString;
@@ -67,7 +67,7 @@ public class ExerciseSet {
         this.setNumber = setNumber;
     }
 
-    public int getSetDuration() {
+    public long getSetDuration() {
         return setDuration;
     }
 
@@ -75,7 +75,7 @@ public class ExerciseSet {
         this.setDuration = setDuration;
     }
 
-    public int getSetRest() {
+    public long getSetRest() {
         return setRest;
     }
 

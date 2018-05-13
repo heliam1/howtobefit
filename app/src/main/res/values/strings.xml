@@ -2,4 +2,8 @@
     <string name="app_name">HowToBeFit</string>
 
     <string name="content_authority">com.heliam1.HowToBeFit</string>
+
+    <string name="main_notification_channel_name">Primary</string>
+
+
 </resources>

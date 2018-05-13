@@ -1,12 +1,8 @@
-package com.heliam1.HowToBeFit.ui;
+package com.heliam1.HowToBeFit.ui.ExerciseSets;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,20 +11,26 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.heliam1.HowToBeFit.R;
-import com.heliam1.HowToBeFit.models.ExerciseSet;
 import com.heliam1.HowToBeFit.models.ExerciseSetAndListPreviousExerciseSet;
 import com.heliam1.HowToBeFit.models.PreviousExerciseSet;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.ExerciseSetViewHolder> implements ExerciseSetTouchHelperAdapter {
     private Context mContext;
-    private List<ExerciseSetAndListPreviousExerciseSet> mEexerciseSetsAndTheirPreviousSets;
+    private ExerciseSetsPresenter mExerciseSetsPresenter;
 
-    public ExerciseSetAdapter(Context context, List<ExerciseSetAndListPreviousExerciseSet> exerciseSetsAndTheirPreviousSets) {
+    // both of these are inside the Presenter
+    // private List<ExerciseSetAndListPreviousExerciseSet> mExerciseSetsAndTheirPreviousSets;
+    // private List<String> mStartTimes = new ArrayList<>();
+
+
+    public ExerciseSetAdapter(Context context, ExerciseSetsPresenter exerciseSetsPresenter) {
         mContext = context;
-        mEexerciseSetsAndTheirPreviousSets = exerciseSetsAndTheirPreviousSets;
+        mExerciseSetsPresenter = exerciseSetsPresenter;
+        mExerciseSetsPresenter.setStartTimes();
     }
 
     @Override
@@ -46,31 +48,40 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
 
     @Override
     public void onBindViewHolder(ExerciseSetViewHolder holder, int position) {
-        holder.bind(mEexerciseSetsAndTheirPreviousSets.get(position), position);
+        holder.bind(mExerciseSetsPresenter.getExerciseSetsAndListPreviousExerciseSets().get(position), position);
     }
 
     @Override
     public void onItemDismiss(int position) {
-        mEexerciseSetsAndTheirPreviousSets.remove(position);
+        mExerciseSetsPresenter.getExerciseSetsAndListPreviousExerciseSets().remove(position);
+        mExerciseSetsPresenter.setStartTimes();
         notifyItemRemoved(position);
+        notifyDataSetChanged();
     }
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-        ExerciseSetAndListPreviousExerciseSet prev = mEexerciseSetsAndTheirPreviousSets.remove(fromPosition);
-        mEexerciseSetsAndTheirPreviousSets.add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
+        ExerciseSetAndListPreviousExerciseSet prev = mExerciseSetsPresenter.getExerciseSetsAndListPreviousExerciseSets().remove(fromPosition);
+        mExerciseSetsPresenter.getExerciseSetsAndListPreviousExerciseSets().add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
+        mExerciseSetsPresenter.setStartTimes();
         notifyItemMoved(fromPosition, toPosition);
+        // Observer Pattern - An obsservable/the subject maintains a list of its dependencies (observers/
+        // subscribers) and notifies them automatically of any state changes usually by
+        // calling one of their methods
+        // Define a subject and observers, when the subject state changes all registered subscribers are notified
+        // The responsibility of subscribers is to register and unregister themselves on a subject and update
+        // their state
+        notifyDataSetChanged();
     }
 
     @Override
-    public int getItemCount() { return mEexerciseSetsAndTheirPreviousSets.size(); }
+    public int getItemCount() { return mExerciseSetsPresenter.getExerciseSetsAndListPreviousExerciseSets().size(); }
 
     class ExerciseSetViewHolder extends RecyclerView.ViewHolder implements ExerciseSetTouchHelperViewHolder {
         TextView setStartTimeNameNumber;
         RecyclerView previousSetsRecycleView;
         EditText currentSetWeight;
         EditText currentSetReps;
-        TextView personalBestWeightReps;
 
         private Context mContext;
 
@@ -80,15 +91,19 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
             previousSetsRecycleView = itemView.findViewById(R.id.previousSetsRecyclerView);
             currentSetWeight = itemView.findViewById(R.id.currentSetWeight);
             currentSetReps = itemView.findViewById(R.id.currentSetReps);
-            personalBestWeightReps = itemView.findViewById(R.id.personalBestWeightAndReps);
             mContext = itemView.getContext();
         }
 
         public void bind(ExerciseSetAndListPreviousExerciseSet exerciseSetAndList, int position) {
-            // mEexerciseSetsAndTheirPreviousSets
-            // and also need position though..
-            int startTimeSeconds = calculateSetStart(position);
-            String startTime = formatStartTime(startTimeSeconds);
+            // convert long start time to correct string
+            Date timeDate = new Date(mExerciseSetsPresenter.getStartTimes().get(position));
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+            String incorrectString = sdf.format(timeDate);
+            // incorrect string displays 10:XX:XX, should display 00:XX:XX
+            String startTime = "0" + incorrectString.charAt(1)
+                    + incorrectString.charAt(2)  + incorrectString.charAt(3)
+                    + incorrectString.charAt(4)  + incorrectString.charAt(5)
+                    + incorrectString.charAt(6)  + incorrectString.charAt(7);
 
             String setStartTimeNameNumberString = startTime + " "
                     + exerciseSetAndList.getExerciseSet().getExerciseName() + "-"
@@ -109,10 +124,6 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
             PreviousSetAdapter adapter = new PreviousSetAdapter(mContext, previousExerciseSets);
             previousSetsRecycleView.setAdapter(adapter);
 
-            personalBestWeightReps.setText(
-                    Integer.toString(exerciseSetAndList.getExerciseSet().getPbWeight()) + " "
-                            + Integer.toString(exerciseSetAndList.getExerciseSet().getPbReps()));
-
             previousSetsRecycleView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -124,13 +135,7 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
                 }
             });
 
-            currentSetWeight.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    previousSetsRecycleView.smoothScrollToPosition(adapter.getItemCount() - 1);
-                    return true;
-                }
-            });
+            previousSetsRecycleView.smoothScrollToPosition(adapter.getItemCount() - 1);
         }
 
         @Override
@@ -141,42 +146,6 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
         @Override
         public void onItemClear() {
             itemView.setBackgroundColor(0);
-        }
-
-        private int calculateSetStart(int position) {
-            int setStart = 0; // seconds
-
-            int i = 0; //
-            while (i < position) {
-                ExerciseSetAndListPreviousExerciseSet exerciseSetAndListPreviousExerciseSet
-                        = mEexerciseSetsAndTheirPreviousSets.get(position);
-                ExerciseSet exerciseSet = exerciseSetAndListPreviousExerciseSet.getExerciseSet();
-                setStart = setStart + exerciseSet.getSetDuration() + exerciseSet.getSetRest();
-                i++;
-            }
-
-            return setStart;
-        }
-
-        private String formatStartTime(int totalSeconds) {
-            int minutes = (totalSeconds / 60);
-            int seconds = totalSeconds % 60;
-
-            String minutesString;
-            if (minutes < 10) {
-                minutesString = "0" + Integer.toString(minutes);
-            } else {
-                minutesString = Integer.toString(minutes);
-            }
-
-            String secondsString;
-            if (seconds < 10) {
-                secondsString = "0" + Integer.toString(seconds);
-            } else {
-                secondsString = Integer.toString(seconds);
-            }
-
-            return (minutesString + ":" + secondsString);
         }
     }
 }
