@@ -1,7 +1,7 @@
 package com.heliam1.HowToBeFit.di;
 
-import com.heliam1.HowToBeFit.ui.ExerciseSetsActivity;
-import com.heliam1.HowToBeFit.ui.MainActivity;
+import com.heliam1.HowToBeFit.ui.ExerciseSets.ExerciseSetsActivity;
+import com.heliam1.HowToBeFit.ui.Workouts.MainActivity;
 
 import javax.inject.Singleton;
 

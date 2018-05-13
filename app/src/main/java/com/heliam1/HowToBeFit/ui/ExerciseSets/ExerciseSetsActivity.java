@@ -1,5 +1,6 @@
-package com.heliam1.HowToBeFit.ui;
+package com.heliam1.HowToBeFit.ui.ExerciseSets;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -9,24 +10,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.heliam1.HowToBeFit.R;
 import com.heliam1.HowToBeFit.di.HowToBeFitApplication;
-import com.heliam1.HowToBeFit.models.ExerciseSet;
 import com.heliam1.HowToBeFit.models.ExerciseSetAndListPreviousExerciseSet;
-import com.heliam1.HowToBeFit.presenters.ExerciseSetsPresenter;
 import com.heliam1.HowToBeFit.repositories.ExerciseSetRepository;
-import com.heliam1.HowToBeFit.sync.NotificationsTasks;
 import com.heliam1.HowToBeFit.utils.NotificationUtils;
 
 import java.util.List;
@@ -44,6 +42,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
     private ActionBar mActionBar;
     private ConstraintLayout mAddEerciseSetContraintLayout;
     private RecyclerView mExerciseSetsRecyclerView;
+    private Button mStartTimers;
     private EditText mTimeElapsed;
     private TextView mActualTimeElapsed;
     private Toast mToast;
@@ -63,6 +62,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         mAddEerciseSetContraintLayout.setVisibility(View.GONE);
         mExerciseSetsRecyclerView = findViewById(R.id.exerciseSetsRecyclerView);
         mTimeElapsed = findViewById(R.id.timeElapsed);
+        mStartTimers = findViewById(R.id.text_view_label_actualTimerElapsed);
         mActualTimeElapsed = findViewById(R.id.actualTimeElapsed);
 
         long workoutId = getIntent().getLongExtra("workoutId", 0);
@@ -76,10 +76,11 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         mActualTimeElapsed.setText("00:00:00");
         mTimeElapsed.setText("00:00:00");
 
-        mActualTimeElapsed.setOnClickListener(new View.OnClickListener() {
+        mStartTimers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mExerciseSetsPresenter.startTimers();
+                findViewById(R.id.constraint_layout_timers).requestFocus();
             }
         });
     }
@@ -182,4 +183,5 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         mToast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         mToast.show();
     }
+
 }

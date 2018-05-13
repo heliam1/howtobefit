@@ -1,4 +1,4 @@
-package com.heliam1.HowToBeFit.ui;
+package com.heliam1.HowToBeFit.ui.Workouts;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,8 +22,8 @@ import android.widget.Toast;
 import com.heliam1.HowToBeFit.R;
 import com.heliam1.HowToBeFit.di.HowToBeFitApplication;
 import com.heliam1.HowToBeFit.models.Workout;
-import com.heliam1.HowToBeFit.presenters.WorkoutsPresenter;
 import com.heliam1.HowToBeFit.repositories.WorkoutRepository;
+import com.heliam1.HowToBeFit.ui.ExerciseSets.ExerciseSetsActivity;
 
 import java.util.List;
 

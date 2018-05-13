@@ -1,8 +1,7 @@
-package com.heliam1.HowToBeFit.presenters;
+package com.heliam1.HowToBeFit.ui.Workouts;
 
 import com.heliam1.HowToBeFit.models.Workout;
 import com.heliam1.HowToBeFit.repositories.WorkoutRepository;
-import com.heliam1.HowToBeFit.ui.WorkoutsView;
 
 import java.util.List;
 

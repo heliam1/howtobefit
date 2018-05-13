@@ -94,6 +94,8 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
         android:id="@+id/constraint_layout_timers"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -114,7 +116,7 @@
             android:layout_marginBottom="4dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:text="Start Time\nTouch to Edit"
+            android:text="Start Time Touch to Edit"
             android:textAlignment="center"
             android:textSize="15dp"
             app:layout_constraintBottom_toTopOf="@+id/timeElapsed"
@@ -122,20 +124,16 @@
             app:layout_constraintStart_toStartOf="@+id/timeElapsed"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <Button
             android:id="@+id/text_view_label_actualTimerElapsed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:text="Time Elapsed\nTouch to Start"
+            android:text="Start Timers\nTotal Time"
             android:textAlignment="center"
             android:textSize="15dp"
-            app:layout_constraintBottom_toTopOf="@+id/actualTimeElapsed"
-            app:layout_constraintEnd_toEndOf="@+id/actualTimeElapsed"
-            app:layout_constraintStart_toStartOf="@+id/actualTimeElapsed"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
@@ -156,16 +154,17 @@
             android:id="@+id/actualTimeElapsed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:background="@android:color/white"
             android:textAlignment="center"
             android:textColor="@android:color/black"
-            android:textSize="40dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/timeElapsed"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/timeElapsed"
+            app:layout_constraintEnd_toEndOf="@+id/text_view_label_actualTimerElapsed"
+            app:layout_constraintStart_toStartOf="@+id/text_view_label_actualTimerElapsed"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_label_actualTimerElapsed"
             tools:text="00:00:00" />
     </android.support.constraint.ConstraintLayout>
 

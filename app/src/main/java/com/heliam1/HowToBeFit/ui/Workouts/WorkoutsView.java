@@ -1,4 +1,4 @@
-package com.heliam1.HowToBeFit.ui;
+package com.heliam1.HowToBeFit.ui.Workouts;
 
 import com.heliam1.HowToBeFit.models.Workout;
 

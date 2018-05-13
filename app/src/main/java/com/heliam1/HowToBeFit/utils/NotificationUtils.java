@@ -12,7 +12,7 @@ import android.support.v4.app.NotificationCompat.Action;
 import android.support.v4.content.ContextCompat;
 
 import com.heliam1.HowToBeFit.R;
-import com.heliam1.HowToBeFit.ui.ExerciseSetsActivity;
+import com.heliam1.HowToBeFit.ui.ExerciseSets.ExerciseSetsActivity;
 
 public class NotificationUtils {
     private static final int SET_START_REMINDER_NOTIFICATION_ID = 1138;
@@ -50,6 +50,7 @@ public class NotificationUtils {
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText("Next set body!"))                                          // context.getString(R.string.charging_reminder_notification_body)))
                 .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setDefaults(Notification.DEFAULT_SOUND)
                 .setContentIntent(contentIntent(context))
                 // COMPLETED (17) Add the two new actions using the addAction method and your helper methods
                 //.addAction(drinkWaterAction(context))

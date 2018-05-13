@@ -1,11 +1,10 @@
-package com.heliam1.HowToBeFit.presenters;
+package com.heliam1.HowToBeFit.ui.ExerciseSets;
 
 import android.util.Log;
 
 import com.heliam1.HowToBeFit.models.ExerciseSet;
 import com.heliam1.HowToBeFit.models.ExerciseSetAndListPreviousExerciseSet;
 import com.heliam1.HowToBeFit.repositories.ExerciseSetRepository;
-import com.heliam1.HowToBeFit.ui.ExerciseSetsView;
 import com.heliam1.HowToBeFit.utils.NotificationUtils;
 
 import java.text.SimpleDateFormat;

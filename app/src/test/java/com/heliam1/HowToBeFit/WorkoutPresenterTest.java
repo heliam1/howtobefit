@@ -1,7 +1,7 @@
 package com.heliam1.HowToBeFit;
 
 import com.heliam1.HowToBeFit.models.Workout;
-import com.heliam1.HowToBeFit.presenters.WorkoutsPresenter;
+import com.heliam1.HowToBeFit.ui.Workouts.WorkoutsPresenter;
 import com.heliam1.HowToBeFit.repositories.WorkoutRepository;
 import com.heliam1.HowToBeFit.ui.WorkoutsView;
 
@@ -22,7 +22,6 @@ import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static java.util.Collections.EMPTY_LIST;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 /**
