@@ -29,9 +29,10 @@ public class ExerciseSetsPresenter {
     private final Scheduler mainScheduler;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
+    long time;
     static boolean actualStarted = false;
     private List<ExerciseSetAndListPreviousExerciseSet> mExerciseSetsAndListPreviousExerciseSets = new ArrayList<>();
-    private List<String> mStartTimes = new ArrayList<>();
+    private List<Long> mStartTimes = new ArrayList<Long>();
 
     public ExerciseSetsPresenter(ExerciseSetsView view,
                                  ExerciseSetRepository exerciseSetsRepository,
@@ -76,7 +77,7 @@ public class ExerciseSetsPresenter {
             actualStarted = true;
             int POLL_INTERVAL = 1;
 
-            long startTime = Calendar.getInstance().getTimeInMillis();
+            time = 0L;
 
             // Every second
              Observable.interval(POLL_INTERVAL, TimeUnit.SECONDS)
@@ -90,60 +91,55 @@ public class ExerciseSetsPresenter {
 
                         @Override
                         public void onNext(Long aLong) {
-                            long currentTime = Calendar.getInstance().getTimeInMillis();
+                            time = time + 1000;
 
                             // Actual Time Elapsed
 
-                            Date actualTimeElapsedDate = new Date(currentTime - startTime);
+                            Date timeDate = new Date(time);
                             SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
-                            String incorrectString = sdf.format(actualTimeElapsedDate);
+                            String incorrectString = sdf.format(timeDate);
                             // incorrect string displays 10:XX:XX, should display 00:XX:XX
                             String timeString = "0" + incorrectString.charAt(1)
                                     + incorrectString.charAt(2)  + incorrectString.charAt(3)
                                     + incorrectString.charAt(4)  + incorrectString.charAt(5)
                                     + incorrectString.charAt(6)  + incorrectString.charAt(7);
-
                             // Display the time elapsed since starting
                             mView.displayActualElapsedTime(timeString);
 
                             if (!mView.isTimeElapsedFocused()) {
 
-                                String timeElapsedString = mView.getTimeElapsed();
-
-                                Date timeElapsed = actualTimeElapsedDate;
+                                String timeNotifString = mView.getTimeElapsed();
+                                Date timeNotifDate = new Date();
                                 try {
-                                    String timeString1 = "1" + timeElapsedString.charAt(1)
-                                            + timeElapsedString.charAt(2) + timeElapsedString.charAt(3)
-                                            + timeElapsedString.charAt(4) + timeElapsedString.charAt(5)
-                                            + timeElapsedString.charAt(6) + timeElapsedString.charAt(7);
-                                    timeElapsed = sdf.parse(timeString1);
+                                    String timeString1 = "1" +  timeNotifString.charAt(1)
+                                            + timeNotifString.charAt(2) + timeNotifString.charAt(3)
+                                            + timeNotifString.charAt(4) + timeNotifString.charAt(5)
+                                            + timeNotifString.charAt(6) + timeNotifString.charAt(7);
+                                    timeNotifDate = sdf.parse(timeString1);
                                 } catch (Exception e) {
                                     Log.v("ExerciseSetsPresenter", "PARSE FAILED");
                                     mView.displayToast("Bad Parse");
                                 }
 
                                 Log.v("ExerciseSetsPresenter", "do we get here");
-                                long timeElapsedLong = timeElapsed.getTime();
-                                timeElapsedLong = timeElapsedLong + 1000;
+                                long timeNotif = timeNotifDate.getTime();
+                                timeNotif = timeNotif + 1000;
 
-                                String incorrectString2 = sdf.format(new Date(timeElapsedLong));
+                                String incorrectString2 = sdf.format(new Date(timeNotif));
                                 String timeString2 = "0" + incorrectString2.charAt(1)
                                         + incorrectString2.charAt(2) + incorrectString2.charAt(3)
                                         + incorrectString2.charAt(4) + incorrectString2.charAt(5)
                                         + incorrectString2.charAt(6) + incorrectString2.charAt(7);
-
-                                Log.v("ExerciseSetsPresenter", timeString2);
-
+                                Log.v("ExerciseSetsPresenter string to display", timeString2);
                                 mView.displayElapsedTime(timeString2);
 
                                 // NOTIFICATION
                                 // TODO: notification, and time until next notification
 
                                 for (int i = 0; i < mStartTimes.size(); i++) {
-                                    Log.v("ExerciseSetsPresenter", timeString2);
-                                    Log.v("ExerciseSetsPresenter", mStartTimes.get(i));
-                                    if (timeString2.equals("00:" + mStartTimes.get(i))) {
-                                        Log.v("ExerciseSetsPresenter", "Sending notifcation");
+                                    Log.v("ExerciseSetsPresenter notif", Long.toString(timeNotif) + Long.toString(mStartTimes.get(i)));
+                                    if (timeNotif == mStartTimes.get(i)) {
+                                        Log.v("ExerciseSetsPresenter", "Sending notification");
                                         mView.displayToast("Sending notification");
                                         // call to view -> activity to start service
                                         // since no service, just call to notif utils directly from view
@@ -178,12 +174,12 @@ public class ExerciseSetsPresenter {
 
     public void setStartTimes() {
         for (int i = 0; i < mExerciseSetsAndListPreviousExerciseSets.size(); i++) {
-            int setStart = calculateSetStart(i);
-            mStartTimes.add(formatStartTime(setStart));
+            long setStart = calculateSetStart(i);
+            mStartTimes.add(setStart);
         }
     }
 
-    public List<String> getStartTimes() {
+    public List<Long> getStartTimes() {
         return mStartTimes;
     }
 
@@ -192,8 +188,8 @@ public class ExerciseSetsPresenter {
     }
 
 
-    private int calculateSetStart(int position) {
-        int setStart = 0; // seconds
+    private long calculateSetStart(int position) {
+        long setStart = 0; // milliseconds
 
         int i = 0; //
         while (i < position) {

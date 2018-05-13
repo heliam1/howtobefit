@@ -14,6 +14,8 @@ import com.heliam1.HowToBeFit.R;
 import com.heliam1.HowToBeFit.models.ExerciseSetAndListPreviousExerciseSet;
 import com.heliam1.HowToBeFit.models.PreviousExerciseSet;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.ExerciseSetViewHolder> implements ExerciseSetTouchHelperAdapter {
@@ -95,8 +97,17 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
         }
 
         public void bind(ExerciseSetAndListPreviousExerciseSet exerciseSetAndList, int position) {
+            // convert long start time to correct string
+            Date timeDate = new Date(mExerciseSetsPresenter.getStartTimes().get(position));
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+            String incorrectString = sdf.format(timeDate);
+            // incorrect string displays 10:XX:XX, should display 00:XX:XX
+            String startTime = "0" + incorrectString.charAt(1)
+                    + incorrectString.charAt(2)  + incorrectString.charAt(3)
+                    + incorrectString.charAt(4)  + incorrectString.charAt(5)
+                    + incorrectString.charAt(6)  + incorrectString.charAt(7);
 
-            String setStartTimeNameNumberString = mExerciseSetsPresenter.getStartTimes().get(position) + " "
+            String setStartTimeNameNumberString = startTime + " "
                     + exerciseSetAndList.getExerciseSet().getExerciseName() + "-"
                     + Integer.toString(exerciseSetAndList.getExerciseSet().getSetNumber());
 

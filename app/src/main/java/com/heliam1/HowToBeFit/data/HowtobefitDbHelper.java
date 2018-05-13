@@ -121,8 +121,8 @@ public class HowtobefitDbHelper extends SQLiteOpenHelper {
         values.put(ExerciseSetEntry._WORKOUT_ID, 2);
         values.put(ExerciseSetEntry.COLUMN_EXERCISE_NAME, "Deadlift");
         values.put(ExerciseSetEntry.COLUMN_SET_NUMBER, "1");
-        values.put(ExerciseSetEntry.COLUMN_SET_DURATION, 60);
-        values.put(ExerciseSetEntry.COLUMN_SET_REST, 180);
+        values.put(ExerciseSetEntry.COLUMN_SET_DURATION, 60000);
+        values.put(ExerciseSetEntry.COLUMN_SET_REST, 180000);
         values.put(ExerciseSetEntry.COLUMN_SET_WEIGHT, 100);
         values.put(ExerciseSetEntry.COLUMN_SET_REPS, 6);
         values.put(ExerciseSetEntry.COLUMN_SET_DATE_STRING, "Today");
@@ -140,8 +140,8 @@ public class HowtobefitDbHelper extends SQLiteOpenHelper {
         values.put(ExerciseSetEntry._WORKOUT_ID, 2);
         values.put(ExerciseSetEntry.COLUMN_EXERCISE_NAME, "Deadlift");
         values.put(ExerciseSetEntry.COLUMN_SET_NUMBER, "2");
-        values.put(ExerciseSetEntry.COLUMN_SET_DURATION, 60);
-        values.put(ExerciseSetEntry.COLUMN_SET_REST, 180);
+        values.put(ExerciseSetEntry.COLUMN_SET_DURATION, 60000);
+        values.put(ExerciseSetEntry.COLUMN_SET_REST, 180000);
         values.put(ExerciseSetEntry.COLUMN_SET_WEIGHT, 100);
         values.put(ExerciseSetEntry.COLUMN_SET_REPS, 6);
         values.put(ExerciseSetEntry.COLUMN_SET_DATE_STRING, "Today");
@@ -159,8 +159,8 @@ public class HowtobefitDbHelper extends SQLiteOpenHelper {
         values.put(ExerciseSetEntry._WORKOUT_ID, 2);
         values.put(ExerciseSetEntry.COLUMN_EXERCISE_NAME, "Deadlift");
         values.put(ExerciseSetEntry.COLUMN_SET_NUMBER, "1");
-        values.put(ExerciseSetEntry.COLUMN_SET_DURATION, 60);
-        values.put(ExerciseSetEntry.COLUMN_SET_REST, 180);
+        values.put(ExerciseSetEntry.COLUMN_SET_DURATION, 60000);
+        values.put(ExerciseSetEntry.COLUMN_SET_REST, 180000);
         values.put(ExerciseSetEntry.COLUMN_SET_WEIGHT, 100);
         values.put(ExerciseSetEntry.COLUMN_SET_REPS, 6);
         values.put(ExerciseSetEntry.COLUMN_SET_DATE_STRING, "Today");
@@ -178,8 +178,8 @@ public class HowtobefitDbHelper extends SQLiteOpenHelper {
         values.put(ExerciseSetEntry._WORKOUT_ID, 2);
         values.put(ExerciseSetEntry.COLUMN_EXERCISE_NAME, "Deadlift");
         values.put(ExerciseSetEntry.COLUMN_SET_NUMBER, "2");
-        values.put(ExerciseSetEntry.COLUMN_SET_DURATION, 60);
-        values.put(ExerciseSetEntry.COLUMN_SET_REST, 180);
+        values.put(ExerciseSetEntry.COLUMN_SET_DURATION, 60000);
+        values.put(ExerciseSetEntry.COLUMN_SET_REST, 180000);
         values.put(ExerciseSetEntry.COLUMN_SET_WEIGHT, 100);
         values.put(ExerciseSetEntry.COLUMN_SET_REPS, 6);
         values.put(ExerciseSetEntry.COLUMN_SET_DATE_STRING, "Today");
