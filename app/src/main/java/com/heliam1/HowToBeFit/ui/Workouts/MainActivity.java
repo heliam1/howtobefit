@@ -159,6 +159,8 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
 
 
             workoutNameView.setText(workout.getName());
+            workoutNameView.setMaxLines(1);
+
             workoutDateView.setText(workout.getDate());
 
             if (column1Turn) {
