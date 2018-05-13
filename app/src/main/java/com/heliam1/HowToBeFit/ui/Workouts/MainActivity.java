@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
         mColumn1 = findViewById(R.id.column1);
         mColumn2 = findViewById(R.id.column2);
 
+        mWorkoutsGridLayout.requestFocus();
         mAddWorkout.setVisibility(View.GONE);
 
         mWorkoutPresenter = new WorkoutsPresenter(this, workoutRepository, AndroidSchedulers.mainThread());

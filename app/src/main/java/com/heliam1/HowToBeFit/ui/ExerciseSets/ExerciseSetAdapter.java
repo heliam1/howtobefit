@@ -135,15 +135,7 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
                 }
             });
 
-            /*
-            personalBestWeightReps.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    previousSetsRecycleView.smoothScrollToPosition(adapter.getItemCount() - 1);
-                    return true;
-                }
-            });
-            */
+            previousSetsRecycleView.smoothScrollToPosition(adapter.getItemCount() - 1);
         }
 
         @Override
