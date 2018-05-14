@@ -38,16 +38,17 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         });
     }
 
+    /*
     @Override
-    public Single<List<ExerciseSet>> getExerciseSetsByWorkoutId(long id) {
+    public Single<List<ExerciseSet>> getExerciseSetsByWorkoutId(long id, long date) {
         return Single.fromCallable(() -> {
             try {
-                return queryExerciseSetsByWorkoutId(id);
+                return queryExerciseSetsByWorkoutId(id, date);
             } catch (Exception e) {
                 throw new RuntimeException("Something wrong with db");
             }
         });
-    }
+    }*/
 
     @Override
     public Single<List<PreviousExerciseSet>> getPreviousSets(String name, int setNumber) {
@@ -62,10 +63,10 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
 
     @Override
     public Single<List<ExerciseSetAndListPreviousExerciseSet>>
-    getExerciseSetsByWorkoutIdandPreviousSets(long id) {
+    getExerciseSetsByWorkoutIdandPreviousSets(long id, long date) {
         return Single.fromCallable(() -> {
             try {
-                List<ExerciseSet> exerciseSets = queryExerciseSetsByWorkoutId(id);
+                List<ExerciseSet> exerciseSets = queryExerciseSetsByWorkoutId(id, date);
 
                 List<ExerciseSetAndListPreviousExerciseSet> list = new ArrayList<>();
 
@@ -109,9 +110,9 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
                     cursor.getLong(cursor.getColumnIndex(WorkoutEntry._ID)),
                     cursor.getString(cursor.getColumnIndex(WorkoutEntry.COLUMN_WORKOUT_NAME)),
                     cursor.getInt(cursor.getColumnIndex(WorkoutEntry.COLUMN_WORKOUT_IMAGE)),
-                    cursor.getString(cursor.getColumnIndex(
+                    cursor.getLong(cursor.getColumnIndex(
                             WorkoutEntry.COLUMN_WORKOUT_LAST_DATE_COMPLETED)),
-                    cursor.getInt(cursor.getColumnIndex(WorkoutEntry.COLUMN_WORKOUT_DURATION))));
+                    cursor.getLong(cursor.getColumnIndex(WorkoutEntry.COLUMN_WORKOUT_DURATION))));
             cursor.moveToNext();
         }
         cursor.close();
@@ -119,7 +120,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         return workouts;
     }
 
-    private List<ExerciseSet> queryExerciseSetsByWorkoutId(long workoutId) {
+    private List<ExerciseSet> queryExerciseSetsByWorkoutId(long workoutId, long date) {
         String[] projection = {
                 ExerciseSetEntry._ID,
                 ExerciseSetEntry._WORKOUT_ID,
@@ -136,9 +137,10 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
                 ExerciseSetEntry.COLUMN_PB_REPS};
 
         String selection = ExerciseSetEntry._WORKOUT_ID + "=?"
+                + " AND " + ExerciseSetEntry.COLUMN_SET_DATE_LONG + "=?"
                 + " AND " + ExerciseSetEntry.COLUMN_SET_ORDER + "!=?";
 
-        String[] selectionArgs = {Long.toString(workoutId, -1)};
+        String[] selectionArgs = {Long.toString(workoutId), Long.toString(date), Integer.toString(-1)};
 
         // String sortOrder = ExerciseSetEntry.COLUMN_SET_DATE + " DESC";
         String sortOrder = ExerciseSetEntry.COLUMN_SET_ORDER + " ASC";
@@ -222,10 +224,29 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
     }
 
     @Override
-    public Single<Long> saveExerciseSet(ExerciseSet exerciseSet) {
+    public Single<Long> updateWorkout(long id, long time, long duration) {
         return Single.fromCallable(() -> {
             try {
-                return upsertExerciseSet(exerciseSet);
+                ContentValues values = new ContentValues();
+                values.put(WorkoutEntry.COLUMN_WORKOUT_LAST_DATE_COMPLETED, time);
+                values.put(WorkoutEntry.COLUMN_WORKOUT_DURATION, duration);
+
+                int i = contentResolver.update(
+                        ContentUris.withAppendedId(WorkoutEntry.CONTENT_URI, id),
+                        values, null, null);
+
+                return 0L;
+            } catch (Exception e) {
+                throw new RuntimeException("Something wrong with db");
+            }
+        });
+    }
+
+    @Override
+    public Single<Long> saveExerciseSets(List<ExerciseSet> exerciseSets) {
+        return Single.fromCallable(() -> {
+            try {
+                return upsertExerciseSets(exerciseSets);
             } catch (Exception e) {
                 throw new RuntimeException("Something wrong with db");
             }
@@ -242,7 +263,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         // uri or Long savedWorkoutId; deffs want long but convert from uri?
         Uri uri;
 
-        if (workout.hasId()) {
+        if (workout.getId() != null) {
             contentResolver.update(
                     ContentUris.withAppendedId(WorkoutEntry.CONTENT_URI, workout.getId()),
                     values, null, null);
@@ -255,35 +276,39 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         return parseUriToId(uri);
     }
 
-    private Long upsertExerciseSet(ExerciseSet exerciseSet) {
+    private Long upsertExerciseSets(List<ExerciseSet> exerciseSets) {
         ContentValues values = new ContentValues();
-        values.put(ExerciseSetEntry._WORKOUT_ID, exerciseSet.getWorkoutId());
-        values.put(ExerciseSetEntry.COLUMN_EXERCISE_NAME, exerciseSet.getExerciseName());
-        values.put(ExerciseSetEntry.COLUMN_SET_NUMBER, exerciseSet.getSetNumber());
-        values.put(ExerciseSetEntry.COLUMN_SET_DURATION, exerciseSet.getSetDuration());
-        values.put(ExerciseSetEntry.COLUMN_SET_REST, exerciseSet.getSetRest());
-        values.put(ExerciseSetEntry.COLUMN_SET_WEIGHT, exerciseSet.getSetWeight());
-        values.put(ExerciseSetEntry.COLUMN_SET_REPS, exerciseSet.getSetReps());
-        values.put(ExerciseSetEntry.COLUMN_SET_DATE_STRING, exerciseSet.getSetDateString());
-        values.put(ExerciseSetEntry.COLUMN_SET_DATE_LONG, exerciseSet.getSetDateLong());
-        values.put(ExerciseSetEntry.COLUMN_SET_ORDER, exerciseSet.getSetOrder());
-        values.put(ExerciseSetEntry.COLUMN_PB_WEIGHT, exerciseSet.getPbWeight());
-        values.put(ExerciseSetEntry.COLUMN_PB_REPS, exerciseSet.getPbReps());
 
-        // uri or Long savedWorkoutId; deffs want long but convert from uri?
-        Uri uri;
+        for (ExerciseSet exerciseSet : exerciseSets) {
+            values.clear();
+            values.put(ExerciseSetEntry._WORKOUT_ID, exerciseSet.getWorkoutId());
+            values.put(ExerciseSetEntry.COLUMN_EXERCISE_NAME, exerciseSet.getExerciseName());
+            values.put(ExerciseSetEntry.COLUMN_SET_NUMBER, exerciseSet.getSetNumber());
+            values.put(ExerciseSetEntry.COLUMN_SET_DURATION, exerciseSet.getSetDuration());
+            values.put(ExerciseSetEntry.COLUMN_SET_REST, exerciseSet.getSetRest());
+            values.put(ExerciseSetEntry.COLUMN_SET_WEIGHT, exerciseSet.getSetWeight());
+            values.put(ExerciseSetEntry.COLUMN_SET_REPS, exerciseSet.getSetReps());
+            values.put(ExerciseSetEntry.COLUMN_SET_DATE_STRING, exerciseSet.getSetDateString());
+            values.put(ExerciseSetEntry.COLUMN_SET_DATE_LONG, exerciseSet.getSetDateLong());
+            values.put(ExerciseSetEntry.COLUMN_SET_ORDER, exerciseSet.getSetOrder());
+            values.put(ExerciseSetEntry.COLUMN_PB_WEIGHT, exerciseSet.getPbWeight());
+            values.put(ExerciseSetEntry.COLUMN_PB_REPS, exerciseSet.getPbReps());
 
-        if (exerciseSet.getId() != null) {
-            contentResolver.update(
-                    ContentUris.withAppendedId(ExerciseSetEntry.CONTENT_URI, exerciseSet.getId()),
-                    values, null, null);
+            // uri or Long savedWorkoutId; deffs want long but convert from uri?
+            Uri uri;
 
-            // TODO:
-            uri = ContentUris.withAppendedId(ExerciseSetEntry.CONTENT_URI, exerciseSet.getId());
-        } else {
-            uri = contentResolver.insert(ExerciseSetEntry.CONTENT_URI, values);
+            if (exerciseSet.getId() != null) {
+                contentResolver.update(
+                        ContentUris.withAppendedId(ExerciseSetEntry.CONTENT_URI, exerciseSet.getId()),
+                        values, null, null);
+
+                // TODO:
+                uri = ContentUris.withAppendedId(ExerciseSetEntry.CONTENT_URI, exerciseSet.getId());
+            } else {
+                uri = contentResolver.insert(ExerciseSetEntry.CONTENT_URI, values);
+            }
         }
-        return parseUriToId(uri);
+        return 0L;
     }
 
     Long parseUriToId(Uri uri) {
@@ -300,12 +325,11 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
     // need thigns for delete
 
     @Override
-    public Single<Long> deleteWorkout(Workout workout) {
+    public Single<Long> deleteWorkout(long id) {
         return Single.fromCallable(() -> {
-            try {
-                Long id  = workout.getId();
+            try { ;
                 contentResolver.delete(
-                        ContentUris.withAppendedId(WorkoutEntry.CONTENT_URI, workout.getId()),
+                        ContentUris.withAppendedId(WorkoutEntry.CONTENT_URI, id),
                         null, null);
                 return id;
             } catch (Exception e) {

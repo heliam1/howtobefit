@@ -21,6 +21,7 @@ import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -51,8 +52,8 @@ public class ExerciseSetsPresenter {
         }
     }
 
-    public void loadExerciseSets(long id) {
-        compositeDisposable.add(mExerciseSetsRepository.getExerciseSetsByWorkoutIdandPreviousSets(id)
+    public void loadExerciseSets(long id, long date) {
+        compositeDisposable.add(mExerciseSetsRepository.getExerciseSetsByWorkoutIdandPreviousSets(id, date)
                 .subscribeOn(Schedulers.io())
                 .observeOn(mainScheduler)
                 .subscribeWith(new DisposableSingleObserver<List<ExerciseSetAndListPreviousExerciseSet>>() {
@@ -79,7 +80,26 @@ public class ExerciseSetsPresenter {
 
     public void addExerciseSet(long workoutId, String exerciseName, String setNumber,
                                String setDuration, String setRest, String pbWeight, String pbReps) {
-        int setOrder = mExerciseSetsAndListPreviousExerciseSets.size();
+        // input val
+        try {
+            if (exerciseName == null)
+                throw new Exception("bad parse");
+            if (Integer.parseInt(setNumber) < 1)
+                throw new Exception("bad parse");
+            if (Integer.parseInt(setDuration) < 1)
+                throw new Exception("bad parse");
+            if (Integer.parseInt(setRest) < 1)
+                throw new Exception("bad parse");
+            if (Double.parseDouble(pbWeight) < 0)
+                throw new Exception("bad parse");
+            if (Integer.parseInt(pbReps) < 0)
+                throw new Exception("bad parse");
+        } catch (Exception e) {
+            mView.displayToast("Bad exercise-set");
+            return;
+        }
+
+        int setOrder = mExerciseSetsAndListPreviousExerciseSets.size() + 1;
         ExerciseSet exerciseSet = new ExerciseSet(workoutId, exerciseName,
                 Integer.parseInt(setNumber), Long.parseLong(setDuration),
                 Long.parseLong(setRest), setOrder, Double.parseDouble(pbWeight),
@@ -91,36 +111,72 @@ public class ExerciseSetsPresenter {
 
         setStartTimes();
         // mView.displayAddedSet(mExerciseSetsAndListPreviousExerciseSets.size() - 1);
-        mView.displayExerciseSets();
+        mView.displayAddedSet(mExerciseSetsAndListPreviousExerciseSets.size() - 1);
     }
 
-    /*
-    public void addExerciseSet(long workoutId, String exerciseName, String setNumber,
-                               String setDuration, String setRest, String pbWeight, String pbReps) {
-        // todo: transforming into object should be in model so that it gets done not on main thr?
-        int setOrder = mExerciseSetsAndListPreviousExerciseSets.size();
-        ExerciseSet exerciseSet = new ExerciseSet(workoutId, exerciseName,
-                Integer.parseInt(setNumber), Long.parseLong(setDuration),
-                Long.parseLong(setRest), setOrder, Double.parseDouble(pbWeight),
-                Integer.parseInt(pbReps));
-
-        compositeDisposable.add(mExerciseSetsRepository.saveExerciseSet(exerciseSet)
+    public void deleteWorkout(long id) {
+        compositeDisposable.add(mExerciseSetsRepository.deleteWorkout(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(mainScheduler)
                 .subscribeWith(new DisposableSingleObserver<Long>() {
                     @Override
                     public void onSuccess(Long id) {
-                        loadExerciseSets(workoutId);
-                        mView.displayToast("Exercise-Set added");
+                        mView.displayToast("Workout deleted");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        mView.displayToast("Unable to save exercise-set");
+                        mView.displayToast("Unable to delete workout");
                     }
                 })
         );
-    }*/
+    }
+
+    // ALSO SAVES WORKOUT
+    public void saveExerciseSets(long id) {
+        long time = Calendar.getInstance().getTimeInMillis();
+
+        List<ExerciseSet> exerciseSets = new ArrayList<>();
+        for (int i = 0; i < mExerciseSetsAndListPreviousExerciseSets.size(); i++) {
+            ExerciseSet exerciseSet = mExerciseSetsAndListPreviousExerciseSets.get(i).getExerciseSet();
+            exerciseSet.setId(null);
+            exerciseSet.setSetDate(time);
+            exerciseSet.setSetOrder(i + 1);
+            exerciseSets.add(exerciseSet);
+        }
+
+        compositeDisposable.add(mExerciseSetsRepository.saveExerciseSets(exerciseSets)
+                .subscribeOn(Schedulers.io())
+                .observeOn(mainScheduler)
+                .subscribeWith(new DisposableSingleObserver<Long>() {
+                    @Override
+                    public void onSuccess(Long id) {
+                        mView.displayToast("Exercise-Sets saved");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.displayToast("Unable to save exercise sets");
+                    }
+                })
+        );
+
+        compositeDisposable.add(mExerciseSetsRepository.updateWorkout(id, time, calculateWorkoutDuration())
+                .subscribeOn(Schedulers.io())
+                .observeOn(mainScheduler)
+                .subscribeWith(new DisposableSingleObserver<Long>() {
+                    @Override
+                    public void onSuccess(Long id) {
+                        mView.displayToast("Workout saved");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.displayToast("Unable to save workout");
+                    }
+                })
+        );
+    }
 
     public void startTimers() {
         if (!actualStarted) {
@@ -234,16 +290,30 @@ public class ExerciseSetsPresenter {
     private long calculateSetStart(int position) {
         long setStart = 0; // milliseconds
 
-        int i = 0; //
-        while (i < position) {
-            ExerciseSetAndListPreviousExerciseSet exerciseSetAndListPreviousExerciseSet
-                    = mExerciseSetsAndListPreviousExerciseSets.get(position);
-            ExerciseSet exerciseSet = exerciseSetAndListPreviousExerciseSet.getExerciseSet();
+        if (position == 0)
+            return setStart;
+
+        for (int i = 0; i < position; i++) {
+            ExerciseSet exerciseSet = mExerciseSetsAndListPreviousExerciseSets.get(i).getExerciseSet();
             setStart = setStart + exerciseSet.getSetDuration() + exerciseSet.getSetRest();
-            i++;
         }
 
         return setStart;
+    }
+
+    private long calculateWorkoutDuration() {
+        long setEnd = 0;
+
+        int i = 0;
+        while (i < mExerciseSetsAndListPreviousExerciseSets.size()) {
+            ExerciseSet exerciseSet = mExerciseSetsAndListPreviousExerciseSets.get(i).getExerciseSet();
+            setEnd = exerciseSet.getSetDuration() + exerciseSet.getSetRest();
+            i++;
+        }
+
+        if (setEnd < 1800000)
+            setEnd = 1800000;
+        return setEnd;
     }
 
     private String formatStartTime(int totalSeconds) {

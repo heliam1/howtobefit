@@ -39,7 +39,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="Set #"
-            android:inputType="number"
             app:layout_constraintEnd_toEndOf="@+id/edit_text_add_pb_reps"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/edit_text_add_pb_reps"
@@ -53,7 +52,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:hint="Duration seconds"
-            android:inputType="number"
             android:textAlignment="textEnd"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -65,7 +63,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="Rest seconds"
-            android:inputType="number"
             android:textAlignment="textEnd"
             app:layout_constraintEnd_toEndOf="@+id/edit_text_add_set_duration"
             app:layout_constraintStart_toStartOf="@+id/edit_text_add_set_duration"
@@ -80,7 +77,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:hint="Pb Weight"
-            android:inputType="number"
             app:layout_constraintEnd_toEndOf="@+id/edit_text_add_set_exercise"
             app:layout_constraintStart_toStartOf="@+id/edit_text_add_set_exercise"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_add_set_exercise" />
@@ -93,27 +89,23 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:hint="Pb Reps"
-            android:inputType="number"
             app:layout_constraintStart_toEndOf="@+id/edit_text_add_pb_weight"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_add_set_number" />
 
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:descendantFocusability="beforeDescendants"
-        android:focusableInTouchMode="true"
         android:id="@+id/constraint_layout_timers"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:background="@color/colorWhite"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exerciseSetsRecyclerView"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/text_view_label_timerElapsed"
@@ -143,13 +135,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:maxLines="1"
             android:id="@+id/timeElapsed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="16dp"
             android:background="@android:color/white"
+            android:maxLines="1"
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="40dp"
@@ -235,16 +227,18 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:textColor="@android:color/black"
         android:id="@+id/exerciseSetsRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@color/colorWhite"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/constraint_layout_timers"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-    </android.support.v7.widget.RecyclerView>
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.0"></android.support.v7.widget.RecyclerView>
 </android.support.constraint.ConstraintLayout>

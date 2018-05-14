@@ -25,6 +25,7 @@ import com.heliam1.HowToBeFit.models.Workout;
 import com.heliam1.HowToBeFit.repositories.WorkoutRepository;
 import com.heliam1.HowToBeFit.ui.ExerciseSets.ExerciseSetsActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -45,7 +46,9 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
 
     private static final int VERTICAL_DIMENSION_MULTIPLIER = 8;
     private ActionBar mActionBar;
+
     private ConstraintLayout mAddWorkout;
+    private EditText mEditAddWorkoutName;
     private Button mSaveWorkout;
     private LinearLayout mWorkoutsGridLayout;
     private LinearLayout mColumn1;
@@ -64,7 +67,9 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
         mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
 
         mAddWorkout = findViewById(R.id.add_workout_constraint_layout);
+        mEditAddWorkoutName = findViewById(R.id.add_workout_name_edit_text);
         mSaveWorkout = findViewById(R.id.save_workout);
+
         mWorkoutsGridLayout = findViewById(R.id.workouts_gridview);
         mColumn1 = findViewById(R.id.column1);
         mColumn2 = findViewById(R.id.column2);
@@ -78,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
         mSaveWorkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // mWorkoutsPresenter.saveWorkout()
+                mWorkoutPresenter.saveWorkout(mEditAddWorkoutName.getText().toString());
                 mAddWorkout.setVisibility(View.GONE);
             }
         });
@@ -127,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
     public void displayWorkouts(List<Workout> workouts) {
 
         // mWorkoutsGridview.setEmptyView(findViewById(R.id.empty_view));
+        mColumn1.removeAllViews();
+        mColumn2.removeAllViews();
 
         // gonna have to programatically add children
         boolean column1Turn = true;
@@ -141,9 +148,10 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
             TextView workoutDateView = workoutView.findViewById(R.id.text_view_date_workout);
 
             workoutImageView.requestLayout();
-            workoutImageView.getLayoutParams().height =
-                    (int) (VERTICAL_DIMENSION_MULTIPLIER * workout.getDuration());
-            workoutImageView.setMinimumHeight(VERTICAL_DIMENSION_MULTIPLIER * workout.getDuration());
+            int height = VERTICAL_DIMENSION_MULTIPLIER * (int) workout.getDuration() / 60000;
+            if (height < 8 * 1800000 / 60000)
+                height = 8 * 1800000 / 60000;
+            workoutImageView.getLayoutParams().height = height;
             // workoutImageView.setImage( // TODO:
             workoutImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -151,7 +159,8 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
                     Intent intent = new Intent(MainActivity.this, ExerciseSetsActivity.class);
 
                     intent.putExtra("workoutId", workout.getId());
-                    intent.putExtra("workoutName",workout.getName());
+                    intent.putExtra("workoutName", workout.getName());
+                    intent.putExtra("workoutDate", workout.getDate());
 
                     startActivity(intent);
                 }
@@ -161,7 +170,8 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
             workoutNameView.setText(workout.getName());
             workoutNameView.setMaxLines(1);
 
-            workoutDateView.setText(workout.getDate());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-M HH:mm");
+            workoutDateView.setText(sdf.format(workout.getDate()));
 
             if (column1Turn) {
                 mColumn1.addView(workoutView);

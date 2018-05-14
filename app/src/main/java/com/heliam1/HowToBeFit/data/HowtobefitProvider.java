@@ -141,6 +141,7 @@ public class HowtobefitProvider extends ContentProvider {
         values = sanitiseExerciseSet(values);
         // If values were not sanitary
         if (values == null) {
+            Log.v("HowToBeFitProvider", "Error saving exercise sets");
             return null;
         }
 
@@ -193,7 +194,7 @@ public class HowtobefitProvider extends ContentProvider {
             return 0;
         }
 
-        values = sanitiseWorkout(values);
+        // values = sanitiseWorkout(values);
         // if values bad sanitised update failed
         if (values == null) {
             return 0;
@@ -245,7 +246,7 @@ public class HowtobefitProvider extends ContentProvider {
         // Check sanity of input
         String name = values.getAsString(WorkoutEntry.COLUMN_WORKOUT_NAME);
         // TODO: Image
-        String zonedDateTime = values.getAsString(WorkoutEntry.COLUMN_WORKOUT_LAST_DATE_COMPLETED);
+        Long time = values.getAsLong(WorkoutEntry.COLUMN_WORKOUT_LAST_DATE_COMPLETED);
         Integer durationSeconds = values.getAsInteger(WorkoutEntry.COLUMN_WORKOUT_DURATION);
 
         if (name == null || TextUtils.isEmpty(name)) {
@@ -254,7 +255,7 @@ public class HowtobefitProvider extends ContentProvider {
             return null;
         }
 
-        if (zonedDateTime == null || TextUtils.isEmpty(zonedDateTime)) {
+        if (time == null) {
             // TODO: Move this into view?
             Log.e(LOG_TAG, "ERROR PASSING DATE TO TABLE");
             // mToast.makeText(getContext(), "ERROR PASSING DATE TO TABLE", Toast.LENGTH_SHORT).show();

@@ -34,7 +34,7 @@ public class HowtobefitDbHelper extends SQLiteOpenHelper {
                 + WorkoutEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + WorkoutEntry.COLUMN_WORKOUT_NAME + " TEXT NOT NULL, "
                 + WorkoutEntry.COLUMN_WORKOUT_IMAGE + " BLOB, "
-                + WorkoutEntry.COLUMN_WORKOUT_LAST_DATE_COMPLETED + " TEXT NOT NULL, " // ZonedDateTime
+                + WorkoutEntry.COLUMN_WORKOUT_LAST_DATE_COMPLETED + " INTEGER NOT NULL, " // ZonedDateTime
                 + WorkoutEntry.COLUMN_WORKOUT_DURATION + " INTEGER NOT NULL DEFAULT 0);";
 
         String SQL_CREATE_EXERCISE_SETS_TABLE = "CREATE TABLE " + ExerciseSetEntry.TABLE_NAME + " ("
@@ -95,6 +95,7 @@ public class HowtobefitDbHelper extends SQLiteOpenHelper {
         Log.v(LOG_TAG, "Inserting defaults");
         ContentValues values = new ContentValues();
 
+        /*
         values.put(WorkoutEntry._ID, 1);
         values.put(WorkoutEntry.COLUMN_WORKOUT_NAME, "SSF5x Chest");
         // values.put(WorkoutEntry.
@@ -193,6 +194,7 @@ public class HowtobefitDbHelper extends SQLiteOpenHelper {
         Log.v(LOG_TAG, Long.toString(didItWork));
         */
 
+        /*
         values.clear();
 
         values.put(WorkoutEntry._ID, 3);
@@ -225,5 +227,6 @@ public class HowtobefitDbHelper extends SQLiteOpenHelper {
 
         didItWork = db.insertOrThrow(WorkoutEntry.TABLE_NAME, null, values);
         Log.v(LOG_TAG, Long.toString(didItWork));
+        */
     }
 }

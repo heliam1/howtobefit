@@ -63,7 +63,7 @@ public class ExerciseSet {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -154,4 +154,6 @@ public class ExerciseSet {
     public int getSetOrder() {
         return setOrder;
     }
+
+    public void setSetOrder(int order) { this.setOrder = order; }
 }

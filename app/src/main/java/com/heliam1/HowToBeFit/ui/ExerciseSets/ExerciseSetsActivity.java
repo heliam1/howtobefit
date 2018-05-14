@@ -1,11 +1,14 @@
 package com.heliam1.HowToBeFit.ui.ExerciseSets;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,6 +43,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
 
     private ExerciseSetsPresenter mExerciseSetsPresenter;
     private long mWorkoutId;
+    private long mWorkoutDate;
 
     private ActionBar mActionBar;
 
@@ -86,12 +90,13 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         mActualTimeElapsed = findViewById(R.id.actualTimeElapsed);
 
         mWorkoutId = getIntent().getLongExtra("workoutId", 0);
+        mWorkoutDate = getIntent().getLongExtra("workoutDate", 0);
         if (mWorkoutId == 0) {
             Log.e("ExerciseSetsActivity", "no workout");
         }
 
         mExerciseSetsPresenter = new ExerciseSetsPresenter(this, exerciseSetRepository, AndroidSchedulers.mainThread());
-        mExerciseSetsPresenter.loadExerciseSets(mWorkoutId);
+        mExerciseSetsPresenter.loadExerciseSets(mWorkoutId, mWorkoutDate);
 
         mActualTimeElapsed.setText("00:00:00");
         mTimeElapsed.setText("00:00:00");
@@ -114,11 +119,15 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                showChooseSaveDialog();
+                return true;
+
             case R.id.item_menu_add_set:
                 if (item.getTitle().equals("Add A Set")) {
                     mAddEerciseSetContraintLayout.setVisibility(View.VISIBLE);
                     item.setTitle("✓");
-                } else { // Saving
+                } else { // adding it to UI
                     mExerciseSetsPresenter.addExerciseSet(mWorkoutId,
                             mEditAddExerciseName.getText().toString(),
                             mEditAddSetNumber.getText().toString(),
@@ -132,12 +141,55 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
                 return true;
 
             case R.id.item_menu_delete_workout:
-                // TODO: do something
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Delete this workout?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mExerciseSetsPresenter.deleteWorkout(mWorkoutId);
+                        NavUtils.navigateUpFromSameTask(ExerciseSetsActivity.this); // todo:
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (dialogInterface != null) {
+                            dialogInterface.dismiss();
+                        }
+                    }
+                });
+                // Create and show the AlertDialog
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showChooseSaveDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Exit and?");
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                mExerciseSetsPresenter.saveExerciseSets(mWorkoutId);
+                NavUtils.navigateUpFromSameTask(ExerciseSetsActivity.this); // todo:
+            }
+        });
+        builder.setNegativeButton("Discard", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                NavUtils.navigateUpFromSameTask(ExerciseSetsActivity.this);
+            }
+        });
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        showChooseSaveDialog();
     }
 
     @Override
@@ -163,8 +215,8 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
 
     @Override
     public void displayAddedSet(int position) {
-        // mExerciseSetAdapter.notifyItemInserted(position);
-        mExerciseSetAdapter.notifyDataSetChanged();
+        mExerciseSetAdapter.notifyItemInserted(position);
+        // mExerciseSetAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -4,19 +4,15 @@ public class Workout {
     private Long id;
     private String name;
     private int image;
-    private String date;
-    private int duration;
+    private long date;
+    private long duration;
 
-    public Workout(long id, String name, int image, String date, int duration) {
+    public Workout(Long id, String name, int image, long date, long duration) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.date = date;
         this.duration = duration;
-    }
-
-    public boolean hasId() {
-        return (this.id != null);
     }
 
     public Long getId() {
@@ -31,11 +27,11 @@ public class Workout {
         return image;
     }
 
-    public String getDate() {
+    public long getDate() {
         return date;
     }
 
-    public int getDuration() {
+    public long getDuration() {
         return duration;
     }
 }
