@@ -2,7 +2,7 @@
     package="com.heliam1.HowToBeFit">
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:name=".di.HowToBeFitApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.heliam1.HowToBeFit.ui.MainActivity"
+            android:name="com.heliam1.HowToBeFit.ui.Workouts.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,9 +18,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.heliam1.HowToBeFit.ui.ExerciseSetsActivity"
+            android:name="com.heliam1.HowToBeFit.ui.ExerciseSets.ExerciseSetsActivity"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme"
-            android:parentActivityName="com.heliam1.HowToBeFit.ui.MainActivity">
+            android:parentActivityName="com.heliam1.HowToBeFit.ui.Workouts.MainActivity">
         </activity>
         <provider
             android:name="com.heliam1.HowToBeFit.data.HowtobefitProvider"

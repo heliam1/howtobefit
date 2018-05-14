@@ -6,18 +6,20 @@ public class ExerciseSet {
     private long workoutId;
     private String exerciseName;
     private int setNumber;
-    private int setDuration;
-    private int setRest;
+    private long setDuration;
+    private long setRest;
     private double setWeight;
     private int setReps;
-    private String setDate;
+    private String setDateString;
+    private long setDateLong;
     private int setOrder;
-    private int pbWeight;
+    private double pbWeight;
     private int pbReps;
 
-    public ExerciseSet(long id, long workoutId, String exerciseName, int setNumber, int setDuration,
-                       int setRest, double setWeight, int setReps, String setDate, int setOrder,
-                       int pbWeight, int pbReps) {
+    // reading exercise set from db or updating
+    public ExerciseSet(Long id, long workoutId, String exerciseName, int setNumber, long setDuration,
+                       long setRest, double setWeight, int setReps, String setDateString,
+                       long setDateLong, int setOrder, double pbWeight, int pbReps) {
         this.id = id;
         this.workoutId = workoutId;
         this.exerciseName = exerciseName;
@@ -26,8 +28,28 @@ public class ExerciseSet {
         this.setRest = setRest;
         this.setWeight = setWeight;
         this.setReps = setReps;
-        this.setDate = setDate;
+        this.setDateString = setDateString;
+        this.setDateLong = setDateLong;
         this.setWeight = setWeight;
+        this.setOrder = setOrder;
+        this.pbWeight = pbWeight;
+        this.pbReps = pbReps;
+    }
+
+    // inserting / adding a new exercise set
+    public ExerciseSet(long workoutId, String exerciseName, int setNumber, long setDuration,
+                       long setRest, int setOrder, double pbWeight, int pbReps) {
+        setDuration = setDuration * 1000;
+        setRest = setRest * 1000;
+
+        this.id = null;
+        this.workoutId = workoutId;
+        this.exerciseName = exerciseName;
+        this.setNumber = setNumber;
+        this.setDuration = setDuration;
+        this.setRest = setRest;
+        this.setDateString = "never"; // This should never be visible
+        this.setDateLong = 0L;
         this.setOrder = setOrder;
         this.pbWeight = pbWeight;
         this.pbReps = pbReps;
@@ -37,11 +59,11 @@ public class ExerciseSet {
         return (this.id != null);
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -53,8 +75,8 @@ public class ExerciseSet {
         return exerciseName;
     }
 
-    public void setWorkoutName(String workoutName) {
-        this.exerciseName = workoutName;
+    public void setExerciseName(String exerciseName) {
+        this.exerciseName = exerciseName;
     }
 
     public int getSetNumber() {
@@ -65,7 +87,7 @@ public class ExerciseSet {
         this.setNumber = setNumber;
     }
 
-    public int getSetDuration() {
+    public long getSetDuration() {
         return setDuration;
     }
 
@@ -73,7 +95,7 @@ public class ExerciseSet {
         this.setDuration = setDuration;
     }
 
-    public int getSetRest() {
+    public long getSetRest() {
         return setRest;
     }
 
@@ -97,15 +119,23 @@ public class ExerciseSet {
         this.setReps = setReps;
     }
 
-    public String getSetDate() {
-        return setDate;
+    public String getSetDateString() {
+        return setDateString;
     }
 
-    public void setSetDate(String setDate) {
-        this.setDate = setDate;
+    public void setSetDateString(String setDateString) {
+        this.setDateString = setDateString;
     }
 
-    public int getPbWeight() {
+    public long getSetDateLong() {
+        return setDateLong;
+    }
+
+    public void setSetDate(long setDateLong) {
+        this.setDateLong = setDateLong;
+    }
+
+    public double getPbWeight() {
         return pbWeight;
     }
 
@@ -124,4 +154,6 @@ public class ExerciseSet {
     public int getSetOrder() {
         return setOrder;
     }
+
+    public void setSetOrder(int order) { this.setOrder = order; }
 }

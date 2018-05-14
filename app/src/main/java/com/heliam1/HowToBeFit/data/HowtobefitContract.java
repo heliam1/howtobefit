@@ -67,7 +67,8 @@ public final class HowtobefitContract {
         public final static String COLUMN_SET_REST = "set_rest";                // INTEGER
         public final static String COLUMN_SET_WEIGHT = "set_weight";            // INTEGER
         public final static String COLUMN_SET_REPS = "set_reps";                // INTEGER
-        public final static String COLUMN_SET_DATE = "set_date";                // INTEGER
+        public final static String COLUMN_SET_DATE_STRING = "set_date_string";  // TEXT
+        public final static String COLUMN_SET_DATE_LONG = "set_date_long";      // INTEGER
         public final static String COLUMN_SET_ORDER = "set_order";              // INTEGER
         public final static String COLUMN_PB_WEIGHT = "pb_weight";              // INTEGER
         public final static String COLUMN_PB_REPS = "pb_reps";                  // INTEGER
