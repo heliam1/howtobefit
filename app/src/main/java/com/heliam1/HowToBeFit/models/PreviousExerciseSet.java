@@ -1,23 +1,23 @@
 package com.heliam1.HowToBeFit.models;
 
 public class PreviousExerciseSet {
-    private int setWeight;
+    private double setWeight;
     private int setReps;
     private String setDateString;
     private long setDateLong;
 
-    public PreviousExerciseSet(int setWeight, int setReps, String setDateString, long setDateLong) {
+    public PreviousExerciseSet(double setWeight, int setReps, String setDateString, long setDateLong) {
         this.setWeight = setWeight;
         this.setReps = setReps;
         this.setDateString = setDateString;
         this.setDateLong = setDateLong;
     }
 
-    public int getSetWeight() {
+    public double getSetWeight() {
         return setWeight;
     }
 
-    public void setSetWeight(int setWeight) {
+    public void setSetWeight(double setWeight) {
         this.setWeight = setWeight;
     }
 

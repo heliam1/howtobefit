@@ -135,9 +135,10 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
                 ExerciseSetEntry.COLUMN_PB_WEIGHT,
                 ExerciseSetEntry.COLUMN_PB_REPS};
 
-        String selection = ExerciseSetEntry._WORKOUT_ID + "=?";
+        String selection = ExerciseSetEntry._WORKOUT_ID + "=?"
+                + " AND " + ExerciseSetEntry.COLUMN_SET_ORDER + "!=?";
 
-        String[] selectionArgs = {Long.toString(workoutId)};
+        String[] selectionArgs = {Long.toString(workoutId, -1)};
 
         // String sortOrder = ExerciseSetEntry.COLUMN_SET_DATE + " DESC";
         String sortOrder = ExerciseSetEntry.COLUMN_SET_ORDER + " ASC";
@@ -154,14 +155,14 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
                     cursor.getLong(cursor.getColumnIndex(ExerciseSetEntry._WORKOUT_ID)),
                     cursor.getString(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_EXERCISE_NAME)),
                     cursor.getInt(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_NUMBER)),
-                    cursor.getInt(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_DURATION)),
-                    cursor.getInt(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_REST)),
+                    cursor.getLong(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_DURATION)),
+                    cursor.getLong(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_REST)),
                     cursor.getDouble(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_WEIGHT)),
                     cursor.getInt(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_REPS)),
                     cursor.getString(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_DATE_STRING)),
                     cursor.getLong(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_DATE_LONG)),
                     cursor.getInt(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_ORDER)),
-                    cursor.getInt(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_PB_WEIGHT)),
+                    cursor.getDouble(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_PB_WEIGHT)),
                     cursor.getInt(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_PB_REPS))));
 
             cursor.moveToNext();
@@ -197,7 +198,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             previousExerciseSets.add(new PreviousExerciseSet(
-                    cursor.getInt(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_WEIGHT)),
+                    cursor.getDouble(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_WEIGHT)),
                     cursor.getInt(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_REPS)),
                     cursor.getString(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_DATE_STRING)),
                     cursor.getLong(cursor.getColumnIndex(ExerciseSetEntry.COLUMN_SET_DATE_LONG))));
@@ -272,7 +273,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         // uri or Long savedWorkoutId; deffs want long but convert from uri?
         Uri uri;
 
-        if (exerciseSet.hasId()) {
+        if (exerciseSet.getId() != null) {
             contentResolver.update(
                     ContentUris.withAppendedId(ExerciseSetEntry.CONTENT_URI, exerciseSet.getId()),
                     values, null, null);

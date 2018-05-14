@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface ExerciseSetsView {
 
-    public void displayExerciseSets(List<ExerciseSetAndListPreviousExerciseSet> exerciseSets);
+    public void displayExerciseSets();
+
+    public void displayAddedSet(int position);
 
     public void displayNoExerciseSets();
 

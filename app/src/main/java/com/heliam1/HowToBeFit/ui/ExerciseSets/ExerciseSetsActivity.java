@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.heliam1.HowToBeFit.R;
 import com.heliam1.HowToBeFit.di.HowToBeFitApplication;
+import com.heliam1.HowToBeFit.models.ExerciseSet;
 import com.heliam1.HowToBeFit.models.ExerciseSetAndListPreviousExerciseSet;
 import com.heliam1.HowToBeFit.repositories.ExerciseSetRepository;
 import com.heliam1.HowToBeFit.utils.NotificationUtils;
@@ -38,10 +39,21 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
     ExerciseSetRepository exerciseSetRepository;
 
     private ExerciseSetsPresenter mExerciseSetsPresenter;
+    private long mWorkoutId;
 
     private ActionBar mActionBar;
+
     private ConstraintLayout mAddEerciseSetContraintLayout;
+    private EditText mEditAddExerciseName;
+    private EditText mEditAddSetNumber;
+    private EditText mEditAddSetDuration;
+    private EditText mEditAddSetRest;
+    private EditText mEditAddPbWeight;
+    private EditText mEditAddPbReps;
+
     private RecyclerView mExerciseSetsRecyclerView;
+    private ExerciseSetAdapter mExerciseSetAdapter;
+
     private Button mStartTimers;
     private EditText mTimeElapsed;
     private TextView mActualTimeElapsed;
@@ -60,18 +72,26 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
 
         mAddEerciseSetContraintLayout = findViewById(R.id.constraint_layout_add_set);
         mAddEerciseSetContraintLayout.setVisibility(View.GONE);
+        mEditAddExerciseName = findViewById(R.id.edit_text_add_set_exercise);
+        mEditAddSetNumber = findViewById(R.id.edit_text_add_set_number);
+        mEditAddSetDuration = findViewById(R.id.edit_text_add_set_duration);
+        mEditAddSetRest = findViewById(R.id.edit_text_add_set_rest);
+        mEditAddPbWeight = findViewById(R.id.edit_text_add_pb_weight);
+        mEditAddPbReps = findViewById(R.id.edit_text_add_pb_reps);
+
         mExerciseSetsRecyclerView = findViewById(R.id.exerciseSetsRecyclerView);
+
         mTimeElapsed = findViewById(R.id.timeElapsed);
         mStartTimers = findViewById(R.id.text_view_label_actualTimerElapsed);
         mActualTimeElapsed = findViewById(R.id.actualTimeElapsed);
 
-        long workoutId = getIntent().getLongExtra("workoutId", 0);
-        if (workoutId == 0) {
+        mWorkoutId = getIntent().getLongExtra("workoutId", 0);
+        if (mWorkoutId == 0) {
             Log.e("ExerciseSetsActivity", "no workout");
         }
 
         mExerciseSetsPresenter = new ExerciseSetsPresenter(this, exerciseSetRepository, AndroidSchedulers.mainThread());
-        mExerciseSetsPresenter.loadExerciseSets(workoutId);
+        mExerciseSetsPresenter.loadExerciseSets(mWorkoutId);
 
         mActualTimeElapsed.setText("00:00:00");
         mTimeElapsed.setText("00:00:00");
@@ -99,7 +119,13 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
                     mAddEerciseSetContraintLayout.setVisibility(View.VISIBLE);
                     item.setTitle("✓");
                 } else { // Saving
-                    // save the set, presenter should update recyclerview,
+                    mExerciseSetsPresenter.addExerciseSet(mWorkoutId,
+                            mEditAddExerciseName.getText().toString(),
+                            mEditAddSetNumber.getText().toString(),
+                            mEditAddSetDuration.getText().toString(),
+                            mEditAddSetRest.getText().toString(),
+                            mEditAddPbWeight.getText().toString(),
+                            mEditAddPbReps.getText().toString());
                     mAddEerciseSetContraintLayout.setVisibility(View.GONE);
                     item.setTitle("Add A Set");
                 }
@@ -121,18 +147,24 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
     }
 
     @Override
-    public void displayExerciseSets(List<ExerciseSetAndListPreviousExerciseSet> exerciseSetsAndTheirPreviousSets) {
+    public void displayExerciseSets() {
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mExerciseSetsRecyclerView.setLayoutManager(layoutManager);
 
-        ExerciseSetAdapter adapter = new ExerciseSetAdapter(this, mExerciseSetsPresenter);
-        mExerciseSetsRecyclerView.setAdapter(adapter);
+        mExerciseSetAdapter = new ExerciseSetAdapter(this, mExerciseSetsPresenter);
+        mExerciseSetsRecyclerView.setAdapter(mExerciseSetAdapter);
 
         ItemTouchHelper.Callback callback =
-                new ExerciseSetTouchHelperCallback(adapter, this);
+                new ExerciseSetTouchHelperCallback(mExerciseSetAdapter, this);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(mExerciseSetsRecyclerView);
+    }
+
+    @Override
+    public void displayAddedSet(int position) {
+        // mExerciseSetAdapter.notifyItemInserted(position);
+        mExerciseSetAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -183,5 +215,4 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         mToast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         mToast.show();
     }
-
 }

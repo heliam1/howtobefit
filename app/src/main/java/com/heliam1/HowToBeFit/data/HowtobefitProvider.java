@@ -275,12 +275,12 @@ public class HowtobefitProvider extends ContentProvider {
         Integer setNumber = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_NUMBER);
         Integer setDuration = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_DURATION);
         Integer setRest = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_REST);
-        Integer setWeight = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_WEIGHT);
+        Double setWeight = values.getAsDouble(ExerciseSetEntry.COLUMN_SET_WEIGHT);
         Integer setReps = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_REPS);
         String setDateString = values.getAsString(ExerciseSetEntry.COLUMN_SET_DATE_STRING);
         Long setDateLong = values.getAsLong(ExerciseSetEntry.COLUMN_SET_DATE_LONG);
         Integer setOrder = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_ORDER);
-        Integer pbWeight = values.getAsInteger(ExerciseSetEntry.COLUMN_PB_WEIGHT);
+        Double pbWeight = values.getAsDouble(ExerciseSetEntry.COLUMN_PB_WEIGHT);
         Integer pbReps = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_REPS);
 
         // Sanitise
@@ -310,7 +310,7 @@ public class HowtobefitProvider extends ContentProvider {
             values.put(ExerciseSetEntry.COLUMN_SET_REST, setRest);
         }
         if (setWeight == null) {
-            setWeight = 0;
+            setWeight = 0.0;
             values.put(ExerciseSetEntry.COLUMN_SET_WEIGHT, setWeight);
         }
         if (setReps == null) {
@@ -342,7 +342,7 @@ public class HowtobefitProvider extends ContentProvider {
             return null;
         }
         if (pbWeight == null) {
-            pbWeight = 0;
+            pbWeight = 0.0;
             values.put(ExerciseSetEntry.COLUMN_PB_WEIGHT, pbWeight);
         }
         if (pbReps == null) {

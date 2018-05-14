@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.heliam1.HowToBeFit.models.ExerciseSet;
 import com.heliam1.HowToBeFit.models.ExerciseSetAndListPreviousExerciseSet;
+import com.heliam1.HowToBeFit.models.PreviousExerciseSet;
 import com.heliam1.HowToBeFit.repositories.ExerciseSetRepository;
 import com.heliam1.HowToBeFit.utils.NotificationUtils;
 
@@ -42,6 +43,14 @@ public class ExerciseSetsPresenter {
         this.mainScheduler = mainScheduler;
     }
 
+    public void setStartTimes() {
+        mStartTimes.clear();
+        for (int i = 0; i < mExerciseSetsAndListPreviousExerciseSets.size(); i++) {
+            long setStart = calculateSetStart(i);
+            mStartTimes.add(setStart);
+        }
+    }
+
     public void loadExerciseSets(long id) {
         compositeDisposable.add(mExerciseSetsRepository.getExerciseSetsByWorkoutIdandPreviousSets(id)
                 .subscribeOn(Schedulers.io())
@@ -50,11 +59,13 @@ public class ExerciseSetsPresenter {
                     @Override
                     public void onSuccess(List<ExerciseSetAndListPreviousExerciseSet> exerciseSetsAndPreviousList) {
                         mExerciseSetsAndListPreviousExerciseSets = exerciseSetsAndPreviousList;
-                        if (exerciseSetsAndPreviousList.isEmpty()) {
-                            mView.displayNoExerciseSets();
-                        } else {
-                            mView.displayExerciseSets(exerciseSetsAndPreviousList);
-                        }
+                        //if (exerciseSetsAndPreviousList.isEmpty()) {
+                            //Log.v("ExerciseSetsPresenter", "empty list");
+                            //mView.displayNoExerciseSets();
+                        // } else {
+                            setStartTimes();
+                            mView.displayExerciseSets();
+                        //}
                     }
 
                     @Override
@@ -64,13 +75,52 @@ public class ExerciseSetsPresenter {
                     }
                 })
         );
-
-
     }
 
-    public void setElapsedTime() {
+    public void addExerciseSet(long workoutId, String exerciseName, String setNumber,
+                               String setDuration, String setRest, String pbWeight, String pbReps) {
+        int setOrder = mExerciseSetsAndListPreviousExerciseSets.size();
+        ExerciseSet exerciseSet = new ExerciseSet(workoutId, exerciseName,
+                Integer.parseInt(setNumber), Long.parseLong(setDuration),
+                Long.parseLong(setRest), setOrder, Double.parseDouble(pbWeight),
+                Integer.parseInt(pbReps));
+        List<PreviousExerciseSet> emptyPrevSetList = new ArrayList<>();
 
+        mExerciseSetsAndListPreviousExerciseSets.add(
+                new ExerciseSetAndListPreviousExerciseSet(exerciseSet, emptyPrevSetList));
+
+        setStartTimes();
+        // mView.displayAddedSet(mExerciseSetsAndListPreviousExerciseSets.size() - 1);
+        mView.displayExerciseSets();
     }
+
+    /*
+    public void addExerciseSet(long workoutId, String exerciseName, String setNumber,
+                               String setDuration, String setRest, String pbWeight, String pbReps) {
+        // todo: transforming into object should be in model so that it gets done not on main thr?
+        int setOrder = mExerciseSetsAndListPreviousExerciseSets.size();
+        ExerciseSet exerciseSet = new ExerciseSet(workoutId, exerciseName,
+                Integer.parseInt(setNumber), Long.parseLong(setDuration),
+                Long.parseLong(setRest), setOrder, Double.parseDouble(pbWeight),
+                Integer.parseInt(pbReps));
+
+        compositeDisposable.add(mExerciseSetsRepository.saveExerciseSet(exerciseSet)
+                .subscribeOn(Schedulers.io())
+                .observeOn(mainScheduler)
+                .subscribeWith(new DisposableSingleObserver<Long>() {
+                    @Override
+                    public void onSuccess(Long id) {
+                        loadExerciseSets(workoutId);
+                        mView.displayToast("Exercise-Set added");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.displayToast("Unable to save exercise-set");
+                    }
+                })
+        );
+    }*/
 
     public void startTimers() {
         if (!actualStarted) {
@@ -170,13 +220,6 @@ public class ExerciseSetsPresenter {
 
     public List<ExerciseSetAndListPreviousExerciseSet> getExerciseSetsAndListPreviousExerciseSets() {
         return mExerciseSetsAndListPreviousExerciseSets;
-    }
-
-    public void setStartTimes() {
-        for (int i = 0; i < mExerciseSetsAndListPreviousExerciseSets.size(); i++) {
-            long setStart = calculateSetStart(i);
-            mStartTimes.add(setStart);
-        }
     }
 
     public List<Long> getStartTimes() {

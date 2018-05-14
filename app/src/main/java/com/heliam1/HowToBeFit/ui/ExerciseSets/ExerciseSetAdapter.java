@@ -30,7 +30,6 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
     public ExerciseSetAdapter(Context context, ExerciseSetsPresenter exerciseSetsPresenter) {
         mContext = context;
         mExerciseSetsPresenter = exerciseSetsPresenter;
-        mExerciseSetsPresenter.setStartTimes();
     }
 
     @Override
@@ -117,9 +116,6 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
 
             // DEBUGGING NEXT 4 LINEs
             List<PreviousExerciseSet> previousExerciseSets = exerciseSetAndList.getPreviousExerciseSets();
-            previousExerciseSets.add(new PreviousExerciseSet(100, 6, "Yest", 2));
-            previousExerciseSets.add(new PreviousExerciseSet(100, 6, "Yest", 2));
-            previousExerciseSets.add(new PreviousExerciseSet(100, 6, "Yest", 2));
 
             PreviousSetAdapter adapter = new PreviousSetAdapter(mContext, previousExerciseSets);
             previousSetsRecycleView.setAdapter(adapter);
@@ -135,7 +131,8 @@ public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.
                 }
             });
 
-            previousSetsRecycleView.smoothScrollToPosition(adapter.getItemCount() - 1);
+            if (previousExerciseSets.size() > 0)
+                previousSetsRecycleView.smoothScrollToPosition(adapter.getItemCount() - 1);
         }
 
         @Override

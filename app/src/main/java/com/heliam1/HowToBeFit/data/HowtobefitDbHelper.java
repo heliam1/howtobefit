@@ -44,12 +44,12 @@ public class HowtobefitDbHelper extends SQLiteOpenHelper {
                 + ExerciseSetEntry.COLUMN_SET_NUMBER + " INTEGER NOT NULL, "
                 + ExerciseSetEntry.COLUMN_SET_DURATION + " INTEGER NOT NULL DEFAULT 30, "
                 + ExerciseSetEntry.COLUMN_SET_REST + " INTEGER NOT NULL DEFAULT 30, "
-                + ExerciseSetEntry.COLUMN_SET_WEIGHT + " INTEGER NOT NULL DEFAULT 0, "
+                + ExerciseSetEntry.COLUMN_SET_WEIGHT + " DOUBLE NOT NULL DEFAULT 0, "
                 + ExerciseSetEntry.COLUMN_SET_REPS + " INTEGER NOT NULL DEFAULT 1, "
                 + ExerciseSetEntry.COLUMN_SET_DATE_STRING + " TEXT NOT NULL, " // ZonedDateTime
                 + ExerciseSetEntry.COLUMN_SET_DATE_LONG + " INTEGER NOT NULL, " // ZonedDateTime
                 + ExerciseSetEntry.COLUMN_SET_ORDER + " INTEGER NOT NULL, "
-                + ExerciseSetEntry.COLUMN_PB_WEIGHT + " INTEGER NOT NULL DEFAULT 0, "
+                + ExerciseSetEntry.COLUMN_PB_WEIGHT + " DOUBLE NOT NULL DEFAULT 0, "
                 + ExerciseSetEntry.COLUMN_PB_REPS + " INTEGER NOT NULL DEFAULT 0);";
 
         // Execute the SQL statements
@@ -115,6 +115,7 @@ public class HowtobefitDbHelper extends SQLiteOpenHelper {
         didItWork = db.insertOrThrow(WorkoutEntry.TABLE_NAME, null, values);
         Log.v(LOG_TAG, Long.toString(didItWork));
 
+        /*
         values.clear();
 
         values.put(ExerciseSetEntry._ID, 1);
@@ -190,6 +191,7 @@ public class HowtobefitDbHelper extends SQLiteOpenHelper {
 
         didItWork = db.insert(ExerciseSetEntry.TABLE_NAME, null, values);
         Log.v(LOG_TAG, Long.toString(didItWork));
+        */
 
         values.clear();
 
