@@ -141,6 +141,7 @@ public class HowtobefitProvider extends ContentProvider {
         values = sanitiseExerciseSet(values);
         // If values were not sanitary
         if (values == null) {
+            Log.v("HowToBeFitProvider", "Error saving exercise sets");
             return null;
         }
 
@@ -193,7 +194,7 @@ public class HowtobefitProvider extends ContentProvider {
             return 0;
         }
 
-        values = sanitiseWorkout(values);
+        // values = sanitiseWorkout(values);
         // if values bad sanitised update failed
         if (values == null) {
             return 0;
@@ -245,7 +246,7 @@ public class HowtobefitProvider extends ContentProvider {
         // Check sanity of input
         String name = values.getAsString(WorkoutEntry.COLUMN_WORKOUT_NAME);
         // TODO: Image
-        String zonedDateTime = values.getAsString(WorkoutEntry.COLUMN_WORKOUT_LAST_DATE_COMPLETED);
+        Long time = values.getAsLong(WorkoutEntry.COLUMN_WORKOUT_LAST_DATE_COMPLETED);
         Integer durationSeconds = values.getAsInteger(WorkoutEntry.COLUMN_WORKOUT_DURATION);
 
         if (name == null || TextUtils.isEmpty(name)) {
@@ -254,7 +255,7 @@ public class HowtobefitProvider extends ContentProvider {
             return null;
         }
 
-        if (zonedDateTime == null || TextUtils.isEmpty(zonedDateTime)) {
+        if (time == null) {
             // TODO: Move this into view?
             Log.e(LOG_TAG, "ERROR PASSING DATE TO TABLE");
             // mToast.makeText(getContext(), "ERROR PASSING DATE TO TABLE", Toast.LENGTH_SHORT).show();
@@ -275,12 +276,12 @@ public class HowtobefitProvider extends ContentProvider {
         Integer setNumber = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_NUMBER);
         Integer setDuration = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_DURATION);
         Integer setRest = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_REST);
-        Integer setWeight = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_WEIGHT);
+        Double setWeight = values.getAsDouble(ExerciseSetEntry.COLUMN_SET_WEIGHT);
         Integer setReps = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_REPS);
         String setDateString = values.getAsString(ExerciseSetEntry.COLUMN_SET_DATE_STRING);
         Long setDateLong = values.getAsLong(ExerciseSetEntry.COLUMN_SET_DATE_LONG);
         Integer setOrder = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_ORDER);
-        Integer pbWeight = values.getAsInteger(ExerciseSetEntry.COLUMN_PB_WEIGHT);
+        Double pbWeight = values.getAsDouble(ExerciseSetEntry.COLUMN_PB_WEIGHT);
         Integer pbReps = values.getAsInteger(ExerciseSetEntry.COLUMN_SET_REPS);
 
         // Sanitise
@@ -310,7 +311,7 @@ public class HowtobefitProvider extends ContentProvider {
             values.put(ExerciseSetEntry.COLUMN_SET_REST, setRest);
         }
         if (setWeight == null) {
-            setWeight = 0;
+            setWeight = 0.0;
             values.put(ExerciseSetEntry.COLUMN_SET_WEIGHT, setWeight);
         }
         if (setReps == null) {
@@ -342,7 +343,7 @@ public class HowtobefitProvider extends ContentProvider {
             return null;
         }
         if (pbWeight == null) {
-            pbWeight = 0;
+            pbWeight = 0.0;
             values.put(ExerciseSetEntry.COLUMN_PB_WEIGHT, pbWeight);
         }
         if (pbReps == null) {

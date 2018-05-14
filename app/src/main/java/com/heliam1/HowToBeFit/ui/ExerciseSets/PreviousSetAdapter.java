@@ -15,6 +15,7 @@ import com.heliam1.HowToBeFit.models.ExerciseSet;
 import com.heliam1.HowToBeFit.models.PreviousExerciseSet;
 
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 // TODO: THis needs to be a recycler view
@@ -40,7 +41,9 @@ public class PreviousSetAdapter extends RecyclerView.Adapter<PreviousSetAdapter.
         }
 
         public void bind(PreviousExerciseSet previousExerciseSet) {
-            previousSetWeightAndReps.setText("26-04" + "\n" + previousExerciseSet.getSetWeight() + " "
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM");
+            previousSetWeightAndReps.setText(sdf.format(previousExerciseSet.getSetDateLong())
+                    + "\n" + previousExerciseSet.getSetWeight() + " "
                     + previousExerciseSet.getSetReps());
         }
     }

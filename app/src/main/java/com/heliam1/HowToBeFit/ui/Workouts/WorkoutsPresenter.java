@@ -3,6 +3,9 @@ package com.heliam1.HowToBeFit.ui.Workouts;
 import com.heliam1.HowToBeFit.models.Workout;
 import com.heliam1.HowToBeFit.repositories.WorkoutRepository;
 
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Scheduler;
@@ -46,8 +49,18 @@ public class WorkoutsPresenter {
         );
     }
 
-    public void saveWorkout(Workout workout) {
-        compositeDisposable.add(mWorkoutRepository.saveWorkout(workout)
+    public void saveWorkout(String workoutName) {
+        // input val
+        try {
+            if (workoutName == null)
+                throw new Exception("bad parse");
+        } catch (Exception e) {
+            mView.displayToast("Bad workout");
+            return;
+        }
+
+        compositeDisposable.add(mWorkoutRepository.saveWorkout(
+                new Workout(null, workoutName, 0, Calendar.getInstance().getTimeInMillis(), 30))
                 .subscribeOn(Schedulers.io())
                 .observeOn(mainScheduler)
                 .subscribeWith(new DisposableSingleObserver<Long>() {
@@ -57,6 +70,7 @@ public class WorkoutsPresenter {
                             // TODO: this should be in on error only?
                             mView.displayErrorSavingWorkouts();
                         } else {
+                            loadWorkouts();
                             mView.displaySuccessSavingWorkout();
                         }
                     }
@@ -69,6 +83,7 @@ public class WorkoutsPresenter {
         );
     }
 
+    /*
     public void deleteWorkout(Workout workout) {
         compositeDisposable.add(mWorkoutRepository.deleteWorkout(workout)
             .subscribeOn(Schedulers.io())
@@ -90,7 +105,7 @@ public class WorkoutsPresenter {
                 }
             })
         );
-    }
+    }*/
 
     public void unsubscribe() {
         compositeDisposable.clear();
