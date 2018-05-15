@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
 
     @Override
     public void displayNoWorkouts() {
-        mWorkoutsGridLayout.setVisibility(View.GONE);
+
     }
 
     @Override

@@ -70,9 +70,9 @@ public class WorkoutsPresenter {
                             // TODO: this should be in on error only?
                             mView.displayErrorSavingWorkouts();
                         } else {
-                            loadWorkouts();
                             mView.displaySuccessSavingWorkout();
                         }
+                        loadWorkouts();
                     }
 
                     @Override
