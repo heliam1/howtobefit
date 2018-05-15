@@ -2,17 +2,18 @@ apply plugin: 'com.android.application'
 
 android {
     // signingConfig block goes here
-    // signingConfigs {
-        // config {
-            // keyAlias ''
-            // keyPassword ''
-            // storeFile file('C:/Users/cube/Google Drive' +
-            //        '/Level 6_ high level knowledge + skills/Dev' +
-            //        '/Learning Android Studio' +
-            //        '/Signing/android.jks')
-            // storePassword ''
-        //}
-    //}
+    /*
+    signingConfigs {
+        config {
+            keyAlias ''
+            keyPassword ''
+            storeFile file('C:/Users/cube/Google Drive' +
+                   '/Level 6_ high level knowledge + skills/Dev' +
+                   '/Learning Android Studio' +
+                    '/Signing/android.jks')
+            storePassword ''
+        }
+    }*/
     
     compileSdkVersion 26
     defaultConfig {
