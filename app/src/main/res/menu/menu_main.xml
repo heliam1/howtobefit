@@ -12,28 +12,8 @@
             android:id="@+id/menu_workout">
             <!-- Add Workouts -->
             <item
-                android:id="@+id/add_default_workout_SSF5x_Chest"
-                android:title="SSF5x Chest"
-                app:showAsAction="always"/>
-
-            <item
-                android:id="@+id/add_default_workout_SSF5x_Back"
-                android:title="SSF5x Back"
-                app:showAsAction="always"/>
-
-            <item
-                android:id="@+id/add_default_workout_SSF5x_Shoulders"
-                android:title="SSF5x Shoulders"
-                app:showAsAction="always"/>
-
-            <item
-                android:id="@+id/add_default_workout_SSF5x_Arms"
-                android:title="SSF5x Arms"
-                app:showAsAction="always"/>
-
-            <item
                 android:id="@+id/add_default_workout_SSF5x_Legs"
-                android:title="SSF5x Legs/Abs"
+                android:title="Default workouts\ncoming soon"
                 app:showAsAction="always"/>
 
             <item

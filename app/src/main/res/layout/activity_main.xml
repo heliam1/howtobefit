@@ -42,6 +42,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
+                android:visibility="invisible"
                 android:id="@+id/add_workout_image"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"

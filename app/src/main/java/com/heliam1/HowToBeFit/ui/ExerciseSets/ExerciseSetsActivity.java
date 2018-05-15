@@ -146,7 +146,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mExerciseSetsPresenter.deleteWorkout(mWorkoutId);
-                        NavUtils.navigateUpFromSameTask(ExerciseSetsActivity.this); // todo:
+                        finish();
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -173,13 +173,13 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 mExerciseSetsPresenter.saveExerciseSets(mWorkoutId);
-                NavUtils.navigateUpFromSameTask(ExerciseSetsActivity.this); // todo:
+                finish();
             }
         });
         builder.setNegativeButton("Discard", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                NavUtils.navigateUpFromSameTask(ExerciseSetsActivity.this);
+                finish();
             }
         });
         // Create and show the AlertDialog
