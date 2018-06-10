@@ -1,13 +1,12 @@
 package com.heliam1.HowToBeFit.ui.ExerciseSets;
 
-import com.heliam1.HowToBeFit.models.ExerciseSet;
-import com.heliam1.HowToBeFit.models.ExerciseSetAndListPreviousExerciseSet;
+import com.heliam1.HowToBeFit.models.StartTimeExerciseSetListPreviousExerciseSet;
 
 import java.util.List;
 
 public interface ExerciseSetsView {
 
-    public void displayExerciseSets();
+    public void displayExerciseSets(List<StartTimeExerciseSetListPreviousExerciseSet> list);
 
     public void displayAddedSet(int position);
 
@@ -26,4 +25,6 @@ public interface ExerciseSetsView {
     public void notifyStartNextSet(String action);
 
     public void displayToast(String message);
+
+    public void clearEditor();
 }

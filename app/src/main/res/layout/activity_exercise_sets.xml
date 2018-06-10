@@ -16,81 +16,250 @@
         android:background="@color/colorWhite"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:maxLines="1"
             android:id="@+id/edit_text_add_set_exercise"
-            android:layout_width="90dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:hint="Exercise"
+            android:hint="Exercise Name"
             android:inputType="text"
+            android:maxLines="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:maxLines="1"
             android:id="@+id/edit_text_add_set_number"
-            android:layout_width="72dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Set #"
-            app:layout_constraintEnd_toEndOf="@+id/edit_text_add_pb_reps"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/edit_text_add_pb_reps"
+            android:hint="set#"
+            android:maxLines="1"
+            app:layout_constraintStart_toEndOf="@+id/edit_text_add_set_exercise"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:maxLines="1"
-            android:id="@+id/edit_text_add_set_duration"
+            android:id="@+id/edit_text_set_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:hint="Duration seconds"
-            android:textAlignment="textEnd"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp"
+            android:hint="Order"
+            android:maxLines="1"
+            app:layout_constraintEnd_toStartOf="@+id/button_minimise"
+            app:layout_constraintStart_toStartOf="@+id/label_PB_Weight"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:maxLines="1"
-            android:id="@+id/edit_text_add_set_rest"
-            android:layout_width="148dp"
+        <TextView
+            android:id="@+id/label_duration"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Rest seconds"
-            android:textAlignment="textEnd"
-            app:layout_constraintEnd_toEndOf="@+id/edit_text_add_set_duration"
-            app:layout_constraintStart_toStartOf="@+id/edit_text_add_set_duration"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_add_set_duration" />
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Duration"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/edit_text_add_set_duration_seconds"
+            app:layout_constraintStart_toStartOf="@+id/edit_text_add_set_duration_minutes"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_add_set_exercise" />
 
         <EditText
+            android:id="@+id/edit_text_add_set_duration_minutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:hint="min"
             android:maxLines="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_duration" />
+
+        <EditText
+            android:id="@+id/edit_text_add_set_duration_seconds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:hint="ss"
+            android:maxLines="1"
+            android:textAlignment="textEnd"
+            app:layout_constraintStart_toEndOf="@+id/edit_text_add_set_duration_minutes"
+            app:layout_constraintTop_toBottomOf="@+id/label_duration" />
+
+        <TextView
+            android:id="@+id/label_rest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Rest"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/edit_text_add_set_rest_seconds"
+            app:layout_constraintStart_toStartOf="@+id/edit_text_add_set_rest_minutes"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_add_set_exercise" />
+
+        <EditText
+            android:id="@+id/edit_text_add_set_rest_minutes"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:hint="min"
+            android:maxLines="1"
+            android:textAlignment="textEnd"
+            app:layout_constraintStart_toEndOf="@+id/edit_text_add_set_duration_seconds"
+            app:layout_constraintTop_toBottomOf="@+id/label_rest" />
+
+        <EditText
+            android:id="@+id/edit_text_add_set_rest_seconds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:hint="ss"
+            android:maxLines="1"
+            android:textAlignment="textEnd"
+            app:layout_constraintStart_toEndOf="@+id/edit_text_add_set_rest_minutes"
+            app:layout_constraintTop_toTopOf="@+id/edit_text_add_set_rest_minutes" />
+
+        <TextView
+            android:id="@+id/label_PB_Weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="PB Weight"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/label_PB_Reps"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_set_order" />
+
+        <EditText
             android:id="@+id/edit_text_add_pb_weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:hint="Pb Weight"
-            app:layout_constraintEnd_toEndOf="@+id/edit_text_add_set_exercise"
-            app:layout_constraintStart_toStartOf="@+id/edit_text_add_set_exercise"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_add_set_exercise" />
+            android:hint="199"
+            android:maxLines="1"
+            app:layout_constraintEnd_toEndOf="@+id/label_PB_Weight"
+            app:layout_constraintStart_toStartOf="@+id/label_PB_Weight"
+            app:layout_constraintTop_toBottomOf="@+id/label_PB_Weight" />
+
+        <TextView
+            android:id="@+id/label_PB_Reps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reps"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/edit_text_reps"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_set_order" />
 
         <EditText
-            android:maxLines="1"
             android:id="@+id/edit_text_add_pb_reps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:hint="99"
+            android:maxLines="1"
+            app:layout_constraintEnd_toStartOf="@+id/button_save_exercise_set"
+            app:layout_constraintStart_toStartOf="@+id/label_PB_Reps"
+            app:layout_constraintTop_toBottomOf="@+id/label_PB_Reps" />
+
+        <TextView
+            android:id="@+id/label_Weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Weight"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/label_PB_Weight"
+            app:layout_constraintStart_toStartOf="@+id/label_PB_Weight"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_add_pb_weight" />
+
+        <TextView
+            android:id="@+id/label_Reps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Reps"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/label_PB_Reps"
+            app:layout_constraintStart_toStartOf="@+id/label_PB_Reps"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_add_pb_reps" />
+
+        <EditText
+            android:id="@+id/edit_text_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:hint="150"
+            android:maxLines="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/label_Weight"
+            app:layout_constraintStart_toStartOf="@+id/label_Weight"
+            app:layout_constraintTop_toBottomOf="@+id/label_Weight" />
+
+        <EditText
+            android:id="@+id/edit_text_reps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:hint="50"
+            android:maxLines="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_save_exercise_set"
+            app:layout_constraintTop_toBottomOf="@+id/label_Reps"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/button_minimise"
+            android:layout_width="40dp"
+            android:layout_height="35dp"
+            android:text="-"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_editor_prev_sets"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:hint="Pb Reps"
-            app:layout_constraintStart_toEndOf="@+id/edit_text_add_pb_weight"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_add_set_number" />
+            app:layout_constraintBottom_toBottomOf="@+id/edit_text_weight"
+            app:layout_constraintEnd_toStartOf="@+id/edit_text_weight"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_add_set_rest_minutes">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/button_delete_exercise_set"
+            android:layout_width="40dp"
+            android:layout_height="35dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:text="X"
+            app:layout_constraintBottom_toTopOf="@+id/button_save_exercise_set"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_minimise" />
+
+        <Button
+            android:id="@+id/button_save_exercise_set"
+            android:layout_width="40dp"
+            android:layout_height="35dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="88dp"
+            android:text="✓"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_minimise" />
 
     </android.support.constraint.ConstraintLayout>
 
@@ -128,7 +297,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="4dp"
-            android:text="Start Timers\nTotal Time"
+            android:text="Start Timers"
             android:textAlignment="center"
             android:textSize="15dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -226,19 +395,21 @@
             app:layout_constraintEnd_toEndOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/exerciseSetsRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@color/colorWhite"
-        android:textColor="@android:color/black"
-        app:layout_constraintBottom_toTopOf="@+id/constraint_layout_timers"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.0"></android.support.v7.widget.RecyclerView>
+    <ListView
+            android:orientation="vertical"
+            android:id="@+id/exerciseSetsListView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@color/colorWhite"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toTopOf="@+id/constraint_layout_timers"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:layout_constraintVertical_bias="0.0">
+    </ListView>
 </android.support.constraint.ConstraintLayout>
