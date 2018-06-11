@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
+import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -80,14 +81,38 @@ public class ExerciseSetsPresenter {
                 throw new Exception("bad set number");
             if (Integer.parseInt(setOrder) < 1)
                 throw new Exception("bad set order");
-            if (Integer.parseInt(setDurationMinutes) < 0)
-                throw new Exception("bad duration minutes");
-            if (Integer.parseInt(setDurationSeconds) < 0)
-                throw new Exception("bad duration seconds");
-            if (Integer.parseInt(setRestMinutes) < 0)
-                throw new Exception("bad rest minutes");
-            if (Integer.parseInt(setRestSeconds) < 0)
-                throw new Exception("bad rest seconds");
+
+            if (Integer.parseInt(setOrder) > mExerciseSetsRepository.getListStartExsetListprevset().size())
+                setOrder = Integer.toString(mExerciseSetsRepository.getListStartExsetListprevset().size() + 1);
+
+            if (!setDurationMinutes.equals("")) {
+                if (Integer.parseInt(setDurationMinutes) < 0)
+                    throw new Exception("bad duration minutes");
+            } else {
+                setDurationMinutes = "0";
+            }
+
+            if (!setDurationSeconds.equals("")) {
+                if (Integer.parseInt(setDurationSeconds) < 0)
+                    throw new Exception("bad duration seconds");
+            } else {
+                setDurationSeconds = "0";
+            }
+
+            if (!setRestMinutes.equals("")) {
+                if (Integer.parseInt(setRestMinutes) < 0)
+                    throw new Exception("bad rest minutes");
+            } else {
+                setRestMinutes = "0";
+            }
+
+            if (!setRestSeconds.equals("")) {
+                if (Integer.parseInt(setRestSeconds) < 0)
+                    throw new Exception("bad rest seconds");
+            } else {
+                setRestSeconds = "0";
+            }
+
             if (Double.parseDouble(pbWeight) < 0)
                 throw new Exception("bad pb weight");
             if (Integer.parseInt(pbReps) < 0)
@@ -115,6 +140,7 @@ public class ExerciseSetsPresenter {
             mView.clearEditor();
             mView.displayToast("Exercise set added");
         } else {
+            Log.v("ExerciseSetsPresenter", "do we get here 121");
             mExerciseSetsRepository.replaceStartExsetListprevset(currentElement, new StartTimeExerciseSetListPreviousExerciseSet(exerciseSet, emptyPrevSetList));
             mView.clearEditor();
             mView.displayToast("Exercise set saved");
@@ -154,7 +180,9 @@ public class ExerciseSetsPresenter {
 
     // ALSO SAVES WORKOUT
     public void saveExerciseSets(long id) {
-        compositeDisposable.add(mExerciseSetsRepository.saveExerciseSets()
+        long time = Calendar.getInstance().getTimeInMillis();
+
+        compositeDisposable.add(mExerciseSetsRepository.saveExerciseSets(time)
                 .subscribeOn(Schedulers.io())
                 .observeOn(mainScheduler)
                 .subscribeWith(new DisposableSingleObserver<Long>() {
@@ -170,7 +198,7 @@ public class ExerciseSetsPresenter {
                 })
         );
 
-        compositeDisposable.add(mExerciseSetsRepository.updateWorkout(id)
+        compositeDisposable.add(mExerciseSetsRepository.updateWorkout(id, time)
                 .subscribeOn(Schedulers.io())
                 .observeOn(mainScheduler)
                 .subscribeWith(new DisposableSingleObserver<Long>() {
@@ -204,8 +232,6 @@ public class ExerciseSetsPresenter {
 
                         @Override
                         public void onNext(Long aLong) {
-
-
                             // Actual Time Elapsed
 
                             Date timeDate = new Date(mTimersRepository.calculateActualTime());

@@ -39,7 +39,7 @@ public final class HowtobefitContract {
         public final static String _ID = BaseColumns._ID;                       // INTEGER
         public final static String COLUMN_WORKOUT_NAME = "name";                // TEXT
         public final static String COLUMN_WORKOUT_IMAGE = "image";              // BLOB
-        public final static String COLUMN_WORKOUT_LAST_DATE_COMPLETED = "date"; // TEXT
+        public final static String COLUMN_WORKOUT_LAST_DATE_COMPLETED = "date"; // LONG
         public final static String COLUMN_WORKOUT_DURATION = "duration";        // INTEGER
     }
 

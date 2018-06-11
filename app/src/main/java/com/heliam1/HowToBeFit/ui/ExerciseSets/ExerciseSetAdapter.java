@@ -76,8 +76,16 @@ public class ExerciseSetAdapter extends BaseAdapter {
                 + incorrectString.charAt(6)  + incorrectString.charAt(7);
         setStartTime.setText(startTime);
 
-        currentSetWeight.setText(Double.toString(startExsetListprev.getExerciseSet().getSetWeight()));
-        currentSetReps.setText(Integer.toString(startExsetListprev.getExerciseSet().getSetReps()));
+        if (startExsetListprev.getExerciseSet().getSetWeight() != -1) {
+            currentSetWeight.setText(Double.toString(startExsetListprev.getExerciseSet().getSetWeight()));
+        } else {
+            currentSetWeight.setText("__");
+        }
+        if (startExsetListprev.getExerciseSet().getSetReps() != -1) {
+            currentSetReps.setText(Integer.toString(startExsetListprev.getExerciseSet().getSetReps()));
+        } else {
+            currentSetReps.setText("__");
+        }
 
         return convertView;
     }

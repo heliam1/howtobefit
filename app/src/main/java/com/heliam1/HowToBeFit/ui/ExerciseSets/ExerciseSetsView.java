@@ -27,4 +27,6 @@ public interface ExerciseSetsView {
     public void displayToast(String message);
 
     public void clearEditor();
+
+    public void finishActivity();
 }

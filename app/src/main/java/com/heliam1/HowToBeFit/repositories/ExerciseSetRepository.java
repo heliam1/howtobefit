@@ -15,13 +15,13 @@ public interface ExerciseSetRepository {
 
     public Single<List<PreviousExerciseSet>> getPreviousSets(String name, int setNumber);
 
-    public Single<Long> saveExerciseSets();
+    public Single<Long> saveExerciseSets(long time);
 
     public Single<Long> deleteExerciseSet(ExerciseSet exerciseSet);
 
     public Single<Long> deleteWorkout(long id);
 
-    public Single<Long> updateWorkout(long id);
+    public Single<Long> updateWorkout(long id, long time);
 
     public void addStartExsetListprevset(StartTimeExerciseSetListPreviousExerciseSet element);
 

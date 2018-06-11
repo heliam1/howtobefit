@@ -102,6 +102,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         mEditWeight = findViewById(R.id.edit_text_weight);
         mEditReps = findViewById(R.id.edit_text_reps);
         mRecyclerPreviousSets = findViewById(R.id.recycler_editor_prev_sets);
+
         mButtonMinimiseEditor = findViewById(R.id.button_minimise);
         mButtonDeleteExerciseSet = findViewById(R.id.button_delete_exercise_set);
         mButtonSaveExerciseSet = findViewById(R.id.button_save_exercise_set);
@@ -146,7 +147,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
                 mAddEerciseSetContraintLayout.setVisibility(View.GONE));
 
         mButtonDeleteExerciseSet.setOnClickListener(view -> {
-            mExerciseSetsPresenter.deleteExerciseSet(mCurrentElement);
+            showDeleteExerciseSetDialog();
         });
 
         mButtonSaveExerciseSet.setOnClickListener(new View.OnClickListener() {
@@ -204,7 +205,6 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mExerciseSetsPresenter.deleteWorkout(mWorkoutId);
-                        finish();
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -264,9 +264,24 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
                     seconds.format(new Date(element.getExerciseSet().getSetDuration())));
             mEditAddPbWeight.setText(Double.toString(element.getExerciseSet().getPbWeight()));
             mEditAddPbReps.setText(Integer.toString(element.getExerciseSet().getPbReps()));
-            mEditWeight.setText(Double.toString(element.getExerciseSet().getSetWeight()));
-            mEditReps.setText(Integer.toString(element.getExerciseSet().getSetReps()));
-            mRecyclerPreviousSets.setAdapter(new PreviousSetAdapter(getApplicationContext(), element.getPreviousExerciseSets()));
+
+            if (element.getExerciseSet().getSetWeight() == -1) {
+                mEditWeight.setText("");
+            } else {
+                mEditWeight.setText(Double.toString(element.getExerciseSet().getSetWeight()));
+            }
+
+            if (element.getExerciseSet().getSetReps() == -1) {
+                mEditReps.setText("");
+            } else {
+                mEditReps.setText(Integer.toString(element.getExerciseSet().getSetReps()));
+            }
+
+            LinearLayoutManager layoutManager
+                    = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            mRecyclerPreviousSets.setLayoutManager(layoutManager);
+
+            mRecyclerPreviousSets.setAdapter(new PreviousSetAdapter(this, element.getPreviousExerciseSets()));
         }
     }
 
@@ -276,13 +291,31 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 mExerciseSetsPresenter.saveExerciseSets(mWorkoutId);
-                finish();
             }
         });
         builder.setNegativeButton("Discard", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 finish();
+            }
+        });
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void showDeleteExerciseSetDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Delete exercise set?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                mExerciseSetsPresenter.deleteExerciseSet(mCurrentElement);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // do nothing lol
             }
         });
         // Create and show the AlertDialog
@@ -367,5 +400,10 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         }
         mToast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         mToast.show();
+    }
+
+    @Override
+    public void finishActivity() {
+        finish();
     }
 }

@@ -147,6 +147,8 @@ public class HowtobefitProvider extends ContentProvider {
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
+        Log.v("INSERT EXSET:", values.toString());
+
         long id = database.insert(ExerciseSetEntry.TABLE_NAME, null, values);
         // If the ID is -1, then the insertion failed. Log an error and return null.
         if (id == -1) {
@@ -201,6 +203,8 @@ public class HowtobefitProvider extends ContentProvider {
         }
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        Log.v("UPDATE WORKOUT", values.toString());
 
         int rowsUpdated = database.update(WorkoutEntry.TABLE_NAME, values, selection, selectionArgs);
 
