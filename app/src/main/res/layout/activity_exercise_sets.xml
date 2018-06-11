@@ -259,8 +259,8 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <ListView
-        android:id="@+id/exerciseSetsListView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/exerciseSetsRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
@@ -276,7 +276,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraint_layout_timers"></ListView>
+        app:layout_constraintTop_toBottomOf="@+id/constraint_layout_timers">
+    </android.support.v7.widget.RecyclerView>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraint_layout_timers"

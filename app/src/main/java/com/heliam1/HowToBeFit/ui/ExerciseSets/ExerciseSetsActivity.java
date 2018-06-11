@@ -67,7 +67,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
     private Button mButtonDeleteExerciseSet;
     private Button mButtonSaveExerciseSet;
 
-    private ListView mExerciseSetsListView;
+    private RecyclerView mExerciseSetsRecyclerView;
     private ExerciseSetAdapter mExerciseSetAdapter;
 
     private Button mStartTimers;
@@ -108,7 +108,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         mButtonSaveExerciseSet = findViewById(R.id.button_save_exercise_set);
 
         // Set the list View
-        mExerciseSetsListView = findViewById(R.id.exerciseSetsListView);
+        mExerciseSetsRecyclerView = findViewById(R.id.exerciseSetsRecyclerView);
 
         // Set the timers
         mTimeElapsed = findViewById(R.id.timeElapsed);
@@ -126,14 +126,15 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         mExerciseSetsPresenter = new ExerciseSetsPresenter(this, timersRepository, exerciseSetRepository, AndroidSchedulers.mainThread());
         mExerciseSetsPresenter.loadExerciseSets(mWorkoutId, mWorkoutDate);
 
-        mExerciseSetsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*
+        mExerciseSetsRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 mCurrentElement = mExerciseSetsPresenter.getCurrentElement(position);
                 setEditorFields(mCurrentElement);
                 mAddEerciseSetContraintLayout.setVisibility(View.VISIBLE);
             }
-        });
+        }); */
 
         mStartTimers.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -336,15 +337,12 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
 
     @Override
     public void displayExerciseSets(List<StartTimeExerciseSetListPreviousExerciseSet> list) {
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mExerciseSetsRecyclerView.setLayoutManager(layoutManager);
 
-        mExerciseSetAdapter = new ExerciseSetAdapter(this, list);
-        mExerciseSetsListView.setAdapter(mExerciseSetAdapter);
-
-        /*
-        ItemTouchHelper.Callback callback =
-                new ExerciseSetTouchHelperCallback(mExerciseSetAdapter, this);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(mExerciseSetsRecyclerView);*/
+        mExerciseSetAdapter = new ExerciseSetAdapter(this, mExerciseSetsPresenter);
+        mExerciseSetsRecyclerView.setAdapter(mExerciseSetAdapter);
     }
 
     @Override

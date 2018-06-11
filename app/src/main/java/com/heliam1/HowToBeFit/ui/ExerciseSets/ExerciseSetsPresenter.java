@@ -332,4 +332,8 @@ public class ExerciseSetsPresenter {
     public StartTimeExerciseSetListPreviousExerciseSet getCurrentElement(int position) {
         return mExerciseSetsRepository.getListStartExsetListprevset().get(position);
     }
+
+    public List<StartTimeExerciseSetListPreviousExerciseSet> getList() {
+        return mExerciseSetsRepository.getListStartExsetListprevset();
+    }
 }

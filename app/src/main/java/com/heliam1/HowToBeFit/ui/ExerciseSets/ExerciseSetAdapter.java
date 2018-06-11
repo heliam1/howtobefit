@@ -3,6 +3,8 @@ package com.heliam1.HowToBeFit.ui.ExerciseSets;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +20,7 @@ import com.heliam1.HowToBeFit.models.PreviousExerciseSet;
 import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,124 +28,61 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableConverter;
 import io.reactivex.subjects.PublishSubject;
 
-public class ExerciseSetAdapter extends BaseAdapter {
-        /* RecyclerView.Adapter<ExerciseSetAdapter.ExerciseSetViewHolder> /*implements ExerciseSetTouchHelperAdapter {*/
+public class ExerciseSetAdapter extends RecyclerView.Adapter<ExerciseSetAdapter.ExerciseSetViewHolder> implements ExerciseSetTouchHelperAdapter {
+
     private Context mContext;
-    private List<StartTimeExerciseSetListPreviousExerciseSet> mList;
+    private ExerciseSetsPresenter mPresenter;
 
-    private final PublishSubject<StartTimeExerciseSetListPreviousExerciseSet> onClickSubject = PublishSubject.create();
-
-    public ExerciseSetAdapter(Context context, List<StartTimeExerciseSetListPreviousExerciseSet> list) {
+    public ExerciseSetAdapter(Context context, ExerciseSetsPresenter presenter) {
         mContext = context;
-        mList = list;
+        mPresenter = presenter;
     }
 
-    @Override
-    public StartTimeExerciseSetListPreviousExerciseSet getItem(int position) {
-        return mList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return  mList.get(position).getStartTime();
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // inflate the layout for each list row
-        if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).
-                    inflate(R.layout.item_exerciseset, parent, false);
-        }
-
-        // get current item to be displayed
-        StartTimeExerciseSetListPreviousExerciseSet startExsetListprev = getItem(position);
-
-        TextView setStartTime =convertView.findViewById(R.id.setStartTime);
-        TextView setNameNumber = convertView.findViewById(R.id.setNameNumber);
-        TextView currentSetWeight = convertView.findViewById(R.id.currentSetWeight);
-        TextView currentSetReps = convertView.findViewById(R.id.currentSetReps);
-
-        setNameNumber.setText(startExsetListprev.getExerciseSet().getExerciseName() + "#"
-                + Integer.toString(startExsetListprev.getExerciseSet().getSetNumber()));
-        // convert long start time to correct string
-        Date timeDate = new Date(startExsetListprev.getStartTime());
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
-        String incorrectString = sdf.format(timeDate);
-        // incorrect string displays 10:XX:XX, should display 00:XX:XX
-        String startTime = "0" + incorrectString.charAt(1)
-                + incorrectString.charAt(2)  + incorrectString.charAt(3)
-                + incorrectString.charAt(4)  + incorrectString.charAt(5)
-                + incorrectString.charAt(6)  + incorrectString.charAt(7);
-        setStartTime.setText(startTime);
-
-        if (startExsetListprev.getExerciseSet().getSetWeight() != -1) {
-            currentSetWeight.setText(Double.toString(startExsetListprev.getExerciseSet().getSetWeight()));
-        } else {
-            currentSetWeight.setText("__");
-        }
-        if (startExsetListprev.getExerciseSet().getSetReps() != -1) {
-            currentSetReps.setText(Integer.toString(startExsetListprev.getExerciseSet().getSetReps()));
-        } else {
-            currentSetReps.setText("__");
-        }
-
-        return convertView;
-    }
-
-    @Override
-    public int getCount() {
-        return  mList.size();
-    }
-
-    /*
     @Override
     public ExerciseSetViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        Context context = viewGroup.getContext();
-
-        LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachImmediatelyToParent = false;
-
-        View view = inflater.inflate(R.layout.item_exerciseset, viewGroup, shouldAttachImmediatelyToParent);
-        ExerciseSetViewHolder viewHolder = new ExerciseSetViewHolder(view);
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        View view = inflater.inflate(R.layout.item_exerciseset, viewGroup, false);
+        ExerciseSetViewHolder viewHolder = new ExerciseSetViewHolder(
+                view, new CurrentSetWeightEditTextListener(), new CurrentSetRepsEditTextListener());
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ExerciseSetViewHolder holder, int position) {
-        final StartTimeExerciseSetListPreviousExerciseSet element = mList.get(position);
+    public void onBindViewHolder(ExerciseSetViewHolder holder, final int position) {
+        final StartTimeExerciseSetListPreviousExerciseSet element = mPresenter.getCurrentElement(position);
         holder.bind(element, position);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickSubject.onNext(element);
-            }
-        });
+        holder.weightEditTextListener.updatePosition(holder.getAdapterPosition());
+        if (mPresenter.getCurrentElement(position).getExerciseSet().getSetWeight() != -1)
+            holder.currentSetWeight.setText(Double.toString(mPresenter.getCurrentElement(position).getExerciseSet().getSetWeight()));
+        else {
+            holder.currentSetWeight.setText("");
+        }
+
+        holder.repsEditTextListener.updatePosition(holder.getAdapterPosition());
+        if (mPresenter.getCurrentElement(position).getExerciseSet().getSetReps() != -1)
+            holder.currentSetWeight.setText(Double.toString(mPresenter.getCurrentElement(position).getExerciseSet().getSetWeight()));
+        else {
+            holder.currentSetWeight.setText("");
+        }
     }
-    */
 
-    /*
-    public Observable<StartTimeExerciseSetListPreviousExerciseSet> getPositionClicks() {
-        return (Observable<StartTimeExerciseSetListPreviousExerciseSet>) onClickSubject;
-    } */
 
-    /*
     @Override
     public void onItemDismiss(int position) {
-        mExerciseSetsPresenter.getExerciseSetsAndListPreviousExerciseSets().remove(position);
-        mExerciseSetsPresenter.setStartTimes();
+        mPresenter.deleteExerciseSet(mPresenter.getCurrentElement(position));
         notifyItemRemoved(position);
         notifyDataSetChanged();
     }
 
+
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-        StartTimeExerciseSetListPreviousExerciseSet prev = mExerciseSetsPresenter.getExerciseSetsAndListPreviousExerciseSets().remove(fromPosition);
-        mExerciseSetsPresenter.getExerciseSetsAndListPreviousExerciseSets().add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
-        mExerciseSetsPresenter.setStartTimes();
+        StartTimeExerciseSetListPreviousExerciseSet prev = mPresenter.getList().remove(fromPosition);
+        mPresenter.getList().add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
         notifyItemMoved(fromPosition, toPosition);
+
         // Observer Pattern - An obsservable/the subject maintains a list of its dependencies (observers/
         // subscribers) and notifies them automatically of any state changes usually by
         // calling one of their methods
@@ -150,29 +90,35 @@ public class ExerciseSetAdapter extends BaseAdapter {
         // The responsibility of subscribers is to register and unregister themselves on a subject and update
         // their state
         notifyDataSetChanged();
-    } */
+    }
 
-    /*
+
     @Override
-    public int getItemCount() { return mList.size(); }
+    public int getItemCount() { return mPresenter.getList().size(); }
 
     class ExerciseSetViewHolder extends RecyclerView.ViewHolder implements ExerciseSetTouchHelperViewHolder {
         TextView setStartTime;
         TextView setNameNumber;
-        RecyclerView previousSetsRecycleView;
-        TextView currentSetWeight;
-        TextView currentSetReps;
+        EditText currentSetWeight;
+        CurrentSetWeightEditTextListener weightEditTextListener;
+        CurrentSetRepsEditTextListener repsEditTextListener;
+        EditText currentSetReps;
 
         private Context mContext;
 
-        public ExerciseSetViewHolder(View itemView) {
+        public ExerciseSetViewHolder(View itemView, CurrentSetWeightEditTextListener weightListener, CurrentSetRepsEditTextListener repsListener) {
             super(itemView);
             setStartTime = itemView.findViewById(R.id.setStartTime);
             setNameNumber = itemView.findViewById(R.id.setNameNumber);
-            previousSetsRecycleView = itemView.findViewById(R.id.previousSetsRecyclerView);
             currentSetWeight = itemView.findViewById(R.id.currentSetWeight);
             currentSetReps = itemView.findViewById(R.id.currentSetReps);
             mContext = itemView.getContext();
+
+            weightEditTextListener = weightListener;
+            repsEditTextListener = repsListener;
+
+            currentSetWeight.addTextChangedListener(weightEditTextListener);
+            currentSetReps.addTextChangedListener(repsEditTextListener);
         }
 
         public void bind(StartTimeExerciseSetListPreviousExerciseSet startExsetListprev, int position) {
@@ -188,44 +134,6 @@ public class ExerciseSetAdapter extends BaseAdapter {
                     + incorrectString.charAt(4)  + incorrectString.charAt(5)
                     + incorrectString.charAt(6)  + incorrectString.charAt(7);
             setStartTime.setText(startTime);
-
-            LinearLayoutManager layoutManager
-                    = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-            previousSetsRecycleView.setLayoutManager(layoutManager);
-
-            List<PreviousExerciseSet> previousExerciseSets = startExsetListprev.getPreviousExerciseSets();
-
-            PreviousSetAdapter adapter = new PreviousSetAdapter(mContext, previousExerciseSets);
-            previousSetsRecycleView.setAdapter(adapter);
-
-            previousSetsRecycleView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
-                        // Disallow the touch request for parent scroll on touch of child view
-                        view.getParent().requestDisallowInterceptTouchEvent(true);
-                    }
-                    return false;
-                }
-            });
-
-            /*
-            currentSetWeight.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return false;
-                }
-            });
-
-            currentSetWeight.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return false;
-                }
-            }); */
-        /*
-            if (previousExerciseSets.size() > 0)
-                previousSetsRecycleView.smoothScrollToPosition(adapter.getItemCount() - 1);
         }
 
         @Override
@@ -238,5 +146,54 @@ public class ExerciseSetAdapter extends BaseAdapter {
             itemView.setBackgroundColor(0);
         }
     }
-    */
+
+    private class CurrentSetWeightEditTextListener implements TextWatcher {
+        private int position;
+
+        public void updatePosition(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            // no op
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            if (charSequence.toString().matches("[0-9]+") || charSequence.toString().matches("-?\\d+(\\.\\d+)?")){
+                mPresenter.getCurrentElement(position).getExerciseSet().setSetWeight(Double.parseDouble(charSequence.toString()));
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            // no op
+        }
+    }
+
+    private class CurrentSetRepsEditTextListener implements TextWatcher {
+        private int position;
+
+        public void updatePosition(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            // no op
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            if (charSequence.toString().matches("[0-9]+")){
+                mPresenter.getCurrentElement(position).getExerciseSet().setSetWeight(Double.parseDouble(charSequence.toString()));
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            // no op
+        }
+    }
 }
