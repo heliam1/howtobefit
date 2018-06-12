@@ -11,12 +11,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,8 +69,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
     private Button mButtonDeleteExerciseSet;
     private Button mButtonSaveExerciseSet;
 
-    private RecyclerView mExerciseSetsRecyclerView;
-    private ExerciseSetAdapter mExerciseSetAdapter;
+    private LinearLayout mExerciseSetsLinearLayout;
 
     private Button mStartTimers;
     private EditText mTimeElapsed;
@@ -108,7 +109,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         mButtonSaveExerciseSet = findViewById(R.id.button_save_exercise_set);
 
         // Set the list View
-        mExerciseSetsRecyclerView = findViewById(R.id.exerciseSetsRecyclerView);
+        mExerciseSetsLinearLayout = findViewById(R.id.exerciseSetsRecyclerView);
 
         // Set the timers
         mTimeElapsed = findViewById(R.id.timeElapsed);
@@ -337,12 +338,43 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
 
     @Override
     public void displayExerciseSets(List<StartTimeExerciseSetListPreviousExerciseSet> list) {
-        LinearLayoutManager layoutManager
-                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mExerciseSetsRecyclerView.setLayoutManager(layoutManager);
+        mExerciseSetsLinearLayout.removeAllViews();
+        for (int i = 0; i < list.size(); i++) {
+            Log.v("ExerciseSetsAcitvity", "Making child for lin lay");
+            View exerciseSetItem = LayoutInflater.from(this).inflate(R.layout.item_exerciseset, mExerciseSetsLinearLayout, false);
+            TextView setStartTime = exerciseSetItem.findViewById(R.id.setStartTime);
+            TextView setNameNumber = exerciseSetItem.findViewById(R.id.setNameNumber);
+            EditText currentSetWeight = exerciseSetItem.findViewById(R.id.currentSetWeight);
+            EditText currentSetReps = exerciseSetItem.findViewById(R.id.currentSetReps);
 
-        mExerciseSetAdapter = new ExerciseSetAdapter(this, mExerciseSetsPresenter);
-        mExerciseSetsRecyclerView.setAdapter(mExerciseSetAdapter);
+            StartTimeExerciseSetListPreviousExerciseSet startExsetListprev = list.get(i);
+            setNameNumber.setText(startExsetListprev.getExerciseSet().getExerciseName() + "#"
+                    + Integer.toString(startExsetListprev.getExerciseSet().getSetNumber()));
+            // convert long start time to correct string
+            Date timeDate = new Date(startExsetListprev.getStartTime());
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+            String incorrectString = sdf.format(timeDate);
+            // incorrect string displays 10:XX:XX, should display 00:XX:XX
+            String startTime = "0" + incorrectString.charAt(1)
+                    + incorrectString.charAt(2)  + incorrectString.charAt(3)
+                    + incorrectString.charAt(4)  + incorrectString.charAt(5)
+                    + incorrectString.charAt(6)  + incorrectString.charAt(7);
+            setStartTime.setText(startTime);
+
+            if (list.get(i).getExerciseSet().getSetWeight() != -1)
+                currentSetWeight.setText(Double.toString(list.get(i).getExerciseSet().getSetWeight()));
+            else {
+                currentSetWeight.setText("");
+            }
+
+            if (list.get(i).getExerciseSet().getSetReps() != -1)
+                currentSetReps.setText(Double.toString(list.get(i).getExerciseSet().getSetReps()));
+            else {
+                currentSetReps.setText("");
+            }
+
+            mExerciseSetsLinearLayout.addView(exerciseSetItem);
+        }
     }
 
     @Override

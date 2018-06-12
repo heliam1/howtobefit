@@ -259,25 +259,30 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/exerciseSetsRecyclerView"
+    <ScrollView
+        android:id="@+id/exerciseSetsScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@color/colorWhite"
-        android:divider="@android:color/black"
-        android:dividerHeight="3px"
-        android:orientation="vertical"
-        android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/constraint_layout_add_set"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraint_layout_timers">
-    </android.support.v7.widget.RecyclerView>
+
+        <LinearLayout
+            android:id="@+id/exerciseSetsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite"
+            android:divider="@android:color/black"
+            android:dividerHeight="3px"
+            android:orientation="vertical"
+            android:textColor="@android:color/black"></LinearLayout>
+    </ScrollView>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraint_layout_timers"
