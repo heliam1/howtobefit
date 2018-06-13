@@ -11,17 +11,20 @@ import android.util.Log;
 import com.heliam1.HowToBeFit.data.HowtobefitContract.WorkoutEntry;
 import com.heliam1.HowToBeFit.data.HowtobefitContract.ExerciseSetEntry;
 import com.heliam1.HowToBeFit.models.ExerciseSet;
-import com.heliam1.HowToBeFit.models.ExerciseSetAndListPreviousExerciseSet;
+import com.heliam1.HowToBeFit.models.StartTimeExerciseSetListPreviousExerciseSet;
 import com.heliam1.HowToBeFit.models.PreviousExerciseSet;
 import com.heliam1.HowToBeFit.models.Workout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import io.reactivex.Single;
 
 public class DatabaseRepository implements WorkoutRepository, ExerciseSetRepository {
     private final ContentResolver contentResolver;
+
+    private List<StartTimeExerciseSetListPreviousExerciseSet> mStartExsetListprevexset = new ArrayList<>();
 
     public DatabaseRepository(Context context) {
         this.contentResolver = context.getContentResolver();
@@ -38,18 +41,6 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         });
     }
 
-    /*
-    @Override
-    public Single<List<ExerciseSet>> getExerciseSetsByWorkoutId(long id, long date) {
-        return Single.fromCallable(() -> {
-            try {
-                return queryExerciseSetsByWorkoutId(id, date);
-            } catch (Exception e) {
-                throw new RuntimeException("Something wrong with db");
-            }
-        });
-    }*/
-
     @Override
     public Single<List<PreviousExerciseSet>> getPreviousSets(String name, int setNumber) {
         return Single.fromCallable(() -> {
@@ -62,27 +53,35 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
     }
 
     @Override
-    public Single<List<ExerciseSetAndListPreviousExerciseSet>>
+    public Single<List<StartTimeExerciseSetListPreviousExerciseSet>>
     getExerciseSetsByWorkoutIdandPreviousSets(long id, long date) {
         return Single.fromCallable(() -> {
             try {
                 List<ExerciseSet> exerciseSets = queryExerciseSetsByWorkoutId(id, date);
 
-                List<ExerciseSetAndListPreviousExerciseSet> list = new ArrayList<>();
+                List<StartTimeExerciseSetListPreviousExerciseSet> list = new ArrayList<>();
 
                 for (int i = 0; i < exerciseSets.size(); i++)
                 {
+                    long setStart = calculateSetStart(i, list);
+
                     ExerciseSet exerciseSet = exerciseSets.get(i);
+
+                    // set the exercise sets weight and reps to "empty" just = -1 for now
+                    exerciseSet.setSetWeight(-1);
+                    exerciseSet.setSetReps(-1);
 
                     List<PreviousExerciseSet> previousExerciseSets =
                             queryPreviousExerciseSets(exerciseSet.getExerciseName(),
                                     exerciseSet.getSetNumber());
 
-                    list.add(new ExerciseSetAndListPreviousExerciseSet(exerciseSet,
+                    list.add(new StartTimeExerciseSetListPreviousExerciseSet(setStart, exerciseSet,
                             previousExerciseSets));
                 }
 
-                return list;
+                mStartExsetListprevexset = list;
+
+                return mStartExsetListprevexset;
             } catch (Exception e) {
                 throw new RuntimeException("Something wrong with db");
             }
@@ -224,9 +223,11 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
     }
 
     @Override
-    public Single<Long> updateWorkout(long id, long time, long duration) {
+    public Single<Long> updateWorkout(long id, long time) {
         return Single.fromCallable(() -> {
             try {
+                long duration = calculateWorkoutDuration();
+
                 ContentValues values = new ContentValues();
                 values.put(WorkoutEntry.COLUMN_WORKOUT_LAST_DATE_COMPLETED, time);
                 values.put(WorkoutEntry.COLUMN_WORKOUT_DURATION, duration);
@@ -242,10 +243,34 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         });
     }
 
+    private long calculateWorkoutDuration() {
+        long setEnd = 0;
+
+        int i = 0;
+        while (i < mStartExsetListprevexset.size()) {
+            ExerciseSet exerciseSet = mStartExsetListprevexset.get(i).getExerciseSet();
+            setEnd = exerciseSet.getSetDuration() + exerciseSet.getSetRest();
+            i++;
+        }
+
+        if (setEnd < 1800000)
+            setEnd = 1800000;
+        return setEnd;
+    }
+
     @Override
-    public Single<Long> saveExerciseSets(List<ExerciseSet> exerciseSets) {
+    public Single<Long> saveExerciseSets(long time) {
         return Single.fromCallable(() -> {
             try {
+                List<ExerciseSet> exerciseSets = new ArrayList<>();
+                for (int i = 0; i < mStartExsetListprevexset.size(); i++) {
+                    ExerciseSet exerciseSet = mStartExsetListprevexset.get(i).getExerciseSet();
+                    exerciseSet.setId(null);
+                    exerciseSet.setSetDate(time);
+                    exerciseSet.setSetOrder(i + 1);
+                    exerciseSets.add(exerciseSet);
+                }
+
                 return upsertExerciseSets(exerciseSets);
             } catch (Exception e) {
                 throw new RuntimeException("Something wrong with db");
@@ -351,5 +376,69 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
                 throw new RuntimeException("Something wrong with db");
             }
         });
+    }
+
+    public void setStartTimes() {
+        for (int i = 0; i < mStartExsetListprevexset.size(); i++) {
+            long setStart = calculateSetStart(i, mStartExsetListprevexset);
+            mStartExsetListprevexset.get(i).setStartTime(setStart);
+        }
+    }
+
+    @Override
+    public List<Long> getStartTimes() {
+        List<Long> startTimes = new ArrayList<>();
+        for (int i = 0; i < mStartExsetListprevexset.size(); i++) {
+            startTimes.add(mStartExsetListprevexset.get(i).getStartTime());
+        }
+        return startTimes;
+    }
+
+    private long calculateSetStart(int position, List<StartTimeExerciseSetListPreviousExerciseSet> list) {
+        long setStart = 0; // milliseconds
+
+        if (position == 0)
+            return setStart;
+
+        for (int i = 0; i < position; i++) {
+            ExerciseSet exerciseSet = list.get(i).getExerciseSet();
+            setStart = setStart + exerciseSet.getSetDuration() + exerciseSet.getSetRest();
+        }
+
+        return setStart;
+    }
+
+    @Override
+    public void addStartExsetListprevset(StartTimeExerciseSetListPreviousExerciseSet element) {
+        mStartExsetListprevexset.add(element.getExerciseSet().getSetOrder() - 1, element);
+        calculateSetOrders(mStartExsetListprevexset);
+        setStartTimes();
+    }
+
+    @Override
+    public void replaceStartExsetListprevset(StartTimeExerciseSetListPreviousExerciseSet prev,
+                                             StartTimeExerciseSetListPreviousExerciseSet present) {
+        mStartExsetListprevexset.remove(prev);
+        mStartExsetListprevexset.add(present.getExerciseSet().getSetOrder() - 1, present);
+        calculateSetOrders(mStartExsetListprevexset);
+        setStartTimes();
+    }
+
+    @Override
+    public void removeStartExsetListprevset(StartTimeExerciseSetListPreviousExerciseSet element) {
+        mStartExsetListprevexset.remove(element);
+        calculateSetOrders(mStartExsetListprevexset);
+        setStartTimes();
+    }
+
+    @Override
+    public List<StartTimeExerciseSetListPreviousExerciseSet> getListStartExsetListprevset() {
+        return mStartExsetListprevexset;
+    }
+
+    private void calculateSetOrders(List<StartTimeExerciseSetListPreviousExerciseSet> list) {
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).getExerciseSet().setSetOrder(i + 1);
+        }
     }
 }
