@@ -236,15 +236,65 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         Log.v("EXERCISESETSACTIVITY", "ExerciseSets: " + list.toString());
         mExerciseSetsLinearLayout.removeAllViews();
         for (int i = 0; i < list.size(); i++) {
-            View exerciseSetView = createViewForExerciseSet(list.get(i));
+            View exerciseSetView = LayoutInflater.from(this).inflate(R.layout.item_exerciseset, mExerciseSetsLinearLayout, false);
+            TextView setStartTime = exerciseSetView.findViewById(R.id.setStartTime);
+            TextView setNameNumber = exerciseSetView.findViewById(R.id.setNameNumber);
+            EditText currentSetWeight = exerciseSetView.findViewById(R.id.currentSetWeight);
+            EditText currentSetReps = exerciseSetView.findViewById(R.id.currentSetReps);
+            Button expandButton = exerciseSetView.findViewById(R.id.button_expand);
+            TextView upButton =exerciseSetView.findViewById(R.id.button_up);
+            TextView downButton = exerciseSetView.findViewById(R.id.button_down);
+
+            StartTimeExerciseSetListPreviousExerciseSet element = list.get(i);
+
+            StartTimeExerciseSetListPreviousExerciseSet startExsetListprev = element;
+            setNameNumber.setText(startExsetListprev.getExerciseSet().getExerciseName() + "#"
+                    + Integer.toString(startExsetListprev.getExerciseSet().getSetNumber()));
+
+            convertStartLongtoString(startExsetListprev.getStartTime());
+            setStartTime.setText(convertStartLongtoString(startExsetListprev.getStartTime()));
+
+            if (element.getExerciseSet().getSetWeight() != -1)
+                currentSetWeight.setText(Double.toString(element.getExerciseSet().getSetWeight()));
+            else {
+                currentSetWeight.setText("");
+            }
+
+            if (element.getExerciseSet().getSetReps() != -1)
+                currentSetReps.setText(Integer.toString(element.getExerciseSet().getSetReps()));
+            else {
+                currentSetReps.setText("");
+            }
+
+            expandButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mExerciseSetsPresenter.saveExerciseSetsToRepository();
+                    expandExerciseSet(startExsetListprev);
+                }
+            });
+
+            upButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    minimiseExerciseSet(mCurrentElement, false);
+                    mExerciseSetsPresenter.swapExerciseSetUp(startExsetListprev);
+                }
+            });
+
+            downButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    minimiseExerciseSet(mCurrentElement, false);
+                    mExerciseSetsPresenter.swapExerciseSetDown(startExsetListprev);
+                }
+            });
             mExerciseSetsLinearLayout.addView(exerciseSetView);
         }
     }
 
-    private View createViewForExerciseSet(StartTimeExerciseSetListPreviousExerciseSet element) {
+    private View createViewForExerciseSet(View exerciseSetView, StartTimeExerciseSetListPreviousExerciseSet element) {
         Log.v("ExerciseSetsAcitvity", "Making child for lin lay");
-        View exerciseSetView = LayoutInflater.from(this).inflate(R.layout.item_exerciseset, mExerciseSetsLinearLayout, false);
-
         TextView setStartTime = exerciseSetView.findViewById(R.id.setStartTime);
         TextView setNameNumber = exerciseSetView.findViewById(R.id.setNameNumber);
         EditText currentSetWeight = exerciseSetView.findViewById(R.id.currentSetWeight);
@@ -304,7 +354,58 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         if (element != null) {
             if (!deleted) {
                 mExerciseSetsLinearLayout.removeViewAt(element.getExerciseSet().getSetOrder() - 1);
-                mExerciseSetsLinearLayout.addView(createViewForExerciseSet(element));
+                View exerciseSetView = LayoutInflater.from(this).inflate(R.layout.item_exerciseset, mExerciseSetsLinearLayout, false);
+                TextView setStartTime = exerciseSetView.findViewById(R.id.setStartTime);
+                TextView setNameNumber = exerciseSetView.findViewById(R.id.setNameNumber);
+                EditText currentSetWeight = exerciseSetView.findViewById(R.id.currentSetWeight);
+                EditText currentSetReps = exerciseSetView.findViewById(R.id.currentSetReps);
+                Button expandButton = exerciseSetView.findViewById(R.id.button_expand);
+                TextView upButton =exerciseSetView.findViewById(R.id.button_up);
+                TextView downButton = exerciseSetView.findViewById(R.id.button_down);
+
+                StartTimeExerciseSetListPreviousExerciseSet startExsetListprev = element;
+                setNameNumber.setText(startExsetListprev.getExerciseSet().getExerciseName() + "#"
+                        + Integer.toString(startExsetListprev.getExerciseSet().getSetNumber()));
+
+                convertStartLongtoString(startExsetListprev.getStartTime());
+                setStartTime.setText(convertStartLongtoString(startExsetListprev.getStartTime()));
+
+                if (element.getExerciseSet().getSetWeight() != -1)
+                    currentSetWeight.setText(Double.toString(element.getExerciseSet().getSetWeight()));
+                else {
+                    currentSetWeight.setText("");
+                }
+
+                if (element.getExerciseSet().getSetReps() != -1)
+                    currentSetReps.setText(Integer.toString(element.getExerciseSet().getSetReps()));
+                else {
+                    currentSetReps.setText("");
+                }
+
+                expandButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mExerciseSetsPresenter.saveExerciseSetsToRepository();
+                        expandExerciseSet(startExsetListprev);
+                    }
+                });
+
+                upButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        minimiseExerciseSet(mCurrentElement, false);
+                        mExerciseSetsPresenter.swapExerciseSetUp(startExsetListprev);
+                    }
+                });
+
+                downButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        minimiseExerciseSet(mCurrentElement, false);
+                        mExerciseSetsPresenter.swapExerciseSetDown(startExsetListprev);
+                    }
+                });
+                mExerciseSetsLinearLayout.addView(exerciseSetView);
                 mCurrentElement = null;
             } else {
                 mExerciseSetsLinearLayout.removeViewAt(element.getExerciseSet().getSetOrder() - 1);
