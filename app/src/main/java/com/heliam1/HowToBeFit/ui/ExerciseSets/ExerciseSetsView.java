@@ -10,6 +10,8 @@ public interface ExerciseSetsView {
 
     public void displayAddedSet(int position);
 
+    public void displaySwappedSet(StartTimeExerciseSetListPreviousExerciseSet setTop, StartTimeExerciseSetListPreviousExerciseSet setBot);
+
     public void displayNoExerciseSets();
 
     public void displayErrorLoadingExerciseSets();
@@ -26,7 +28,13 @@ public interface ExerciseSetsView {
 
     public void displayToast(String message);
 
-    public void clearEditor();
+    public void minimiseExerciseSet(StartTimeExerciseSetListPreviousExerciseSet element, boolean deleted);
+
+    public String getSetWeightString(int i);
+    public String getSetRepsString(int i);
+
+    public List<String> getSetWeightStrings();
+    public List<String> getSetRepsStrings();
 
     public void finishActivity();
 }

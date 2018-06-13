@@ -394,6 +394,34 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         return startTimes;
     }
 
+    @Override
+    public void swapExerciseSetUp(StartTimeExerciseSetListPreviousExerciseSet startExsetPrev) {
+        mStartExsetListprevexset.remove(startExsetPrev);
+        startExsetPrev.getExerciseSet().setSetOrder(startExsetPrev.getExerciseSet().getSetOrder() - 1);
+        mStartExsetListprevexset.add(startExsetPrev.getExerciseSet().getSetOrder() - 1, startExsetPrev);
+
+        // set and calculate the new set start for set moved up
+        startExsetPrev.setStartTime(
+                calculateSetStart(startExsetPrev.getExerciseSet().getSetOrder() - 1, mStartExsetListprevexset));
+        // set and calculate the new set start for set moved down
+        mStartExsetListprevexset.get(startExsetPrev.getExerciseSet().getSetOrder() - 1 + 1).setStartTime(
+                calculateSetStart(startExsetPrev.getExerciseSet().getSetOrder() - 1 + 1, mStartExsetListprevexset));
+    }
+
+    @Override
+    public void swapExerciseSetDown(StartTimeExerciseSetListPreviousExerciseSet startExsetPrev) {
+        mStartExsetListprevexset.remove(startExsetPrev);
+        startExsetPrev.getExerciseSet().setSetOrder(startExsetPrev.getExerciseSet().getSetOrder() + 1);
+        mStartExsetListprevexset.add(startExsetPrev.getExerciseSet().getSetOrder() - 1, startExsetPrev);
+
+        // set and calculate the new set start for set moved down
+        startExsetPrev.setStartTime(
+                calculateSetStart(startExsetPrev.getExerciseSet().getSetOrder() - 1, mStartExsetListprevexset));
+        // set and calculate the new set start for set moved up
+        mStartExsetListprevexset.get(startExsetPrev.getExerciseSet().getSetOrder() - 1 - 1).setStartTime(
+                calculateSetStart(startExsetPrev.getExerciseSet().getSetOrder() - 1 - 1, mStartExsetListprevexset));
+    }
+
     private long calculateSetStart(int position, List<StartTimeExerciseSetListPreviousExerciseSet> list) {
         long setStart = 0; // milliseconds
 
