@@ -267,15 +267,6 @@ public class ExerciseSetsPresenter {
         try { saveExerciseSetsToRepository(); }
         catch (Exception e) { return; }
 
-            /*
-            then add my arms workout to the app, then figure out what's wrong with the arrow functions
-            then a few ui things
-            then editor movement
-            then notification improvement, atleast the text, maybe entry,
-            release to aaron alex dad whoever else.
-            then colors
-            */
-
         compositeDisposable.add(mExerciseSetsRepository.saveExerciseSets(time)
                 .subscribeOn(Schedulers.io())
                 .observeOn(mainScheduler)
