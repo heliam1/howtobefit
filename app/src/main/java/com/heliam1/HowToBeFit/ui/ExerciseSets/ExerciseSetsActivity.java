@@ -407,7 +407,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
                         mExerciseSetsPresenter.swapExerciseSetDown(startExsetListprev);
                     }
                 });
-                mExerciseSetsLinearLayout.addView(exerciseSetView);
+                mExerciseSetsLinearLayout.addView(exerciseSetView, element.getExerciseSet().getSetOrder() - 1);
                 mCurrentElement = null;
             } else {
                 mExerciseSetsLinearLayout.removeViewAt(element.getExerciseSet().getSetOrder() - 1);
@@ -415,7 +415,8 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
             }
         } else {
             // decided not to add an exercise set, just remove the view
-            mExerciseSetsLinearLayout.removeViewAt(mExerciseSetsPresenter.getList().size() - 1);
+            // TODO:
+            // mExerciseSetsLinearLayout.removeViewAt(mExerciseSetsPresenter.getList().size() - 1);
         }
         mFabAddExerciseSet.setVisibility(View.VISIBLE);
     }
@@ -503,6 +504,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
             prevSetsRecyclerView.setLayoutManager(layoutManager);
             prevSetsRecyclerView.setAdapter(new PreviousSetAdapter(this, element.getPreviousExerciseSets()));
         }
+
         minimiseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
