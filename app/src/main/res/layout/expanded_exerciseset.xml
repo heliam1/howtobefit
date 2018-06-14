@@ -14,7 +14,6 @@
         android:id="@+id/recycler_expanded_prev_sets"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_expanded_save"
@@ -26,9 +25,11 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text_expanded_duration_seconds"
         app:layout_constraintEnd_toEndOf="@+id/edit_text_expanded_reps"
         app:layout_constraintStart_toStartOf="@+id/edit_text_expanded_reps"
-        app:layout_constraintTop_toBottomOf="@+id/label_PB_Reps" />
+        app:layout_constraintTop_toBottomOf="@+id/label_PB_Reps"
+        app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/edit_text_expanded_weight"
@@ -82,10 +83,14 @@
         android:id="@+id/edit_text_expanded_pb_weight"
         android:layout_width="55dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text_expanded_duration_minutes"
         app:layout_constraintEnd_toEndOf="@+id/edit_text_expanded_weight"
         app:layout_constraintStart_toStartOf="@+id/edit_text_expanded_weight"
-        app:layout_constraintTop_toTopOf="@+id/edit_text_expanded_pb_reps" />
+        app:layout_constraintTop_toBottomOf="@+id/label_PB_Weight"
+        app:layout_constraintVertical_bias="0.13" />
 
     <TextView
         android:id="@+id/label_PB_Weight"
@@ -122,12 +127,15 @@
 
     <EditText
         android:id="@+id/edit_text_expanded_set_order"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:hint="set#"
         android:maxLines="1"
+        app:layout_constraintEnd_toStartOf="@+id/edit_text_expanded_weight"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/edit_text_expanded_name"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -226,9 +234,9 @@
         android:id="@+id/label_prev_sets"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="Prev\nSets"
+        android:textSize="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/recycler_expanded_prev_sets"
         app:layout_constraintEnd_toStartOf="@+id/recycler_expanded_prev_sets"
         app:layout_constraintHorizontal_bias="1.0"
