@@ -72,24 +72,20 @@ public class ExerciseSetsPresenter {
                                long workoutId, String exerciseName, String setNumber,
                                String setOrder, String setDurationMinutes, String setDurationSeconds,
                                String setRestMinutes, String setRestSeconds, String pbWeight,
-                               String pbReps, String weight, String reps) {
+                               String pbReps) {
         // input val
         try {
             if (exerciseName == null || exerciseName.equals(""))
                 throw new Exception("bad name");
 
             if (setOrder.equals(""))
-                setOrder = Integer.toString(getList().size());
+                setOrder = Integer.toString(getList().size() + 1);
             else {
                 if (Integer.parseInt(setNumber) < 1)
                     throw new Exception("bad set number");
+                if (Integer.parseInt(setOrder) > mExerciseSetsRepository.getListStartExsetListprevset().size())
+                    setOrder = Integer.toString(mExerciseSetsRepository.getListStartExsetListprevset().size() + 1);
             }
-
-            if (Integer.parseInt(setOrder) < 1)
-                throw new Exception("bad set order");
-
-            if (Integer.parseInt(setOrder) > mExerciseSetsRepository.getListStartExsetListprevset().size())
-                setOrder = Integer.toString(mExerciseSetsRepository.getListStartExsetListprevset().size() + 1);
 
             if (!setDurationMinutes.equals("")) {
                 if (Integer.parseInt(setDurationMinutes) < 0)
@@ -132,18 +128,6 @@ public class ExerciseSetsPresenter {
                 pbReps = "-1";
             }
 
-            if (!weight.equals("")) {
-                if (Double.parseDouble(weight) < 0)
-                    throw new Exception("weight");
-            } else {
-                weight = "-1";
-            }
-            if (!reps.equals("")){
-                if (Integer.parseInt(pbReps) < 0)
-                    throw new Exception("reps");
-            } else {
-                reps = "-1";
-            }
         } catch (Exception e) {
             mView.displayToast("Needs name, set #, and order");
             return;
@@ -152,18 +136,21 @@ public class ExerciseSetsPresenter {
         long durationSeconds = Long.parseLong(setDurationSeconds) + 60 * Long.parseLong(setDurationMinutes);
         long restSeconds     = Long.parseLong(setRestSeconds) + 60 * Long.parseLong(setRestMinutes);
 
-        ExerciseSet exerciseSet = new ExerciseSet(workoutId, exerciseName,
-                Integer.parseInt(setNumber), durationSeconds,
-                restSeconds, Integer.parseInt(setOrder), Double.parseDouble(pbWeight),
-                Integer.parseInt(pbReps), Double.parseDouble(weight), Integer.parseInt(reps));
-        List<PreviousExerciseSet> emptyPrevSetList = new ArrayList<>();
-
         if (currentElement == null) {
+            ExerciseSet exerciseSet = new ExerciseSet(workoutId, exerciseName,
+                    Integer.parseInt(setNumber), durationSeconds,
+                    restSeconds, Integer.parseInt(setOrder), Double.parseDouble(pbWeight),
+                    Integer.parseInt(pbReps), -1, -1);
+            List<PreviousExerciseSet> emptyPrevSetList = new ArrayList<>();
             mExerciseSetsRepository.addStartExsetListprevset(new StartTimeExerciseSetListPreviousExerciseSet(exerciseSet, emptyPrevSetList));
             mView.displayToast("Exercise set added");
         } else {
-            Log.v("ExerciseSetsPresenter", "do we get here 121");
-            mExerciseSetsRepository.replaceStartExsetListprevset(currentElement, new StartTimeExerciseSetListPreviousExerciseSet(exerciseSet, emptyPrevSetList));
+            StartTimeExerciseSetListPreviousExerciseSet newElement = currentElement;
+            newElement.getExerciseSet().setExerciseName(exerciseName);
+            newElement.getExerciseSet().setSetNumber(Integer.parseInt(setNumber));
+            newElement.getExerciseSet().setPbWeight(Double.parseDouble(pbWeight));
+            newElement.getExerciseSet().setPbReps(Integer.parseInt(pbReps));
+            mExerciseSetsRepository.replaceStartExsetListprevset(currentElement, newElement);
             mView.displayToast("Exercise set saved");
         }
 

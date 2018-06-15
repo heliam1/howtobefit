@@ -446,7 +446,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
     @Override
     public void replaceStartExsetListprevset(StartTimeExerciseSetListPreviousExerciseSet prev,
                                              StartTimeExerciseSetListPreviousExerciseSet present) {
-        mStartExsetListprevexset.remove(prev);
+        boolean test = mStartExsetListprevexset.remove(prev);
         mStartExsetListprevexset.add(present.getExerciseSet().getSetOrder() - 1, present);
         calculateSetOrders(mStartExsetListprevexset);
         setStartTimes();

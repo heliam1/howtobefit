@@ -53,6 +53,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
     private long mWorkoutDate;
     // functions as private static int expandedFlag = -1;
     private StartTimeExerciseSetListPreviousExerciseSet mCurrentElement = null;
+    private static boolean mNewElementExpanded = false;
 
     private ActionBar mActionBar;
 
@@ -108,7 +109,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         mFabAddExerciseSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // expandExerciseSet(null);
+                expandExerciseSet(null);
             }
         });
     }
@@ -231,10 +232,15 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         super.onDestroy();
     }
 
+    static int mCount = 0;
+
     @Override
     public void displayExerciseSets(List<StartTimeExerciseSetListPreviousExerciseSet> list) {
+        mCount++;
+        Log.v("EXERCISESETSACTIVITY", Integer.toString(mCount));
         mExerciseSetsLinearLayout.removeAllViews();
         for (int i = 0; i < list.size(); i++) {
+
             View exerciseSetView = LayoutInflater.from(this).inflate(R.layout.item_exerciseset, mExerciseSetsLinearLayout, false);
             TextView setStartTime = exerciseSetView.findViewById(R.id.setStartTime);
             TextView setNameNumber = exerciseSetView.findViewById(R.id.setNameNumber);
@@ -253,9 +259,11 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
             convertStartLongtoString(startExsetListprev.getStartTime());
             setStartTime.setText(convertStartLongtoString(startExsetListprev.getStartTime()));
 
-            if (element.getExerciseSet().getSetWeight() != -1)
+            if (element.getExerciseSet().getSetWeight() != -1) {
+                Log.v("EXERCISESETSACTIVITY", Double.toString(element.getExerciseSet().getSetWeight()));
                 currentSetWeight.setText(Double.toString(element.getExerciseSet().getSetWeight()));
-            else {
+                Log.v("EXERCISESETSACTIVITY", currentSetWeight.getText().toString());
+            } else {
                 currentSetWeight.setText("");
             }
 
@@ -291,64 +299,6 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
 
             mExerciseSetsLinearLayout.addView(exerciseSetView);
         }
-
-
-    }
-
-    private View createViewForExerciseSet(View exerciseSetView, StartTimeExerciseSetListPreviousExerciseSet element) {
-        Log.v("ExerciseSetsAcitvity", "Making child for lin lay");
-        TextView setStartTime = exerciseSetView.findViewById(R.id.setStartTime);
-        TextView setNameNumber = exerciseSetView.findViewById(R.id.setNameNumber);
-        EditText currentSetWeight = exerciseSetView.findViewById(R.id.currentSetWeight);
-        EditText currentSetReps = exerciseSetView.findViewById(R.id.currentSetReps);
-        Button expandButton = exerciseSetView.findViewById(R.id.button_expand);
-        TextView upButton =exerciseSetView.findViewById(R.id.button_up);
-        TextView downButton = exerciseSetView.findViewById(R.id.button_down);
-
-        StartTimeExerciseSetListPreviousExerciseSet startExsetListprev = element;
-        setNameNumber.setText(startExsetListprev.getExerciseSet().getExerciseName() + "#"
-                + Integer.toString(startExsetListprev.getExerciseSet().getSetNumber()));
-
-        convertStartLongtoString(startExsetListprev.getStartTime());
-        setStartTime.setText(convertStartLongtoString(startExsetListprev.getStartTime()));
-
-        if (element.getExerciseSet().getSetWeight() != -1)
-            currentSetWeight.setText(Double.toString(element.getExerciseSet().getSetWeight()));
-        else {
-            currentSetWeight.setText("");
-        }
-
-        if (element.getExerciseSet().getSetReps() != -1)
-            currentSetReps.setText(Integer.toString(element.getExerciseSet().getSetReps()));
-        else {
-            currentSetReps.setText("");
-        }
-
-        expandButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mExerciseSetsPresenter.saveExerciseSetsToRepository();
-                expandExerciseSet(startExsetListprev);
-            }
-        });
-
-        upButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                minimiseExerciseSet(mCurrentElement, false);
-                mExerciseSetsPresenter.swapExerciseSetUp(startExsetListprev);
-            }
-        });
-
-        downButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                minimiseExerciseSet(mCurrentElement, false);
-                mExerciseSetsPresenter.swapExerciseSetDown(startExsetListprev);
-            }
-        });
-
-        return exerciseSetView;
     }
 
     @Override
@@ -408,16 +358,17 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
                     }
                 });
                 mExerciseSetsLinearLayout.addView(exerciseSetView, element.getExerciseSet().getSetOrder() - 1);
-                mCurrentElement = null;
             } else {
                 mExerciseSetsLinearLayout.removeViewAt(element.getExerciseSet().getSetOrder() - 1);
-                mCurrentElement = null;
             }
         } else {
+            if (mNewElementExpanded) {
+                mExerciseSetsLinearLayout.removeViewAt(mExerciseSetsPresenter.getList().size());
+                mNewElementExpanded = false;
+            }
             // decided not to add an exercise set, just remove the view
-            // TODO:
-            // mExerciseSetsLinearLayout.removeViewAt(mExerciseSetsPresenter.getList().size() - 1);
         }
+        mCurrentElement = null;
         mFabAddExerciseSet.setVisibility(View.VISIBLE);
     }
 
@@ -432,8 +383,6 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         EditText nameEditText = expandedView.findViewById(R.id.edit_text_expanded_name);
         TextView startTimeTextView = expandedView.findViewById(R.id.text_view_expanded_start);
         EditText setNumberEditText = expandedView.findViewById(R.id.edit_text_expanded_set_order);
-        EditText setWeightEditText = expandedView.findViewById(R.id.edit_text_expanded_weight);
-        EditText setRepsEditText = expandedView.findViewById(R.id.edit_text_expanded_reps);
         EditText durationMinutesEditText = expandedView.findViewById(R.id.edit_text_expanded_duration_minutes);
         EditText durationSecondsEditText = expandedView.findViewById(R.id.edit_text_expanded_duration_seconds);
         EditText restMinutesEditText = expandedView.findViewById(R.id.edit_text_expanded_rest_minutes);
@@ -449,8 +398,6 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
             nameEditText.setText("");
             startTimeTextView.setText("");
             setNumberEditText.setText("");
-            setWeightEditText.setText("");
-            setRepsEditText.setText("");
             durationMinutesEditText.setText("");
             durationSecondsEditText.setText("");
             restMinutesEditText.setText("");
@@ -462,17 +409,6 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
             nameEditText.setText(element.getExerciseSet().getExerciseName());
             startTimeTextView.setText(convertStartLongtoString(element.getStartTime()));
             setNumberEditText.setText(Integer.toString(element.getExerciseSet().getSetNumber()));
-
-            if (element.getExerciseSet().getSetWeight() != -1)
-                setWeightEditText.setText(Double.toString(element.getExerciseSet().getSetWeight()));
-            else {
-                setWeightEditText.setText("");
-            }
-            if (element.getExerciseSet().getSetReps() != -1)
-                setRepsEditText.setText(Integer.toString(element.getExerciseSet().getSetReps()));
-            else {
-                setRepsEditText.setText("");
-            }
 
             SimpleDateFormat sdfMinutes = new SimpleDateFormat("mm");
             SimpleDateFormat sdfSeconds = new SimpleDateFormat("ss");
@@ -514,27 +450,42 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String setOrder;
+                if (mCurrentElement != null) {
+                    setOrder = Integer.toString(mCurrentElement.getExerciseSet().getSetOrder());
+                } else {
+                    setOrder = "";
+                }
+
                 mExerciseSetsPresenter.addExerciseSet(mCurrentElement,
                         mWorkoutId,
                         nameEditText.getText().toString(),
                         setNumberEditText.getText().toString(),
-                        Integer.toString(mCurrentElement.getExerciseSet().getSetOrder()),
+                        setOrder,
                         durationMinutesEditText.getText().toString(),
                         durationSecondsEditText.getText().toString(),
                         restMinutesEditText.getText().toString(),
                         restSecondsEditText.getText().toString(),
                         pbWeightEditText.getText().toString(),
-                        pbRepsEditText.getText().toString(),
-                        setWeightEditText.getText().toString(),
-                        setRepsEditText.getText().toString()
+                        pbRepsEditText.getText().toString()
                 );
-                minimiseExerciseSet(
-                        mExerciseSetsPresenter.getList().get(
-                                mCurrentElement.getExerciseSet().getSetOrder() - 1), false);
+
+                // stops android dynmaically removed view unfocus bug
+                mExerciseSetsLinearLayout.requestFocus();
+
+                if (mCurrentElement == null)
+                    minimiseExerciseSet(mExerciseSetsPresenter.getList().get(
+                            mExerciseSetsPresenter.getList().size() - 1), false);
+                else {
+                    minimiseExerciseSet(mCurrentElement, false);
+                }
+
+                mNewElementExpanded = false;
             }});
 
         if (mCurrentElement == null) {
             mExerciseSetsLinearLayout.addView(expandedView);
+            mNewElementExpanded = true;
         } else {
             mExerciseSetsLinearLayout.removeViewAt(mCurrentElement.getExerciseSet().getSetOrder() - 1);
             mExerciseSetsLinearLayout.addView(expandedView, mCurrentElement.getExerciseSet().getSetOrder() - 1);
