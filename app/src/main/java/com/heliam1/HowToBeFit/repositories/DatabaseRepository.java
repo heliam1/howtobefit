@@ -412,7 +412,12 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
     public void swapExerciseSetDown(StartTimeExerciseSetListPreviousExerciseSet startExsetPrev) {
         mStartExsetListprevexset.remove(startExsetPrev);
         startExsetPrev.getExerciseSet().setSetOrder(startExsetPrev.getExerciseSet().getSetOrder() + 1);
-        mStartExsetListprevexset.add(startExsetPrev.getExerciseSet().getSetOrder() - 1, startExsetPrev);
+
+        if (startExsetPrev.getExerciseSet().getSetOrder() - 1 > mStartExsetListprevexset.size())
+            mStartExsetListprevexset.add(startExsetPrev);
+        else {
+            mStartExsetListprevexset.add(startExsetPrev.getExerciseSet().getSetOrder() - 1, startExsetPrev);
+        }
 
         // set and calculate the new set start for set moved down
         startExsetPrev.setStartTime(

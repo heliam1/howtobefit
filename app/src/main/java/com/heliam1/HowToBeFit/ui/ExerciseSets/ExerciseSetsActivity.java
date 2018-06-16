@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -58,6 +59,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
     private ActionBar mActionBar;
 
     private LinearLayout mExerciseSetsLinearLayout;
+    private boolean critical; // the linear layout has alot of views, giving them input while spawning will crash the ap
 
     private Button mStartTimers;
     private EditText mTimeElapsed;
@@ -232,13 +234,11 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         super.onDestroy();
     }
 
-    static int mCount = 0;
-
     @Override
     public void displayExerciseSets(List<StartTimeExerciseSetListPreviousExerciseSet> list) {
-        mCount++;
-        Log.v("EXERCISESETSACTIVITY", Integer.toString(mCount));
         mExerciseSetsLinearLayout.removeAllViews();
+        // ENTER CRITICAL SECTION
+        critical = true;
         for (int i = 0; i < list.size(); i++) {
 
             View exerciseSetView = LayoutInflater.from(this).inflate(R.layout.item_exerciseset, mExerciseSetsLinearLayout, false);
@@ -299,6 +299,15 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
 
             mExerciseSetsLinearLayout.addView(exerciseSetView);
         }
+        // EXIT CRITICAL SECTION
+        critical = false;
+    }
+    // CRITICAL IMPLEMENTATION
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (!critical)
+            return super.dispatchTouchEvent(ev);
+        return true;
     }
 
     @Override
