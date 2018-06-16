@@ -159,7 +159,7 @@ public class ExerciseSet {
         return pbWeight;
     }
 
-    public void setPbWeight(int pbWeight) {
+    public void setPbWeight(double pbWeight) {
         this.pbWeight = pbWeight;
     }
 

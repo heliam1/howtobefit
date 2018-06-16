@@ -394,6 +394,39 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         return startTimes;
     }
 
+    @Override
+    public void swapExerciseSetUp(StartTimeExerciseSetListPreviousExerciseSet startExsetPrev) {
+        mStartExsetListprevexset.remove(startExsetPrev);
+        startExsetPrev.getExerciseSet().setSetOrder(startExsetPrev.getExerciseSet().getSetOrder() - 1);
+        mStartExsetListprevexset.add(startExsetPrev.getExerciseSet().getSetOrder() - 1, startExsetPrev);
+
+        // set and calculate the new set start for set moved up
+        startExsetPrev.setStartTime(
+                calculateSetStart(startExsetPrev.getExerciseSet().getSetOrder() - 1, mStartExsetListprevexset));
+        // set and calculate the new set start for set moved down
+        mStartExsetListprevexset.get(startExsetPrev.getExerciseSet().getSetOrder() - 1 + 1).setStartTime(
+                calculateSetStart(startExsetPrev.getExerciseSet().getSetOrder() - 1 + 1, mStartExsetListprevexset));
+    }
+
+    @Override
+    public void swapExerciseSetDown(StartTimeExerciseSetListPreviousExerciseSet startExsetPrev) {
+        mStartExsetListprevexset.remove(startExsetPrev);
+        startExsetPrev.getExerciseSet().setSetOrder(startExsetPrev.getExerciseSet().getSetOrder() + 1);
+
+        if (startExsetPrev.getExerciseSet().getSetOrder() - 1 > mStartExsetListprevexset.size())
+            mStartExsetListprevexset.add(startExsetPrev);
+        else {
+            mStartExsetListprevexset.add(startExsetPrev.getExerciseSet().getSetOrder() - 1, startExsetPrev);
+        }
+
+        // set and calculate the new set start for set moved down
+        startExsetPrev.setStartTime(
+                calculateSetStart(startExsetPrev.getExerciseSet().getSetOrder() - 1, mStartExsetListprevexset));
+        // set and calculate the new set start for set moved up
+        mStartExsetListprevexset.get(startExsetPrev.getExerciseSet().getSetOrder() - 1 - 1).setStartTime(
+                calculateSetStart(startExsetPrev.getExerciseSet().getSetOrder() - 1 - 1, mStartExsetListprevexset));
+    }
+
     private long calculateSetStart(int position, List<StartTimeExerciseSetListPreviousExerciseSet> list) {
         long setStart = 0; // milliseconds
 
@@ -418,7 +451,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
     @Override
     public void replaceStartExsetListprevset(StartTimeExerciseSetListPreviousExerciseSet prev,
                                              StartTimeExerciseSetListPreviousExerciseSet present) {
-        mStartExsetListprevexset.remove(prev);
+        boolean test = mStartExsetListprevexset.remove(prev);
         mStartExsetListprevexset.add(present.getExerciseSet().getSetOrder() - 1, present);
         calculateSetOrders(mStartExsetListprevexset);
         setStartTimes();

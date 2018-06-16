@@ -315,11 +315,11 @@ public class HowtobefitProvider extends ContentProvider {
             values.put(ExerciseSetEntry.COLUMN_SET_REST, setRest);
         }
         if (setWeight == null) {
-            setWeight = 0.0;
+            setWeight = -1.0;
             values.put(ExerciseSetEntry.COLUMN_SET_WEIGHT, setWeight);
         }
         if (setReps == null) {
-            setReps = 1;
+            setReps = -1;
             values.put(ExerciseSetEntry.COLUMN_SET_REPS, setReps);
         }
         if (setReps < 0) {

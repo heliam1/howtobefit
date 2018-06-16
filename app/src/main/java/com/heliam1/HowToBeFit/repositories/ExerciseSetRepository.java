@@ -34,5 +34,9 @@ public interface ExerciseSetRepository {
 
     public List<Long> getStartTimes();
 
+    public void swapExerciseSetUp(StartTimeExerciseSetListPreviousExerciseSet startExsetPrev);
+
+    public void swapExerciseSetDown(StartTimeExerciseSetListPreviousExerciseSet startExsetPrev);
+
     // Single<List<Task>> searchTasks(String title);
 }

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/expanded_exerciseset"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_exerciseset"
+    android:orientation="horizontal">
+    <!-- android:background="@drawable/background_exerciseset" -->
+
+    <EditText
+        android:id="@+id/edit_text_expanded_rest_seconds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:hint="sec"
+        android:maxLines="1"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toStartOf="@+id/button_expanded_delete"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/edit_text_expanded_rest_minutes"
+        app:layout_constraintTop_toTopOf="@+id/edit_text_expanded_rest_minutes" />
+
+    <EditText
+        android:id="@+id/edit_text_expanded_pb_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="40dp"
+        android:maxLines="1"
+        android:minWidth="65dp"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/edit_text_expanded_pb_reps"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="225.25" />
+
+    <TextView
+        android:id="@+id/label_PB_Weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Personal\nBest"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text_expanded_pb_weight"
+        app:layout_constraintEnd_toStartOf="@+id/edit_text_expanded_pb_weight"
+        app:layout_constraintTop_toTopOf="@+id/edit_text_expanded_pb_weight" />
+
+    <Button
+        android:id="@+id/button_expanded_save"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="8dp"
+        android:text="✓"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/button_expanded_delete"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="X"
+        app:layout_constraintBottom_toTopOf="@+id/button_expanded_save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_expanded_minimise" />
+
+    <EditText
+        android:id="@+id/edit_text_expanded_set_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:hint="##"
+        android:maxLines="1"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/button_expanded_minimise"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/edit_text_expanded_name"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_text_expanded_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="8dp"
+        android:hint="Name"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/button_expanded_minimise"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_text_expanded_rest_minutes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:hint="min"
+        android:maxLines="1"
+        android:textAlignment="textEnd"
+        app:layout_constraintStart_toEndOf="@+id/label_rest"
+        app:layout_constraintTop_toTopOf="@+id/edit_text_expanded_duration_seconds" />
+
+    <EditText
+        android:id="@+id/edit_text_expanded_duration_seconds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:hint="sec"
+        android:maxLines="1"
+        android:textAlignment="textEnd"
+        app:layout_constraintStart_toEndOf="@+id/edit_text_expanded_duration_minutes"
+        app:layout_constraintTop_toTopOf="@+id/edit_text_expanded_duration_minutes" />
+
+    <EditText
+        android:id="@+id/edit_text_expanded_duration_minutes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:hint="min"
+        android:maxLines="1"
+        app:layout_constraintStart_toEndOf="@+id/label_duration"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_expanded_pb_weight" />
+
+    <TextView
+        android:id="@+id/text_view_expanded_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:gravity="start"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text_expanded_pb_weight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/edit_text_expanded_pb_weight"
+        app:layout_constraintVertical_bias="0.6"
+        tools:text="00:10:30" />
+
+    <Button
+        android:id="@+id/button_expanded_minimise"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="-"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/label_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Duration"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text_expanded_duration_minutes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/edit_text_expanded_duration_minutes" />
+
+    <TextView
+        android:id="@+id/label_rest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Rest"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text_expanded_duration_seconds"
+        app:layout_constraintStart_toEndOf="@+id/edit_text_expanded_duration_seconds"
+        app:layout_constraintTop_toTopOf="@+id/edit_text_expanded_duration_seconds" />
+
+    <TextView
+        android:id="@+id/label_prev_sets"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Prev\nSets"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/recycler_expanded_prev_sets"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_expanded_duration_minutes"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_expanded_prev_sets"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="#CCCCCC"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/edit_text_expanded_rest_seconds"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/edit_text_expanded_duration_minutes"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_expanded_rest_minutes"
+        app:layout_constraintVertical_bias="0.0"></android.support.v7.widget.RecyclerView>
+
+    <EditText
+        android:id="@+id/edit_text_expanded_pb_reps"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:maxLines="1"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/edit_text_expanded_set_order"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>
