@@ -182,7 +182,11 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
     public List<String> getSetWeightStrings() {
         ArrayList<String> setWeights = new ArrayList<>();
 
-        for (int i = 0; i < mExerciseSetsLinearLayout.getChildCount(); i++) {
+        int childCount = mExerciseSetsLinearLayout.getChildCount();
+        if (mNewElementExpanded)
+            childCount = childCount - 1;
+
+        for (int i = 0; i < childCount; i++) {
             setWeights.add(((EditText) ((ViewGroup) mExerciseSetsLinearLayout.getChildAt(i)).getChildAt(2)).getText().toString());
         }
         return setWeights;
@@ -192,7 +196,11 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
     public List<String> getSetRepsStrings() {
         ArrayList<String> setReps = new ArrayList<>();
 
-        for (int i = 0; i < mExerciseSetsLinearLayout.getChildCount(); i++) {
+        int childCount = mExerciseSetsLinearLayout.getChildCount();
+        if (mNewElementExpanded)
+            childCount = childCount - 1;
+
+        for (int i = 0; i < childCount; i++) {
             setReps.add(((EditText) ((ViewGroup) mExerciseSetsLinearLayout.getChildAt(i)).getChildAt(3)).getText().toString());
         }
         return setReps;
@@ -413,7 +421,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         if (mCurrentElement == null) {
             nameEditText.setText("");
             startTimeTextView.setText("");
-            setNumberEditText.setText("");
+            setNumberEditText.setText("1");
             durationMinutesEditText.setText("");
             durationSecondsEditText.setText("");
             restMinutesEditText.setText("");
@@ -466,6 +474,8 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mExerciseSetsPresenter.saveExerciseSetsToRepository();
+
                 String setOrder;
                 if (mCurrentElement != null) {
                     setOrder = Integer.toString(mCurrentElement.getExerciseSet().getSetOrder());
