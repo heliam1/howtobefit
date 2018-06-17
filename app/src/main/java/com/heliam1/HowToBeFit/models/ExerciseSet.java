@@ -55,6 +55,26 @@ public class ExerciseSet {
         this.pbReps = pbReps;
     }
 
+    public ExerciseSet(long workoutId, String exerciseName, int setNumber, long setDuration,
+                       long setRest, int setOrder, double pbWeight, int pbReps, double weight, int reps) {
+        setDuration = setDuration * 1000;
+        setRest = setRest * 1000;
+
+        this.id = null;
+        this.workoutId = workoutId;
+        this.exerciseName = exerciseName;
+        this.setNumber = setNumber;
+        this.setDuration = setDuration;
+        this.setRest = setRest;
+        this.setDateString = "never"; // This should never be visible
+        this.setDateLong = 0L;
+        this.setOrder = setOrder;
+        this.pbWeight = pbWeight;
+        this.pbReps = pbReps;
+        this.setWeight = weight;
+        this.setReps = reps;
+    }
+
     public boolean hasId() {
         return (this.id != null);
     }
@@ -139,7 +159,7 @@ public class ExerciseSet {
         return pbWeight;
     }
 
-    public void setPbWeight(int pbWeight) {
+    public void setPbWeight(double pbWeight) {
         this.pbWeight = pbWeight;
     }
 

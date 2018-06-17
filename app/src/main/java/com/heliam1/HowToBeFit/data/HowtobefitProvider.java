@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.heliam1.HowToBeFit.data.HowtobefitContract.WorkoutEntry;
 import com.heliam1.HowToBeFit.data.HowtobefitContract.ExerciseSetEntry;
 
-public class HowtobefitProvider extends ContentProvider {
+public class  HowtobefitProvider extends ContentProvider {
     public static final String LOG_TAG = HowtobefitProvider.class.getSimpleName();
 
     private static final int WORKOUTS = 100;        // URI matcher code for workouts table
@@ -147,6 +147,8 @@ public class HowtobefitProvider extends ContentProvider {
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
+        Log.v("INSERT EXSET:", values.toString());
+
         long id = database.insert(ExerciseSetEntry.TABLE_NAME, null, values);
         // If the ID is -1, then the insertion failed. Log an error and return null.
         if (id == -1) {
@@ -201,6 +203,8 @@ public class HowtobefitProvider extends ContentProvider {
         }
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        Log.v("UPDATE WORKOUT", values.toString());
 
         int rowsUpdated = database.update(WorkoutEntry.TABLE_NAME, values, selection, selectionArgs);
 
@@ -311,18 +315,12 @@ public class HowtobefitProvider extends ContentProvider {
             values.put(ExerciseSetEntry.COLUMN_SET_REST, setRest);
         }
         if (setWeight == null) {
-            setWeight = 0.0;
+            setWeight = -1.0;
             values.put(ExerciseSetEntry.COLUMN_SET_WEIGHT, setWeight);
         }
-        if (setReps == null) {
-            setReps = 1;
+        if (setReps == null || setReps < 0) {
+            setReps = -1;
             values.put(ExerciseSetEntry.COLUMN_SET_REPS, setReps);
-        }
-        if (setReps < 0) {
-            Log.e(LOG_TAG, "ERROR PASSING SET REPS TO WORKOUT TABLE");
-            // mToast.makeText(getContext(), "Set reps cannot be negative",
-            //        Toast.LENGTH_SHORT).show();
-            return null;
         }
         if (setDateString == null) {
             // TODO: Move this into view?

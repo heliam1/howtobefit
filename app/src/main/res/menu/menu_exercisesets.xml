@@ -3,11 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/item_menu_add_set"
-        android:title="Add A Set"
-        app:showAsAction="ifRoom"/>
-
-    <item
         android:id="@+id/item_menu_delete_workout"
         android:title="Delete Workout"
         app:showAsAction="never"/>

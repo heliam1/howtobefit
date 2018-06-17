@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#000000</color>
-    <color name="colorOldPrimary">#444444</color>
-    <color name="colorPrimaryLight">#999999</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#f0f4c3</color>
+    <!-- Layout colors -->
+    <color name="colorPrimaryLighter">#999999</color>
+    <color name="colorPrimaryLight">#666666</color>
+    <color name="colorPrimary">#333333</color>
+    <color name="colorPrimaryDark">#222222</color>
+    <color name="colorBorder">#414246</color>
+    <color name="colorPrimaryDarker">#111111</color>
+
+    <!-- Text colors -->
+    <!-- <color name="colorAccent">#f0f4c3</color> --> <!-- This should make it the deafult android green -->
     <color name="colorWhite">#ffffff</color>
+    <color name="colorNotWhite">#cfd0d3</color>
+
+    <!-- Symbol colors -->
+    <color name="colorSymbol">#c6c7c8</color>
 </resources>

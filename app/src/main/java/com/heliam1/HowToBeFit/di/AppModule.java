@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.heliam1.HowToBeFit.repositories.DatabaseRepository;
 import com.heliam1.HowToBeFit.repositories.ExerciseSetRepository;
+import com.heliam1.HowToBeFit.repositories.TimersRepository;
 import com.heliam1.HowToBeFit.repositories.WorkoutRepository;
 
 import javax.inject.Singleton;
@@ -33,6 +34,12 @@ public class AppModule {
     @Singleton
     ExerciseSetRepository providesExerciseSetRepository(Context application) {
         return new DatabaseRepository(application);
+    }
+
+    @Provides
+    @Singleton
+    TimersRepository providesTimersRepository() {
+        return new TimersRepository();
     }
 }
 
