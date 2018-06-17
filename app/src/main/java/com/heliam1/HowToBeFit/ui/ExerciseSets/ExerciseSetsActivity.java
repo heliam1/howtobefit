@@ -21,11 +21,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.heliam1.HowToBeFit.R;
 import com.heliam1.HowToBeFit.di.HowToBeFitApplication;
+import com.heliam1.HowToBeFit.models.ExerciseSet;
 import com.heliam1.HowToBeFit.models.StartTimeExerciseSetListPreviousExerciseSet;
 import com.heliam1.HowToBeFit.repositories.ExerciseSetRepository;
 import com.heliam1.HowToBeFit.repositories.TimersRepository;
@@ -58,6 +60,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
 
     private ActionBar mActionBar;
 
+    private ScrollView mExerciseSetsScrollView;
     private LinearLayout mExerciseSetsLinearLayout;
     private boolean critical; // the linear layout has alot of views, giving them input while spawning will crash the ap
 
@@ -81,6 +84,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         mActionBar.setTitle(getIntent().getStringExtra("workoutName"));
 
         // Set the list View
+        mExerciseSetsScrollView = findViewById(R.id.exerciseSetsScrollView);
         mExerciseSetsLinearLayout = findViewById(R.id.exerciseSetsRecyclerView);
 
         // Set the timers
@@ -94,9 +98,9 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         // populate the recycler View
         mWorkoutId = getIntent().getLongExtra("workoutId", 0);
         mWorkoutDate = getIntent().getLongExtra("workoutDate", 0);
-        if (mWorkoutId == 0) {
-            Log.e("ExerciseSetsActivity", "no workout");
-        }
+        Log.v("ExerciseSetsActivity", "workout id on load" + mWorkoutId);
+        Log.v("ExerciseSetsActivity", "workout date on load" + mWorkoutDate);
+
         mExerciseSetsPresenter = new ExerciseSetsPresenter(this, timersRepository, exerciseSetRepository, AndroidSchedulers.mainThread());
         mExerciseSetsPresenter.loadExerciseSets(mWorkoutId, mWorkoutDate);
 
@@ -161,7 +165,6 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
             public void onClick(DialogInterface dialog, int id) {
                 minimiseExerciseSet(mCurrentElement, false);
                 mExerciseSetsPresenter.saveExerciseSets(mWorkoutId);
-                finish();
             }
         });
         builder.setNegativeButton("Discard", new DialogInterface.OnClickListener() {

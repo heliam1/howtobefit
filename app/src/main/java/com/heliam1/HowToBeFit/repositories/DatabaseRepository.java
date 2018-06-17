@@ -223,6 +223,12 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
     }
 
     @Override
+    public Single<Long> saveExerciseSetsUpdateWorkout(long id, long time) {
+        saveExerciseSets(time);
+        return updateWorkout(id, time);
+    }
+
+    @Override
     public Single<Long> updateWorkout(long id, long time) {
         return Single.fromCallable(() -> {
             try {
@@ -262,6 +268,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
     public Single<Long> saveExerciseSets(long time) {
         return Single.fromCallable(() -> {
             try {
+                Log.v("DatabaseRepository", "do we even get here271");
                 List<ExerciseSet> exerciseSets = new ArrayList<>();
                 for (int i = 0; i < mStartExsetListprevexset.size(); i++) {
                     ExerciseSet exerciseSet = mStartExsetListprevexset.get(i).getExerciseSet();
@@ -269,10 +276,12 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
                     exerciseSet.setSetDate(time);
                     exerciseSet.setSetOrder(i + 1);
                     exerciseSets.add(exerciseSet);
+                    Log.v("DatabaseRepository", "id" + exerciseSet.getId() + " date" + exerciseSet.getSetDateLong());
                 }
 
                 return upsertExerciseSets(exerciseSets);
             } catch (Exception e) {
+                Log.v("DatabaseRepository", "do we even get here284");
                 throw new RuntimeException("Something wrong with db");
             }
         });
@@ -303,7 +312,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
 
     private Long upsertExerciseSets(List<ExerciseSet> exerciseSets) {
         ContentValues values = new ContentValues();
-
+        Log.v("DatabaseRepository", "do we even get here314");
         for (ExerciseSet exerciseSet : exerciseSets) {
             values.clear();
             values.put(ExerciseSetEntry._WORKOUT_ID, exerciseSet.getWorkoutId());
@@ -331,6 +340,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
                 uri = ContentUris.withAppendedId(ExerciseSetEntry.CONTENT_URI, exerciseSet.getId());
             } else {
                 uri = contentResolver.insert(ExerciseSetEntry.CONTENT_URI, values);
+                Log.v("DatabaseRepository", "did it save" + uri.toString());
             }
         }
         return 0L;

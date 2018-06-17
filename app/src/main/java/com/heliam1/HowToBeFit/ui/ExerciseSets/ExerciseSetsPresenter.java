@@ -254,34 +254,19 @@ public class ExerciseSetsPresenter {
         try { saveExerciseSetsToRepository(); }
         catch (Exception e) { mView.displayToast("Error saving exercise sets"); return; }
 
-        compositeDisposable.add(mExerciseSetsRepository.saveExerciseSets(time)
-                .subscribeOn(Schedulers.io())
-                .observeOn(mainScheduler)
-                .subscribeWith(new DisposableSingleObserver<Long>() {
-                    @Override
-                    public void onSuccess(Long id) {
-                        mView.displayToast("Exercise-Sets saved");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.displayToast("Unable to save exercise sets");
-                    }
-                })
-        );
-
-        compositeDisposable.add(mExerciseSetsRepository.updateWorkout(id, time)
+        compositeDisposable.add(mExerciseSetsRepository.saveExerciseSetsUpdateWorkout(id, time)
                 .subscribeOn(Schedulers.io())
                 .observeOn(mainScheduler)
                 .subscribeWith(new DisposableSingleObserver<Long>() {
                     @Override
                     public void onSuccess(Long id) {
                         mView.displayToast("Workout saved");
+                        mView.finishActivity();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        mView.displayToast("Unable to save workout");
+                        mView.displayToast("Unable to save exercise sets");
                     }
                 })
         );

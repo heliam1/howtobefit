@@ -10,6 +10,7 @@ import io.reactivex.Single;
 
 public interface ExerciseSetRepository {
     // public Single<List<ExerciseSet>> getExerciseSetsByWorkoutId(long id);
+    public Single<Long> saveExerciseSetsUpdateWorkout(long id, long time);
 
     Single<List<StartTimeExerciseSetListPreviousExerciseSet>> getExerciseSetsByWorkoutIdandPreviousSets(long id, long date);
 
