@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
         mAddWorkout.setVisibility(View.GONE);
 
         mWorkoutPresenter = new WorkoutsPresenter(this, workoutRepository, AndroidSchedulers.mainThread());
-        mWorkoutPresenter.loadWorkouts();
 
         mSaveWorkout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +86,12 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
                 mAddWorkout.setVisibility(View.GONE);
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mWorkoutPresenter.loadWorkouts();
     }
 
     @Override
@@ -111,11 +116,6 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     @Override
@@ -157,11 +157,19 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(MainActivity.this, ExerciseSetsActivity.class);
-
                     intent.putExtra("workoutId", workout.getId());
                     intent.putExtra("workoutName", workout.getName());
                     intent.putExtra("workoutDate", workout.getDate());
-
+                    startActivity(intent);
+                }
+            });
+            workoutDateView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this, ExerciseSetsActivity.class);
+                    intent.putExtra("workoutId", workout.getId());
+                    intent.putExtra("workoutName", workout.getName());
+                    intent.putExtra("workoutDate", workout.getDate());
                     startActivity(intent);
                 }
             });

@@ -10,18 +10,16 @@ import io.reactivex.Single;
 
 public interface ExerciseSetRepository {
     // public Single<List<ExerciseSet>> getExerciseSetsByWorkoutId(long id);
+    public void saveExerciseSetsUpdateWorkout(long id, long time);
 
     Single<List<StartTimeExerciseSetListPreviousExerciseSet>> getExerciseSetsByWorkoutIdandPreviousSets(long id, long date);
 
     public Single<List<PreviousExerciseSet>> getPreviousSets(String name, int setNumber);
 
-    public Single<Long> saveExerciseSets(long time);
-
     public Single<Long> deleteExerciseSet(ExerciseSet exerciseSet);
 
     public Single<Long> deleteWorkout(long id);
 
-    public Single<Long> updateWorkout(long id, long time);
 
     public void addStartExsetListprevset(StartTimeExerciseSetListPreviousExerciseSet element);
 

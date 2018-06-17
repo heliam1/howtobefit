@@ -7,20 +7,22 @@
     android:orientation="vertical"
     android:layout_width="150dp"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryLight">
+    android:background="@android:color/white">
 
     <ImageView
-        android:background="@android:color/black"
+        android:background="@color/colorPrimaryLight"
         android:id="@+id/image_view_image_workout"
         android:layout_width="match_parent"
         android:layout_height="160dp"/>
 
     <EditText
+        android:textColor="@android:color/black"
         android:id="@+id/edit_text_name_workout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
+        android:textColor="@android:color/black"
         android:id="@+id/text_view_date_workout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

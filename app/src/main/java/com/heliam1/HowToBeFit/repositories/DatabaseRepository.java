@@ -223,9 +223,13 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
     }
 
     @Override
-    public Single<Long> updateWorkout(long id, long time) {
-        return Single.fromCallable(() -> {
-            try {
+    public void saveExerciseSetsUpdateWorkout(long id, long time) {
+        saveExerciseSets(time);
+        updateWorkout(id, time);
+        return;
+    }
+
+    public void updateWorkout(long id, long time) {
                 long duration = calculateWorkoutDuration();
 
                 ContentValues values = new ContentValues();
@@ -235,12 +239,6 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
                 int i = contentResolver.update(
                         ContentUris.withAppendedId(WorkoutEntry.CONTENT_URI, id),
                         values, null, null);
-
-                return 0L;
-            } catch (Exception e) {
-                throw new RuntimeException("Something wrong with db");
-            }
-        });
     }
 
     private long calculateWorkoutDuration() {
@@ -258,10 +256,8 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         return setEnd;
     }
 
-    @Override
-    public Single<Long> saveExerciseSets(long time) {
-        return Single.fromCallable(() -> {
-            try {
+    public void saveExerciseSets(long time) {
+                Log.v("DatabaseRepository", "do we even get here271");
                 List<ExerciseSet> exerciseSets = new ArrayList<>();
                 for (int i = 0; i < mStartExsetListprevexset.size(); i++) {
                     ExerciseSet exerciseSet = mStartExsetListprevexset.get(i).getExerciseSet();
@@ -269,13 +265,11 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
                     exerciseSet.setSetDate(time);
                     exerciseSet.setSetOrder(i + 1);
                     exerciseSets.add(exerciseSet);
+                    Log.v("DatabaseRepository", "id" + exerciseSet.getId() + " date" + exerciseSet.getSetDateLong());
                 }
 
-                return upsertExerciseSets(exerciseSets);
-            } catch (Exception e) {
-                throw new RuntimeException("Something wrong with db");
-            }
-        });
+                upsertExerciseSets(exerciseSets);
+                return;
     }
 
     private Long upsertWorkout(Workout workout) {
@@ -303,7 +297,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
 
     private Long upsertExerciseSets(List<ExerciseSet> exerciseSets) {
         ContentValues values = new ContentValues();
-
+        Log.v("DatabaseRepository", "do we even get here314");
         for (ExerciseSet exerciseSet : exerciseSets) {
             values.clear();
             values.put(ExerciseSetEntry._WORKOUT_ID, exerciseSet.getWorkoutId());
@@ -331,6 +325,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
                 uri = ContentUris.withAppendedId(ExerciseSetEntry.CONTENT_URI, exerciseSet.getId());
             } else {
                 uri = contentResolver.insert(ExerciseSetEntry.CONTENT_URI, values);
+                Log.v("DatabaseRepository", "did it save" + uri.toString());
             }
         }
         return 0L;

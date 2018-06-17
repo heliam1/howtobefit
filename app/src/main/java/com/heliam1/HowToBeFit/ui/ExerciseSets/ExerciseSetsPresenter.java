@@ -129,7 +129,7 @@ public class ExerciseSetsPresenter {
             }
 
         } catch (Exception e) {
-            mView.displayToast("Needs name, set #, and order");
+            mView.displayToast("An exercise requires a name and set number (#*)");
             return;
         }
 
@@ -252,39 +252,10 @@ public class ExerciseSetsPresenter {
         long time = Calendar.getInstance().getTimeInMillis();
 
         try { saveExerciseSetsToRepository(); }
-        catch (Exception e) { return; }
+        catch (Exception e) { mView.displayToast("Error saving exercise sets"); return; }
 
-        compositeDisposable.add(mExerciseSetsRepository.saveExerciseSets(time)
-                .subscribeOn(Schedulers.io())
-                .observeOn(mainScheduler)
-                .subscribeWith(new DisposableSingleObserver<Long>() {
-                    @Override
-                    public void onSuccess(Long id) {
-                        mView.displayToast("Exercise-Sets saved");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.displayToast("Unable to save exercise sets");
-                    }
-                })
-        );
-
-        compositeDisposable.add(mExerciseSetsRepository.updateWorkout(id, time)
-                .subscribeOn(Schedulers.io())
-                .observeOn(mainScheduler)
-                .subscribeWith(new DisposableSingleObserver<Long>() {
-                    @Override
-                    public void onSuccess(Long id) {
-                        mView.displayToast("Workout saved");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.displayToast("Unable to save workout");
-                    }
-                })
-        );
+        mExerciseSetsRepository.saveExerciseSetsUpdateWorkout(id, time);
+        mView.finishActivity();
     }
 
     public void startTimers() {
