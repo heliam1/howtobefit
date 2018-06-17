@@ -10,7 +10,6 @@ android {
     // signingConfig block goes here
 
     compileSdkVersion 26
-
     defaultConfig {
         applicationId "com.heliam1.HowToBeFit"
         minSdkVersion 24
@@ -23,7 +22,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            // signingConfig signingConfigs.config
+            // signingConfig signingConfigs.config goes here
         }
         debug {
             minifyEnabled false

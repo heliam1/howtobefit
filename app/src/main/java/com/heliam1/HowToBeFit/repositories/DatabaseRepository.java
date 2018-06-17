@@ -223,15 +223,13 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
     }
 
     @Override
-    public Single<Long> saveExerciseSetsUpdateWorkout(long id, long time) {
+    public void saveExerciseSetsUpdateWorkout(long id, long time) {
         saveExerciseSets(time);
-        return updateWorkout(id, time);
+        updateWorkout(id, time);
+        return;
     }
 
-    @Override
-    public Single<Long> updateWorkout(long id, long time) {
-        return Single.fromCallable(() -> {
-            try {
+    public void updateWorkout(long id, long time) {
                 long duration = calculateWorkoutDuration();
 
                 ContentValues values = new ContentValues();
@@ -241,12 +239,6 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
                 int i = contentResolver.update(
                         ContentUris.withAppendedId(WorkoutEntry.CONTENT_URI, id),
                         values, null, null);
-
-                return 0L;
-            } catch (Exception e) {
-                throw new RuntimeException("Something wrong with db");
-            }
-        });
     }
 
     private long calculateWorkoutDuration() {
@@ -264,10 +256,7 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
         return setEnd;
     }
 
-    @Override
-    public Single<Long> saveExerciseSets(long time) {
-        return Single.fromCallable(() -> {
-            try {
+    public void saveExerciseSets(long time) {
                 Log.v("DatabaseRepository", "do we even get here271");
                 List<ExerciseSet> exerciseSets = new ArrayList<>();
                 for (int i = 0; i < mStartExsetListprevexset.size(); i++) {
@@ -279,12 +268,8 @@ public class DatabaseRepository implements WorkoutRepository, ExerciseSetReposit
                     Log.v("DatabaseRepository", "id" + exerciseSet.getId() + " date" + exerciseSet.getSetDateLong());
                 }
 
-                return upsertExerciseSets(exerciseSets);
-            } catch (Exception e) {
-                Log.v("DatabaseRepository", "do we even get here284");
-                throw new RuntimeException("Something wrong with db");
-            }
-        });
+                upsertExerciseSets(exerciseSets);
+                return;
     }
 
     private Long upsertWorkout(Workout workout) {
