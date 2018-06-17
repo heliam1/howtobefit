@@ -157,11 +157,19 @@ public class MainActivity extends AppCompatActivity implements WorkoutsView {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(MainActivity.this, ExerciseSetsActivity.class);
-
                     intent.putExtra("workoutId", workout.getId());
                     intent.putExtra("workoutName", workout.getName());
                     intent.putExtra("workoutDate", workout.getDate());
-
+                    startActivity(intent);
+                }
+            });
+            workoutDateView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this, ExerciseSetsActivity.class);
+                    intent.putExtra("workoutId", workout.getId());
+                    intent.putExtra("workoutName", workout.getName());
+                    intent.putExtra("workoutDate", workout.getDate());
                     startActivity(intent);
                 }
             });
