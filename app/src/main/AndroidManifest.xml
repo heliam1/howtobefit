@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.heliam1.HowToBeFit">
+    package="com.heliam1.HowToBeFit"
+    android:versionCode="2"
+
+    >
 
     <application
         android:allowBackup="false"

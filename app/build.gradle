@@ -1,27 +1,22 @@
 apply plugin: 'com.android.application'
 
+// never have credentials in source control
+// put credentials in signingConfigs block
+// create the apk
+// remove credentials
+// commit to source control
+
 android {
     // signingConfig block goes here
-    /*
-    signingConfigs {
-        config {
-            keyAlias ''
-            keyPassword ''
-            storeFile file('C:/Users/cube/Google Drive' +
-                   '/Level 6_ high level knowledge + skills/Dev' +
-                   '/Learning Android Studio' +
-                    '/Signing/android.jks')
-            storePassword ''
-        }
-    }*/
-    
+
     compileSdkVersion 26
+
     defaultConfig {
         applicationId "com.heliam1.HowToBeFit"
         minSdkVersion 24
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

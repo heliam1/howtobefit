@@ -159,7 +159,9 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         builder.setMessage("Exit and?");
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                minimiseExerciseSet(mCurrentElement, false);
                 mExerciseSetsPresenter.saveExerciseSets(mWorkoutId);
+                finish();
             }
         });
         builder.setNegativeButton("Discard", new DialogInterface.OnClickListener() {
@@ -276,6 +278,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
             expandButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    minimiseExerciseSet(mCurrentElement, false);
                     mExerciseSetsPresenter.saveExerciseSetsToRepository();
                     expandExerciseSet(startExsetListprev);
                 }
@@ -346,6 +349,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
                 expandButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        minimiseExerciseSet(mCurrentElement, false);
                         mExerciseSetsPresenter.saveExerciseSetsToRepository();
                         expandExerciseSet(startExsetListprev);
                     }

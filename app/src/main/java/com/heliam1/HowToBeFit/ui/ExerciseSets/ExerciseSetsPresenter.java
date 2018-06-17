@@ -129,7 +129,7 @@ public class ExerciseSetsPresenter {
             }
 
         } catch (Exception e) {
-            mView.displayToast("Needs name, set #, and order");
+            mView.displayToast("An exercise requires a name and set number (#*)");
             return;
         }
 
@@ -252,7 +252,7 @@ public class ExerciseSetsPresenter {
         long time = Calendar.getInstance().getTimeInMillis();
 
         try { saveExerciseSetsToRepository(); }
-        catch (Exception e) { return; }
+        catch (Exception e) { mView.displayToast("Error saving exercise sets"); return; }
 
         compositeDisposable.add(mExerciseSetsRepository.saveExerciseSets(time)
                 .subscribeOn(Schedulers.io())
