@@ -30,6 +30,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="40dp"
         android:maxLines="1"
+        android:hint="weight"
         android:minWidth="65dp"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/edit_text_expanded_pb_reps"
@@ -211,11 +212,13 @@
 
     <EditText
         android:id="@+id/edit_text_expanded_pb_reps"
-        android:layout_width="40dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="40dp"
+        android:hint="reps"
         android:maxLines="1"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/edit_text_expanded_set_order"
+        app:layout_constraintEnd_toStartOf="@+id/button_expanded_delete"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
