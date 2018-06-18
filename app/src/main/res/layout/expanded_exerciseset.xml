@@ -17,7 +17,7 @@
         android:layout_marginStart="8dp"
         android:hint="sec"
         android:maxLines="1"
-        android:textAlignment="textEnd"
+        android:textAlignment="center"
         app:layout_constraintEnd_toStartOf="@+id/button_expanded_delete"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/edit_text_expanded_rest_minutes"
@@ -30,6 +30,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="40dp"
         android:maxLines="1"
+        android:hint="weight"
+        android:textAlignment="center"
         android:minWidth="65dp"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/edit_text_expanded_pb_reps"
@@ -41,11 +43,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:text="Personal\nBest"
         android:textAlignment="center"
-        android:textSize="12sp"
+        android:textSize="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/edit_text_expanded_pb_weight"
         app:layout_constraintEnd_toStartOf="@+id/edit_text_expanded_pb_weight"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/text_view_expanded_start"
         app:layout_constraintTop_toTopOf="@+id/edit_text_expanded_pb_weight" />
 
     <Button
@@ -54,7 +59,8 @@
         android:layout_height="50dp"
         android:layout_marginBottom="4dp"
         android:layout_marginEnd="8dp"
-        android:text="✓"
+        android:text="save"
+        android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -65,7 +71,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:text="X"
+        android:text="del"
         app:layout_constraintBottom_toTopOf="@+id/button_expanded_save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_expanded_minimise" />
@@ -75,13 +81,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:text="1"
-        android:hint="#*"
+        android:hint="Set#*"
         android:maxLines="1"
+        android:text="1"
         android:textAlignment="center"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/button_expanded_minimise"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/edit_text_expanded_name"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -90,9 +96,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="60dp"
         android:layout_marginStart="8dp"
-        android:hint="Exercise Name, Set Number ->*"
+        android:hint="Exercise Name*"
         android:inputType="text"
         android:maxLines="1"
         android:textSize="16sp"
@@ -107,7 +113,7 @@
         android:layout_marginStart="8dp"
         android:hint="min"
         android:maxLines="1"
-        android:textAlignment="textEnd"
+        android:textAlignment="center"
         app:layout_constraintStart_toEndOf="@+id/label_rest"
         app:layout_constraintTop_toTopOf="@+id/edit_text_expanded_duration_seconds" />
 
@@ -118,11 +124,12 @@
         android:layout_marginStart="8dp"
         android:hint="sec"
         android:maxLines="1"
-        android:textAlignment="textEnd"
+        android:textAlignment="center"
         app:layout_constraintStart_toEndOf="@+id/edit_text_expanded_duration_minutes"
         app:layout_constraintTop_toTopOf="@+id/edit_text_expanded_duration_minutes" />
 
     <EditText
+        android:textAlignment="center"
         android:id="@+id/edit_text_expanded_duration_minutes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -210,11 +217,14 @@
 
     <EditText
         android:id="@+id/edit_text_expanded_pb_reps"
-        android:layout_width="40dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="40dp"
+        android:hint="reps"
+        android:textAlignment="center"
         android:maxLines="1"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/edit_text_expanded_set_order"
+        app:layout_constraintEnd_toStartOf="@+id/button_expanded_delete"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
