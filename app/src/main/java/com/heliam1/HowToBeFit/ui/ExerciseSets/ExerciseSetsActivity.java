@@ -492,11 +492,11 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
                 mExerciseSetsPresenter.saveExerciseSetsToRepository();
 
                 String setOrder;
-                // if (mCurrentElement != null) {
+                if (mCurrentElement != null) {
                     setOrder = Integer.toString(mCurrentElement.getExerciseSet().getSetOrder());
-                //} else {
-                    // setOrder = "";
-                //}
+                } else {
+                    setOrder = "";
+                }
 
                 mExerciseSetsPresenter.addExerciseSet(mCurrentElement,
                         mWorkoutId,
