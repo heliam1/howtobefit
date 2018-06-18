@@ -111,16 +111,16 @@ public class ExerciseSet {
         return setDuration;
     }
 
-    public void setSetDuration(int setDuration) {
-        this.setDuration = setDuration;
+    public void setSetDuration(long setDuration) {
+        this.setDuration = setDuration * 1000;
     }
 
     public long getSetRest() {
         return setRest;
     }
 
-    public void setSetRest(int setRest) {
-        this.setRest = setRest;
+    public void setSetRest(long setRest) {
+        this.setRest = setRest * 1000;
     }
 
     public double getSetWeight() {

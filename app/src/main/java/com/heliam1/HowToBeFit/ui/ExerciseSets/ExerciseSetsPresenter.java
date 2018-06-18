@@ -148,6 +148,8 @@ public class ExerciseSetsPresenter {
             StartTimeExerciseSetListPreviousExerciseSet newElement = currentElement;
             newElement.getExerciseSet().setExerciseName(exerciseName);
             newElement.getExerciseSet().setSetNumber(Integer.parseInt(setNumber));
+            newElement.getExerciseSet().setSetDuration(durationSeconds);
+            newElement.getExerciseSet().setSetRest(restSeconds);
             newElement.getExerciseSet().setPbWeight(Double.parseDouble(pbWeight));
             newElement.getExerciseSet().setPbReps(Integer.parseInt(pbReps));
             mExerciseSetsRepository.replaceStartExsetListprevset(currentElement, newElement);

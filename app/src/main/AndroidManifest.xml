@@ -22,7 +22,7 @@
         </activity>
         <activity
             android:name="com.heliam1.HowToBeFit.ui.ExerciseSets.ExerciseSetsActivity"
-            android:launchMode="standard"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme"
             android:parentActivityName="com.heliam1.HowToBeFit.ui.Workouts.MainActivity">
         </activity>
