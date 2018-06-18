@@ -57,6 +57,8 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
     // functions as private static int expandedFlag = -1;
     private StartTimeExerciseSetListPreviousExerciseSet mCurrentElement = null;
     private static boolean mNewElementExpanded = false;
+    private static boolean mAnyElementExpanded = false;
+    private static int mIndexElementExpanded = -1;
 
     private ActionBar mActionBar;
 
@@ -187,7 +189,12 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
             childCount = childCount - 1;
 
         for (int i = 0; i < childCount; i++) {
+            Log.v("ExerciseSetsActivity","Getting edittextweight number/index:" + i);
+            if (i != mIndexElementExpanded)
             setWeights.add(((EditText) ((ViewGroup) mExerciseSetsLinearLayout.getChildAt(i)).getChildAt(2)).getText().toString());
+            else {
+                setWeights.add(Double.toString(mCurrentElement.getExerciseSet().getSetWeight()));
+            }
         }
         return setWeights;
     }
@@ -201,7 +208,11 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
             childCount = childCount - 1;
 
         for (int i = 0; i < childCount; i++) {
-            setReps.add(((EditText) ((ViewGroup) mExerciseSetsLinearLayout.getChildAt(i)).getChildAt(3)).getText().toString());
+            if (i != mIndexElementExpanded)
+                setReps.add(((EditText) ((ViewGroup) mExerciseSetsLinearLayout.getChildAt(i)).getChildAt(3)).getText().toString());
+            else {
+                setReps.add(Integer.toString(mCurrentElement.getExerciseSet().getSetReps()));
+            }
         }
         return setReps;
     }
@@ -388,12 +399,15 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         } else {
             if (mNewElementExpanded) {
                 mExerciseSetsLinearLayout.removeViewAt(mExerciseSetsPresenter.getList().size());
-                mNewElementExpanded = false;
             }
             // decided not to add an exercise set, just remove the view
         }
         mCurrentElement = null;
         mFabAddExerciseSet.setVisibility(View.VISIBLE);
+
+        mNewElementExpanded = false;
+        mAnyElementExpanded = false;
+        mIndexElementExpanded = -1;
     }
 
     private void expandExerciseSet(StartTimeExerciseSetListPreviousExerciseSet element) {
@@ -468,6 +482,7 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
         minimiseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 minimiseExerciseSet(mCurrentElement, false);
             }});
 
@@ -477,11 +492,11 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
                 mExerciseSetsPresenter.saveExerciseSetsToRepository();
 
                 String setOrder;
-                if (mCurrentElement != null) {
+                // if (mCurrentElement != null) {
                     setOrder = Integer.toString(mCurrentElement.getExerciseSet().getSetOrder());
-                } else {
-                    setOrder = "";
-                }
+                //} else {
+                    // setOrder = "";
+                //}
 
                 mExerciseSetsPresenter.addExerciseSet(mCurrentElement,
                         mWorkoutId,
@@ -505,18 +520,19 @@ public class ExerciseSetsActivity extends AppCompatActivity implements ExerciseS
                 else {
                     minimiseExerciseSet(mCurrentElement, false);
                 }
-
-                mNewElementExpanded = false;
             }});
 
         if (mCurrentElement == null) {
             mExerciseSetsLinearLayout.addView(expandedView);
             mNewElementExpanded = true;
+            mIndexElementExpanded = mExerciseSetsLinearLayout.getChildCount() - 1;
         } else {
             mExerciseSetsLinearLayout.removeViewAt(mCurrentElement.getExerciseSet().getSetOrder() - 1);
             mExerciseSetsLinearLayout.addView(expandedView, mCurrentElement.getExerciseSet().getSetOrder() - 1);
+            mIndexElementExpanded = mCurrentElement.getExerciseSet().getSetOrder() - 1;
         }
 
+        mAnyElementExpanded = true;
         // those methods that are affected
         // test (properly me in the gym), colors, release to Aaron Vish Alex (hey this might not work but it works on my phone perfectly), update jobs
         // maybe release TimeLord
